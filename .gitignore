@@ -1,0 +1,7 @@
+.vscode/
+dist/
+.idea/
+tests/
+test.py
+site
+__pycache__/
