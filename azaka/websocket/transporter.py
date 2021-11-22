@@ -4,8 +4,8 @@ import asyncio
 import logging
 import queue
 import typing as t
-from .protocol import Protocol
 
+from .protocol import Protocol
 
 __all__ = ("Transporter",)
 
@@ -41,7 +41,7 @@ class Transporter:
     async def start(self, credential: bytes) -> None:
         protocol_factory = Protocol(credential, self.on_connect, self.on_disconnect)
         protocol_factory.subscriber = self.notify
-        addr, port = "api.vndb.org", 19534
+        addr, port = "127.0.0.1", 8888  # "api.vndb.org", 19534
 
         try:
             self._transport, _ = await self.loop.create_connection(  # type: ignore
