@@ -3,7 +3,7 @@ import logging
 import typing as t
 from asyncio import transports
 
-from ..workers.transformer import parse_response
+from ..workers import parse_response
 
 __all__ = ("Protocol",)
 
@@ -23,16 +23,19 @@ class Protocol(asyncio.Protocol):
         return self._subscriber
 
     @subscriber.setter
-    def subscriber(self, value):
+    def subscriber(self, value: t.Callable[[str], t.NoReturn]):
         self._subscriber = value
         return self._subscriber
 
     def connection_made(self, transport: transports.Transport) -> None:  # type: ignore
+        self.logger.info(
+            f"ESTABLISHING CONNECTION WITH {repr(transport.get_extra_info('socket'))}"
+        )
         transport.write(self.command)
         self.logger.info(f"DISPATCHED TRANSPORTER WITH {repr(self.command)}")
 
     def data_received(self, data: bytes) -> None:
-        self.logger.info("PAYLOAD RECIEVED.")
+        self.logger.info("PAYLOAD RECEIVED.")
         msg = parse_response(data)
 
         if msg == "ok":

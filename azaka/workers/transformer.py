@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import json
-from json.decoder import JSONDecodeError
 import typing as t
+from json.decoder import JSONDecodeError
 
 __all__ = ("TERMINATOR", "make_command", "parse_response")
 
