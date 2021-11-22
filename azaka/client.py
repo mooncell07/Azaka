@@ -1,7 +1,13 @@
+import os
+
+os.environ["PYTHONASYNCIODEBUG"] = "1"
+
 import asyncio
 import typing as t
-from .websocket.transporter import Transporter
-from .workers.transformer import make_command
+
+from .objects import DBStats
+from .websocket import Transporter
+from .workers import Cache, make_command
 
 __all__ = ("Client",)
 
@@ -11,13 +17,14 @@ CLIENT_VERSION = "0.1.0"
 
 class Client:
 
-    __slots__ = ("loop", "password", "transporter", "username")
+    __slots__ = ("cache", "loop", "password", "transporter", "username")
 
     def __init__(
         self,
         *,
         username: t.Optional[str] = None,
         password: t.Optional[str] = None,
+        cache_size: int = 50,
         loop: t.Optional[asyncio.AbstractEventLoop] = None
     ) -> None:
         self.loop = (
@@ -28,6 +35,7 @@ class Client:
         self.transporter: Transporter = Transporter(self.loop)
         self.username = username
         self.password = password
+        self.cache = Cache(maxsize=cache_size)
 
     def _acquire_loop(self) -> asyncio.AbstractEventLoop:
         try:
@@ -37,15 +45,21 @@ class Client:
             asyncio.set_event_loop(loop)
         return loop
 
-    async def dbstats(self) -> str:
+    async def fetch_dbstats(self) -> DBStats:
         command = make_command("dbstats")
-        condition = asyncio.Condition()
 
-        async with condition:
-            await self.transporter.inject(command, condition)
-            await condition.acquire()
+        if command not in self.cache:
+            condition = asyncio.Condition()
 
-        return self.transporter.queue.get_nowait()
+            async with condition:
+                await self.transporter.inject(command, condition)
+                await condition.acquire()
+
+            result = DBStats(self.transporter.queue.get_nowait())
+            self.cache.put(command, result)
+        else:
+            result = self.cache[command]
+        return result
 
     def start(self) -> None:
         data = dict(
