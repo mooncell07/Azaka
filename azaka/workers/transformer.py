@@ -1,29 +1,27 @@
+from __future__ import annotations
+
 import json
+from json.decoder import JSONDecodeError
 import typing as t
 
-__all__ = ("Transformer",)
+__all__ = ("TERMINATOR", "make_command", "parse_response")
+
+TERMINATOR = "\x04"
 
 
-class Transformer:
+def parse_response(data: bytes) -> t.Union[t.Mapping[t.Any, t.Any], str]:
+    decoded = data.decode().rstrip(TERMINATOR)
 
-    __slots__ = ("data", "terminator")
+    try:
+        return json.loads(decoded)
+    except JSONDecodeError:
+        return decoded
 
-    def __init__(self, *, data: t.Union[t.Mapping[t.Any, t.Any], str, bytes]) -> None:
-        self.data = data
-        self.terminator = b"\x04"
 
-    def to_bytes(self) -> bytes:
-        if isinstance(self.data, dict):
-            self.data = json.dumps(self.data)
-        return self.data.encode()  # type: ignore
-
-    def to_dict(self) -> t.Optional[t.Mapping[t.Any, t.Any]]:
-        if isinstance(self.data, str) or isinstance(self.data, bytes):
-            return json.loads(self.data)
-        return None
-
-    def command_formation(self, command: str, **arguments: t.Any) -> bytes:
-        if arguments:
-            self.data = arguments
-        fmt = command.encode() + self.to_bytes() + self.terminator
-        return fmt
+def make_command(name: str, **args: t.Any) -> bytes:
+    if args:
+        newargs = json.dumps(args["args"])
+        cmd = name + newargs + TERMINATOR
+    else:
+        cmd = name + TERMINATOR
+    return cmd.encode()
