@@ -6,9 +6,6 @@ import queue
 import typing as t
 from .protocol import Protocol
 
-if t.TYPE_CHECKING:
-    from ..workers.transformer import Transformer
-
 
 __all__ = ("Transporter",)
 
@@ -17,7 +14,15 @@ class Transporter:
 
     PROTOCOL_VERSION = 1
 
-    __slots__ = ('_transport', 'conditions', 'logger', 'loop', 'on_connect', 'on_disconnect', 'queue')
+    __slots__ = (
+        "_transport",
+        "conditions",
+        "logger",
+        "loop",
+        "on_connect",
+        "on_disconnect",
+        "queue",
+    )
 
     def __init__(self, loop: asyncio.AbstractEventLoop) -> None:
         self.loop = loop
@@ -29,23 +34,21 @@ class Transporter:
         self.queue: queue.Queue = queue.Queue()
         self.conditions: queue.Queue = queue.Queue()
 
-    def notify(self, msg: str) -> None:
+    def notify(self, msg: t.Mapping[t.Any, t.Any]) -> None:
         self.queue.put_nowait(msg)
         self.conditions.get_nowait().release()
 
-    async def start(self, credential: Transformer) -> None:
-        command = credential.command_formation("login")
-        protocol_factory = Protocol(command, self.on_connect, self.on_disconnect)
+    async def start(self, credential: bytes) -> None:
+        protocol_factory = Protocol(credential, self.on_connect, self.on_disconnect)
         protocol_factory.subscriber = self.notify
+        addr, port = "api.vndb.org", 19534
 
-        addr =  "api.vndb.org"
-        port =  19534
         try:
             self._transport, _ = await self.loop.create_connection(  # type: ignore
-                    lambda: protocol_factory,
-                    addr,
-                    port,
-                )
+                lambda: protocol_factory,
+                addr,
+                port,
+            )
         except Exception as e:
             await self.loop.shutdown_asyncgens()
             await self.loop.shutdown_default_executor()
@@ -55,14 +58,13 @@ class Transporter:
         finally:
             self.shutdown_handler()
 
-    async def inject(self, command: Transformer, condition: asyncio.Condition) -> None:
+    async def inject(self, command: bytes, condition: asyncio.Condition) -> None:
         await self.on_connect.wait()
-        cmd = command.to_bytes() + b"\x04"
 
         if self._transport:
-            self._transport.write(cmd)
+            self._transport.write(command)
 
-            self.logger.info(f"DISPATCHED TRANSPORTER WITH {repr(cmd)}")
+            self.logger.info(f"DISPATCHED TRANSPORTER WITH {repr(command)}")
             self.conditions.put_nowait(condition)
 
     def shutdown_handler(self) -> None:

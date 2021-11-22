@@ -1,7 +1,7 @@
 import asyncio
 import typing as t
 from .websocket.transporter import Transporter
-from .workers.transformer import Transformer
+from .workers.transformer import make_command
 
 __all__ = ("Client",)
 
@@ -38,11 +38,11 @@ class Client:
         return loop
 
     async def dbstats(self) -> str:
-        transformer = Transformer(data="dbstats")
+        command = make_command("dbstats")
         condition = asyncio.Condition()
 
         async with condition:
-            await self.transporter.inject(transformer, condition)
+            await self.transporter.inject(command, condition)
             await condition.acquire()
 
         return self.transporter.queue.get_nowait()
@@ -56,8 +56,8 @@ class Client:
         if None not in (self.username, self.password):
             data.update({"username": self.username, "password": self.password})
 
-        transformer = Transformer(data=data)
-        self.loop.create_task(self.transporter.start(transformer))
+        command = make_command("login", args=data)
+        self.loop.create_task(self.transporter.start(command))
         try:
             self.loop.run_forever()
         finally:

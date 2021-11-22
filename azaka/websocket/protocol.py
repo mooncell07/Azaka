@@ -3,12 +3,14 @@ import logging
 import typing as t
 from asyncio import transports
 
+from ..workers.transformer import parse_response
+
 __all__ = ("Protocol",)
 
 
 class Protocol(asyncio.Protocol):
 
-    __slots__ = ('_subscriber', 'command', 'logger', 'on_connect', 'on_disconnect')
+    __slots__ = ("_subscriber", "command", "logger", "on_connect", "on_disconnect")
 
     def __init__(self, command: bytes, *event: asyncio.Event) -> None:
         self.command = command
@@ -31,10 +33,9 @@ class Protocol(asyncio.Protocol):
 
     def data_received(self, data: bytes) -> None:
         self.logger.info("PAYLOAD RECIEVED.")
-        msg = data.decode()
-        self.logger.info(f"PAYLOAD -> {repr(msg)}")
+        msg = parse_response(data)
 
-        if msg.lower() == "ok":
+        if msg == "ok":
             self.logger.info("LOGGED IN.")
             self.on_connect.set()
         else:
