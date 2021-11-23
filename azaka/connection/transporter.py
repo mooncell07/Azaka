@@ -42,20 +42,16 @@ class Transporter:
         protocol_factory = Protocol(credential, self.on_connect, self.on_disconnect)
         protocol_factory.subscriber = self.notify
         addr, port = "127.0.0.1", 8888  # "api.vndb.org", 19534
-
         try:
             self._transport, _ = await self.loop.create_connection(  # type: ignore
                 lambda: protocol_factory,
                 addr,
                 port,
             )
-        except Exception as e:
-            await self.loop.shutdown_asyncgens()
-            await self.loop.shutdown_default_executor()
-            self.logger.error(e)
-        else:
             await self.on_disconnect.wait()
         finally:
+            await self.loop.shutdown_asyncgens()
+            await self.loop.shutdown_default_executor()
             self.shutdown_handler()
 
     async def inject(self, command: bytes, condition: asyncio.Condition) -> None:
@@ -69,7 +65,9 @@ class Transporter:
 
     def shutdown_handler(self) -> None:
         for task in asyncio.all_tasks(loop=self.loop):
-            task.cancel()
+            if False in (task.done(), task.cancelled()):
+                task.cancel()
         if self._transport:
             self._transport.close()
+
         self.loop.stop()

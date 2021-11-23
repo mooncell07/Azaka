@@ -37,7 +37,6 @@ class Protocol(asyncio.Protocol):
     def data_received(self, data: bytes) -> None:
         self.logger.info("PAYLOAD RECEIVED.")
         msg = parse_response(data)
-
         if msg == "ok":
             self.logger.info("LOGGED IN.")
             self.on_connect.set()
@@ -46,7 +45,7 @@ class Protocol(asyncio.Protocol):
 
     def connection_lost(self, exc: t.Optional[Exception]) -> None:
         if exc is None:
-            self.logger.info("WEBSOCKET CONNECTION CLOSED.")
+            self.logger.info("CONNECTION CLOSED.")
         else:
             self.logger.exception(
                 f"CONNECTION WAS CLOSED BY THE SERVER WITH EXCEPTION -> {exc}"

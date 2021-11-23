@@ -6,7 +6,7 @@ import asyncio
 import typing as t
 
 from .objects import DBStats
-from .websocket import Transporter
+from .connection import Transporter
 from .workers import Cache, make_command
 
 __all__ = ("Client",)
@@ -75,7 +75,14 @@ class Client:
         try:
             self.loop.run_forever()
         finally:
-            self.loop.stop()
+            self.loop.run_until_complete(
+                asyncio.gather(
+                    self.loop.shutdown_asyncgens(),
+                    self.loop.shutdown_default_executor(),
+                )
+            )
+            self.transporter.shutdown_handler()
+            self.loop.close()
 
     def close(self) -> None:
         self.transporter.shutdown_handler()
