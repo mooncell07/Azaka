@@ -11,10 +11,10 @@ TERMINATOR = "\x04"
 
 def parse_response(data: bytes) -> t.Union[t.Mapping[t.Any, t.Any], str]:
     decoded = data.decode().rstrip(TERMINATOR)
-
+    mapping = decoded.split()
     try:
-        return json.loads(decoded)
-    except JSONDecodeError:
+        return json.loads(mapping[1])
+    except (JSONDecodeError, IndexError):
         return decoded
 
 
