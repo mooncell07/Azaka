@@ -4,7 +4,7 @@ import asyncio
 import logging
 import queue
 import typing as t
-
+import ssl
 from .protocol import Protocol
 
 __all__ = ("Transporter",)
@@ -39,14 +39,18 @@ class Transporter:
         self.conditions.get_nowait().release()
 
     async def start(self, credential: bytes) -> None:
+        sslctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        sslctx.load_default_certs()
+
         protocol_factory = Protocol(credential, self.on_connect, self.on_disconnect)
         protocol_factory.subscriber = self.notify
-        addr, port = "127.0.0.1", 8888  # "api.vndb.org", 19534
+        addr, port = "api.vndb.org", 19535  # "127.0.0.1", 8888
         try:
             self._transport, _ = await self.loop.create_connection(  # type: ignore
                 lambda: protocol_factory,
                 addr,
                 port,
+                ssl=sslctx,
             )
             await self.on_disconnect.wait()
         finally:
