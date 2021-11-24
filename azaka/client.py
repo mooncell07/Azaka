@@ -5,19 +5,18 @@ os.environ["PYTHONASYNCIODEBUG"] = "1"
 import asyncio
 import typing as t
 
-from .objects import DBStats
 from .connection import Transporter
-from .workers import Cache, make_command
+from .objects import DBStats
+from .workers import Cache, make_command, make_repr
 
 __all__ = ("Client",)
-
 CLIENT_NAME = "Azaka"
 CLIENT_VERSION = "0.1.0"
 
 
 class Client:
 
-    __slots__ = ("cache", "loop", "password", "transporter", "username")
+    __slots__ = ("_transporter", "cache", "loop", "password", "username")
 
     def __init__(
         self,
@@ -32,10 +31,10 @@ class Client:
             if isinstance(loop, asyncio.AbstractEventLoop) and not loop.is_closed()
             else self._acquire_loop()
         )
-        self.transporter: Transporter = Transporter(self.loop)
-        self.username = username
-        self.password = password
+        self._transporter: Transporter = Transporter(self.loop)
         self.cache = Cache(maxsize=cache_size)
+        self.password = password
+        self.username = username
 
     def _acquire_loop(self) -> asyncio.AbstractEventLoop:
         try:
@@ -52,26 +51,31 @@ class Client:
             condition = asyncio.Condition()
 
             async with condition:
-                await self.transporter.inject(command, condition)
+                await self._transporter.inject(command, condition)
                 await condition.acquire()
 
-            result = DBStats(self.transporter.queue.get_nowait())
+            result = DBStats(self._transporter.queue.get_nowait())
             self.cache.put(command, result)
         else:
             result = self.cache[command]
         return result
 
     def start(self) -> None:
-        data = dict(
-            protocol=self.transporter.PROTOCOL_VERSION,
-            client=CLIENT_NAME,
-            clientver=CLIENT_VERSION,
-        )
-        if None not in (self.username, self.password):
-            data.update({"username": self.username, "password": self.password})
+        data = {
+            "protocol": self._transporter.PROTOCOL_VERSION,
+            "client": CLIENT_NAME,
+            "clientver": CLIENT_VERSION,
+        }
+
+        username = self.username
+        password = self.password
+        if (username is not None) and (password is not None):
+            data["username"] = username
+            data["password"] = password
 
         command = make_command("login", args=data)
-        self.loop.create_task(self.transporter.start(command))
+        self.loop.create_task(self._transporter.start(command))
+
         try:
             self.loop.run_forever()
         finally:
@@ -81,8 +85,18 @@ class Client:
                     self.loop.shutdown_default_executor(),
                 )
             )
-            self.transporter.shutdown_handler()
+            self._transporter.shutdown_handler()
             self.loop.close()
 
+    async def get_extra_info(self, *args, default=None) -> t.List[t.Any]:
+        return await self._transporter.get_extra_info(args, default=default)
+
     def close(self) -> None:
-        self.transporter.shutdown_handler()
+        self._transporter.shutdown_handler()
+
+    @property
+    def is_closing(self) -> bool:
+        return self._transporter.is_closing()
+
+    def __repr__(self) -> str:
+        return make_repr(self)

@@ -39,6 +39,8 @@ class Cache:
     def __delitem__(self, key: t.Any) -> None:
         if key in self.cache:
             del self.cache[key]
+        else:
+            raise KeyError(key) from None
 
     def __repr__(self) -> t.Any:
         return str(self.cache)
