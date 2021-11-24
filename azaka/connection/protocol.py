@@ -6,48 +6,56 @@ from asyncio import transports
 from ..workers import parse_response
 
 __all__ = ("Protocol",)
+logger = logging.getLogger(__name__)
 
 
 class Protocol(asyncio.Protocol):
 
-    __slots__ = ("_subscriber", "command", "logger", "on_connect", "on_disconnect")
+    __slots__ = ("_subscriber", "command", "on_connect", "on_disconnect")
 
-    def __init__(self, command: bytes, *event: asyncio.Event) -> None:
-        self.command = command
-        self.on_connect, self.on_disconnect = event
-        self.logger: logging.Logger = logging.getLogger(__name__)
+    def __init__(
+        self, command: bytes, on_connect: asyncio.Event, on_disconnect: asyncio.Event
+    ) -> None:
         self._subscriber: t.Optional[t.Callable[[str], t.NoReturn]] = None
+        self.command = command
+        self.on_connect = on_connect
+        self.on_disconnect = on_disconnect
 
     @property
     def subscriber(self):
         return self._subscriber
 
     @subscriber.setter
-    def subscriber(self, value: t.Callable[[str], t.NoReturn]):
+    def subscriber(self, value: t.Callable[[str], t.NoReturn]) -> None:
         self._subscriber = value
-        return self._subscriber
 
     def connection_made(self, transport: transports.Transport) -> None:  # type: ignore
-        self.logger.info(
+        logger.info(
             f"ESTABLISHING CONNECTION WITH {repr(transport.get_extra_info('socket'))}"
         )
         transport.write(self.command)
-        self.logger.info(f"DISPATCHED TRANSPORTER WITH {repr(self.command)}")
+        logger.info(f"DISPATCHED TRANSPORTER WITH {repr(self.command)}")
 
     def data_received(self, data: bytes) -> None:
-        self.logger.info("PAYLOAD RECEIVED.")
+        logger.info("PAYLOAD RECEIVED.")
         msg = parse_response(data)
-        if msg == "ok":
-            self.logger.info("LOGGED IN.")
+
+        if msg.type == "ok":
+            logger.info("LOGGED IN.")
             self.on_connect.set()
+
+        elif msg.type == "results" or msg.type == "dbstats":
+            self.subscriber(msg.data)
+
         else:
-            self.subscriber(msg)
+            logger.error(f"UNKNOWN MESSAGE TYPE -> {msg.type}")
+            self.on_disconnect.set()
 
     def connection_lost(self, exc: t.Optional[Exception]) -> None:
         if exc is None:
-            self.logger.info("CONNECTION CLOSED.")
+            logger.info("CONNECTION CLOSED.")
         else:
-            self.logger.exception(
+            logger.exception(
                 f"CONNECTION WAS CLOSED BY THE SERVER WITH EXCEPTION -> {exc}"
             )
         self.on_disconnect.set()

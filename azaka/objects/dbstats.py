@@ -1,51 +1,38 @@
 import typing as t
 
+from azaka.workers.transformer import make_repr
+
 __all__ = ("DBStats",)
 
 
 class DBStats:
 
-    __slots__ = ("_data",)
+    __slots__ = (
+        "_data",
+        "chars",
+        "posts",
+        "producers",
+        "releases",
+        "staff",
+        "tags",
+        "threads",
+        "traits",
+        "users",
+        "vn",
+    )
 
     def __init__(self, _data: t.Mapping[str, t.Any]) -> None:
         self._data = _data
+        self.chars: t.Optional[int] = self._data.get("chars")
+        self.posts: t.Optional[int] = self._data.get("posts")
+        self.producers: t.Optional[int] = self._data.get("producers")
+        self.releases: t.Optional[int] = self._data.get("releases")
+        self.staff: t.Optional[int] = self._data.get("staff")
+        self.tags: t.Optional[int] = self._data.get("tags")
+        self.threads: t.Optional[int] = self._data.get("threads")
+        self.traits: t.Optional[int] = self._data.get("traits")
+        self.users: t.Optional[int] = self._data.get("users")
+        self.vn: t.Optional[int] = self._data.get("vn")
 
-    @property
-    def vn(self) -> t.Optional[int]:
-        return self._data.get("vn")
-
-    @property
-    def producers(self) -> t.Optional[int]:
-        return self._data.get("producers")
-
-    @property
-    def users(self) -> t.Optional[int]:
-        return self._data.get("users")
-
-    @property
-    def traits(self) -> t.Optional[int]:
-        return self._data.get("traits")
-
-    @property
-    def releases(self) -> t.Optional[int]:
-        return self._data.get("releases")
-
-    @property
-    def tags(self) -> t.Optional[int]:
-        return self._data.get("tags")
-
-    @property
-    def chars(self) -> t.Optional[int]:
-        return self._data.get("chars")
-
-    @property
-    def staff(self) -> t.Optional[int]:
-        return self._data.get("staff")
-
-    @property
-    def threads(self) -> t.Optional[int]:
-        return self._data.get("threads")
-
-    @property
-    def posts(self) -> t.Optional[int]:
-        return self._data.get("posts")
+    def __repr__(self) -> str:
+        return make_repr(self)

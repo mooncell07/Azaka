@@ -8,6 +8,7 @@ import ssl
 from .protocol import Protocol
 
 __all__ = ("Transporter",)
+logger = logging.getLogger(__name__)
 
 
 class Transporter:
@@ -17,7 +18,6 @@ class Transporter:
     __slots__ = (
         "_transport",
         "conditions",
-        "logger",
         "loop",
         "on_connect",
         "on_disconnect",
@@ -25,34 +25,34 @@ class Transporter:
     )
 
     def __init__(self, loop: asyncio.AbstractEventLoop) -> None:
+        self._transport: t.Optional[asyncio.transports.Transport] = None
+        self.conditions: queue.Queue = queue.Queue()
         self.loop = loop
+
         self.on_connect: asyncio.Event = asyncio.Event()
         self.on_disconnect: asyncio.Event = asyncio.Event()
-        self.logger: logging.Logger = logging.getLogger(__name__)
-
-        self._transport: t.Optional[asyncio.transports.Transport] = None
         self.queue: queue.Queue = queue.Queue()
-        self.conditions: queue.Queue = queue.Queue()
 
     def notify(self, msg: t.Mapping[t.Any, t.Any]) -> None:
         self.queue.put_nowait(msg)
         self.conditions.get_nowait().release()
 
     async def start(self, credential: bytes) -> None:
-        sslctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-        sslctx.load_default_certs()
-
         protocol_factory = Protocol(credential, self.on_connect, self.on_disconnect)
         protocol_factory.subscriber = self.notify
-        addr, port = "api.vndb.org", 19535  # "127.0.0.1", 8888
+        addr = "api.vndb.org"
+        port = 19535
+        cert = self.ssl_handler()
+
         try:
             self._transport, _ = await self.loop.create_connection(  # type: ignore
-                lambda: protocol_factory,
-                addr,
-                port,
-                ssl=sslctx,
+                protocol_factory=lambda: protocol_factory,
+                host=addr,
+                port=port,
+                ssl=cert,
             )
             await self.on_disconnect.wait()
+
         finally:
             await self.loop.shutdown_asyncgens()
             await self.loop.shutdown_default_executor()
@@ -61,17 +61,32 @@ class Transporter:
     async def inject(self, command: bytes, condition: asyncio.Condition) -> None:
         await self.on_connect.wait()
 
-        if self._transport:
-            self._transport.write(command)
+        transport = self._transport
+        if transport is not None:
+            transport.write(command)
 
-            self.logger.info(f"DISPATCHED TRANSPORTER WITH {repr(command)}")
+            logger.info(f"DISPATCHED TRANSPORTER WITH {repr(command)}")
             self.conditions.put_nowait(condition)
+
+    def is_closing(self) -> bool:
+        return self._transport is None or self._transport.is_closing()
+
+    async def get_extra_info(
+        self, args: t.Tuple[str, ...], *, default: t.Optional[t.Any] = None
+    ) -> t.List[t.Any]:
+        await self.on_connect.wait()
+        return [self._transport.get_extra_info(arg, default=default) for arg in args]
+
+    def ssl_handler(self) -> ssl.SSLContext:
+        sslctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        sslctx.load_default_certs()
+
+        return sslctx
 
     def shutdown_handler(self) -> None:
         for task in asyncio.all_tasks(loop=self.loop):
-            if False in (task.done(), task.cancelled()):
-                task.cancel()
-        if self._transport:
+            task.cancel()
+        if self._transport is not None:
             self._transport.close()
 
         self.loop.stop()
