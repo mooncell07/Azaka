@@ -1,6 +1,6 @@
 import typing as t
 
-from azaka.workers.transformer import make_repr
+from azaka.tools.transformer import make_repr
 
 __all__ = ("DBStats",)
 
