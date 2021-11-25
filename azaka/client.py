@@ -3,11 +3,12 @@ import os
 os.environ["PYTHONASYNCIODEBUG"] = "1"
 
 import asyncio
+import contextlib
 import typing as t
 
 from .connection import Transporter
 from .objects import DBStats
-from .workers import Cache, make_command, make_repr
+from .tools import Cache, make_command, make_repr
 
 __all__ = ("Client",)
 CLIENT_NAME = "Azaka"
@@ -26,6 +27,7 @@ class Client:
         cache_size: int = 50,
         loop: t.Optional[asyncio.AbstractEventLoop] = None
     ) -> None:
+
         self.loop = (
             loop
             if isinstance(loop, asyncio.AbstractEventLoop) and not loop.is_closed()
@@ -35,6 +37,10 @@ class Client:
         self.cache = Cache(maxsize=cache_size)
         self.password = password
         self.username = username
+
+    @property
+    def is_closing(self) -> bool:
+        return self._transporter.is_closing()
 
     def _acquire_loop(self) -> asyncio.AbstractEventLoop:
         try:
@@ -74,29 +80,29 @@ class Client:
             data["password"] = password
 
         command = make_command("login", args=data)
-        self.loop.create_task(self._transporter.start(command))
+
+        task = self.loop.create_task(self._transporter.start(command))
+        task._log_destroy_pending = False  # type: ignore
 
         try:
             self.loop.run_forever()
         finally:
-            self.loop.run_until_complete(
-                asyncio.gather(
-                    self.loop.shutdown_asyncgens(),
-                    self.loop.shutdown_default_executor(),
-                )
-            )
             self._transporter.shutdown_handler()
             self.loop.close()
 
-    async def get_extra_info(self, *args, default=None) -> t.List[t.Any]:
+        with contextlib.suppress(
+            asyncio.InvalidStateError, TypeError, asyncio.CancelledError
+        ):
+            raise task.exception() from None  # type: ignore
+
+    async def get_extra_info(self, *args, default=None) -> t.Optional[t.List[t.Any]]:
         return await self._transporter.get_extra_info(args, default=default)
 
     def close(self) -> None:
         self._transporter.shutdown_handler()
 
-    @property
-    def is_closing(self) -> bool:
-        return self._transporter.is_closing()
-
     def __repr__(self) -> str:
+        return make_repr(self)
+
+    def __str__(self) -> str:
         return make_repr(self)

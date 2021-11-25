@@ -9,6 +9,7 @@ class Cache:
     __slots__ = ("cache", "maxsize")
 
     def __init__(self, maxsize=50) -> None:
+
         self.maxsize = maxsize
         self.cache: OrderedDict = OrderedDict()
 

@@ -25,6 +25,7 @@ class Transporter:
     )
 
     def __init__(self, loop: asyncio.AbstractEventLoop) -> None:
+
         self._transport: t.Optional[asyncio.transports.Transport] = None
         self.conditions: queue.Queue = queue.Queue()
         self.loop = loop
@@ -52,11 +53,11 @@ class Transporter:
                 ssl=cert,
             )
             await self.on_disconnect.wait()
-
-        finally:
-            await self.loop.shutdown_asyncgens()
-            await self.loop.shutdown_default_executor()
             self.shutdown_handler()
+        except Exception as e:
+            self.shutdown_handler()
+
+            raise e
 
     async def inject(self, command: bytes, condition: asyncio.Condition) -> None:
         await self.on_connect.wait()
@@ -73,9 +74,14 @@ class Transporter:
 
     async def get_extra_info(
         self, args: t.Tuple[str, ...], *, default: t.Optional[t.Any] = None
-    ) -> t.List[t.Any]:
+    ) -> t.Optional[t.List[t.Any]]:
         await self.on_connect.wait()
-        return [self._transport.get_extra_info(arg, default=default) for arg in args]
+        transport = self._transport
+
+        if transport is not None:
+            return [transport.get_extra_info(arg, default=default) for arg in args]
+
+        return None
 
     def ssl_handler(self) -> ssl.SSLContext:
         sslctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
@@ -86,7 +92,11 @@ class Transporter:
     def shutdown_handler(self) -> None:
         for task in asyncio.all_tasks(loop=self.loop):
             task.cancel()
+
+        self.on_disconnect.set()
+
         if self._transport is not None:
             self._transport.close()
 
-        self.loop.stop()
+        if self.loop.is_running:
+            self.loop.stop()
