@@ -1,9 +1,12 @@
+from __future__ import annotations
+
 import asyncio
 import logging
 import typing as t
 from asyncio import transports
 
-from ..workers import parse_response
+from ..exceptions import InvalidResponseTypeError
+from ..tools import parse_response
 
 __all__ = ("Protocol",)
 logger = logging.getLogger(__name__)
@@ -38,18 +41,20 @@ class Protocol(asyncio.Protocol):
 
     def data_received(self, data: bytes) -> None:
         logger.info("PAYLOAD RECEIVED.")
-        msg = parse_response(data)
+        response = parse_response(data)
 
-        if msg.type == "ok":
+        if response.type == "ok":
             logger.info("LOGGED IN.")
             self.on_connect.set()
 
-        elif msg.type == "results" or msg.type == "dbstats":
-            self.subscriber(msg.data)
+        elif (response.type == "results") or (response.type == "dbstats"):
+            self.subscriber(response.data)
 
         else:
-            logger.error(f"UNKNOWN MESSAGE TYPE -> {msg.type}")
             self.on_disconnect.set()
+            raise InvalidResponseTypeError(
+                response.type, "Couldn't recognize the type of response."
+            ) from None
 
     def connection_lost(self, exc: t.Optional[Exception]) -> None:
         if exc is None:

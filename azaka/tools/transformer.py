@@ -34,7 +34,7 @@ def parse_response(data: bytes):
     decoded = data.decode().rstrip(TERMINATOR)
     mapping = decoded.split(maxsplit=1)
 
-    response = namedtuple("result", ["type", "data"])
+    response = namedtuple("response", ["type", "data"])
     response.type = mapping[0]
 
     if len(mapping) > 1:
