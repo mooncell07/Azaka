@@ -54,9 +54,9 @@ class Transporter:
             )
             await self.on_disconnect.wait()
             self.shutdown_handler()
+
         except Exception as e:
             self.shutdown_handler()
-
             raise e
 
     async def inject(self, command: bytes, condition: asyncio.Condition) -> None:
