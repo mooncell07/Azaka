@@ -3,7 +3,6 @@ import os
 os.environ["PYTHONASYNCIODEBUG"] = "1"
 
 import asyncio
-import contextlib
 import typing as t
 
 from .connection import Transporter
@@ -90,9 +89,7 @@ class Client:
             self._transporter.shutdown_handler()
             self.loop.close()
 
-        with contextlib.suppress(
-            asyncio.InvalidStateError, TypeError, asyncio.CancelledError
-        ):
+        if task.done() or task.cancelled():
             raise task.exception() from None  # type: ignore
 
     async def get_extra_info(self, *args, default=None) -> t.Optional[t.List[t.Any]]:
