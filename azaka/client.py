@@ -11,7 +11,7 @@ from .tools import Cache, make_command, make_repr
 
 __all__ = ("Client",)
 CLIENT_NAME = "Azaka"
-CLIENT_VERSION = "0.1.0"
+CLIENT_VERSION = "0.1.0a1"
 
 
 class Client:
@@ -59,7 +59,8 @@ class Client:
                 await self._transporter.inject(command, condition)
                 await condition.acquire()
 
-            result = DBStats(self._transporter.queue.get_nowait())
+            data = self._transporter.response_queue.get_nowait()
+            result = DBStats(data)
             self.cache.put(command, result)
         else:
             result = self.cache[command]
@@ -97,6 +98,16 @@ class Client:
 
     def close(self) -> None:
         self._transporter.shutdown_handler()
+
+    def register(
+        self,
+        func_or_coro: t.Union[t.Callable[..., t.Any], t.Coroutine[t.Any, t.Any, t.Any]],
+    ):
+        ctask = self.loop.create_task
+
+        ctask(func_or_coro) if isinstance(func_or_coro, t.Coroutine) else ctask(
+            func_or_coro()
+        )
 
     def __repr__(self) -> str:
         return make_repr(self)
