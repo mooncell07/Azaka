@@ -33,7 +33,6 @@ def make_repr(obj: t.Any) -> str:
 def parse_response(data: bytes):
     decoded = data.decode().rstrip(TERMINATOR)
     mapping = decoded.split(maxsplit=1)
-
     response = namedtuple("response", ["type", "data"])
     response.type = mapping[0]
 
