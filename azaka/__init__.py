@@ -4,3 +4,4 @@ from .client import *
 from .tools import *
 from .connection import *
 from .exceptions import *
+from .config import *

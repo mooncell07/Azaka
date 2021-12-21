@@ -1,113 +1,91 @@
 import os
+import ssl
 
 os.environ["PYTHONASYNCIODEBUG"] = "1"
 
 import asyncio
+import inspect
 import typing as t
 
+from .config import Config
 from .connection import Transporter
 from .objects import DBStats
 from .tools import Cache, make_command, make_repr
 
 __all__ = ("Client",)
-CLIENT_NAME = "Azaka"
-CLIENT_VERSION = "0.1.0a1"
 
 
 class Client:
 
-    __slots__ = ("_transporter", "cache", "loop", "password", "username")
+    __slots__ = ("_transporter", "_cache", "cfg")
 
     def __init__(
         self,
         *,
         username: t.Optional[str] = None,
         password: t.Optional[str] = None,
-        cache_size: int = 50,
-        loop: t.Optional[asyncio.AbstractEventLoop] = None
+        _cache_size: int = 50,
+        loop: t.Optional[asyncio.AbstractEventLoop] = None,
+        ssl_context: t.Optional[ssl.SSLContext] = None
     ) -> None:
-
-        self.loop = (
-            loop
-            if isinstance(loop, asyncio.AbstractEventLoop) and not loop.is_closed()
-            else self._acquire_loop()
+        self.cfg = Config(
+            username=username, password=password, loop=loop, ssl_context=ssl_context
         )
-        self._transporter: Transporter = Transporter(self.loop)
-        self.cache = Cache(maxsize=cache_size)
-        self.password = password
-        self.username = username
+        self._cache = Cache(maxsize=_cache_size)
+        self._transporter: Transporter = Transporter(self.cfg)
 
     @property
     def is_closing(self) -> bool:
-        return self._transporter.is_closing()
+        return (
+            self._transporter.transport is None
+            or self._transporter.transport.is_closing()
+        )
 
-    def _acquire_loop(self) -> asyncio.AbstractEventLoop:
-        try:
-            loop = asyncio.get_running_loop()
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-        return loop
+    def register(
+        self,
+        coro: t.Callable[..., t.Any],
+    ):
+        create_task = self.cfg.loop.create_task
 
-    async def fetch_dbstats(self) -> DBStats:
-        command = make_command("dbstats")
-
-        if command not in self.cache:
-            condition = asyncio.Condition()
-
-            async with condition:
-                await self._transporter.inject(command, condition)
-                await condition.acquire()
-
-            data = self._transporter.response_queue.get_nowait()
-            result = DBStats(data)
-            self.cache.put(command, result)
+        if inspect.iscoroutinefunction(coro):
+            create_task(coro(self))
         else:
-            result = self.cache[command]
-        return result
+            raise TypeError("Callback must be a coroutine.") from None
 
     def start(self) -> None:
         data = {
-            "protocol": self._transporter.PROTOCOL_VERSION,
-            "client": CLIENT_NAME,
-            "clientver": CLIENT_VERSION,
+            "protocol": self.cfg.PROTOCOL_VERSION,
+            "client": self.cfg.CLIENT_NAME,
+            "clientver": self.cfg.CLIENT_VERSION,
         }
 
-        username = self.username
-        password = self.password
+        username = self.cfg.username
+        password = self.cfg.password
         if (username is not None) and (password is not None):
             data["username"] = username
             data["password"] = password
 
         command = make_command("login", args=data)
+        self._transporter.start(command)
 
-        task = self.loop.create_task(self._transporter.start(command))
-        task._log_destroy_pending = False  # type: ignore
+    async def fetch_dbstats(self, update=False) -> DBStats:
+        command = make_command("dbstats")
 
-        try:
-            self.loop.run_forever()
-        finally:
-            self._transporter.shutdown_handler()
-            self.loop.close()
+        if command not in self._cache or update is True:
+            future = self.cfg.loop.create_future()
+            await self._transporter.inject(command, future)
 
-        if task.done() or task.cancelled():
-            raise task.exception() from None  # type: ignore
+            result = DBStats(await future)
+            self._cache.put(command, result)
+        else:
+            result = self._cache[command]
+        return result
 
     async def get_extra_info(self, *args, default=None) -> t.Optional[t.List[t.Any]]:
         return await self._transporter.get_extra_info(args, default=default)
 
     def close(self) -> None:
-        self._transporter.shutdown_handler()
-
-    def register(
-        self,
-        func_or_coro: t.Union[t.Callable[..., t.Any], t.Coroutine[t.Any, t.Any, t.Any]],
-    ):
-        ctask = self.loop.create_task
-
-        ctask(func_or_coro) if isinstance(func_or_coro, t.Coroutine) else ctask(
-            func_or_coro()
-        )
+        self.cfg.loop.stop()
 
     def __repr__(self) -> str:
         return make_repr(self)
