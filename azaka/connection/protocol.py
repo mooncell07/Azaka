@@ -14,23 +14,26 @@ logger = logging.getLogger(__name__)
 
 class Protocol(asyncio.Protocol):
 
-    __slots__ = ("_listener", "command", "on_connect", "on_disconnect")
+    __slots__ = ("listener", "_command", "on_connect", "on_disconnect")
 
     def __init__(
-        self, command: bytes, on_connect: asyncio.Event, on_disconnect: asyncio.Event
+        self,
+        listener: t.Callable[[t.Mapping[t.Any, t.Any]], None],
+        on_connect: asyncio.Event,
+        on_disconnect: asyncio.Event,
     ) -> None:
-        self._listener: t.Optional[t.Callable[[str], t.NoReturn]] = None
-        self.command = command
+        self._command: t.Optional[bytes] = None
+        self.listener = listener
         self.on_connect = on_connect
         self.on_disconnect = on_disconnect
 
     @property
-    def listener(self):
-        return self._listener
+    def command(self):
+        return self._command
 
-    @listener.setter
-    def listener(self, value: t.Callable[[str], t.NoReturn]) -> None:
-        self._listener = value
+    @command.setter
+    def command(self, value: bytes) -> None:
+        self._command = value
 
     def connection_made(self, transport: transports.Transport) -> None:  # type: ignore
         logger.info(
@@ -57,10 +60,5 @@ class Protocol(asyncio.Protocol):
             ) from None
 
     def connection_lost(self, exc: t.Optional[Exception]) -> None:
-        if exc is None:
-            logger.info("CONNECTION CLOSED.")
-        else:
-            logger.exception(
-                f"CONNECTION WAS CLOSED BY THE SERVER WITH EXCEPTION -> {exc}"
-            )
+        logger.info("CONNECTION CLOSED.")
         self.on_disconnect.set()

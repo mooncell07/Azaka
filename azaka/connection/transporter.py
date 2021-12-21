@@ -7,85 +7,80 @@ import ssl
 from .protocol import Protocol
 from ..tools.queuecontrolmixin import QueueControlMixin
 
+
 __all__ = ("Transporter",)
 logger = logging.getLogger(__name__)
 
 
 class Transporter(QueueControlMixin):
 
-    PROTOCOL_VERSION = 1
+    __slots__ = ("transport", "cfg", "protocol_factory")
 
-    __slots__ = (
-        "_transport",
-        "loop",
-    )
+    def __init__(self, cfg) -> None:
 
-    def __init__(self, loop: asyncio.AbstractEventLoop) -> None:
-
-        self._transport: t.Optional[asyncio.transports.Transport] = None
-        self.loop = loop
+        self.transport: t.Optional[asyncio.transports.Transport] = None
+        self.cfg = cfg
 
         super().__init__()
+        self.protocol_factory = Protocol(
+            self.listener, self.on_connect, self.on_disconnect
+        )
 
-    async def start(self, credential: bytes) -> None:
-        protocol_factory = Protocol(credential, self.on_connect, self.on_disconnect)
-        protocol_factory.listener = self.listener
-        addr = "api.vndb.org"
-        port = 19535
-        cert = self.ssl_handler()
+    async def connect(self, command: bytes) -> None:
 
+        self.protocol_factory.command = command
         try:
-            self._transport, _ = await self.loop.create_connection(  # type: ignore
-                protocol_factory=lambda: protocol_factory,
-                host=addr,
-                port=port,
-                ssl=cert,
+            self.transport, _ = await self.cfg.loop.create_connection(  # type: ignore
+                protocol_factory=lambda: self.protocol_factory,
+                host=self.cfg.ADDR,
+                port=self.cfg.PORT,
+                ssl=self.cfg.ssl_context,
             )
             await self.on_disconnect.wait()
-            self.shutdown_handler()
+        except Exception:
+            raise
+        finally:
+            self.cfg.loop.stop()
 
-        except Exception as e:
-            self.shutdown_handler()
-            raise e
+    def start(self, command):
+        task = self.cfg.loop.create_task(self.connect(command))
+        task._log_destroy_pending = False  # type: ignore
 
-    async def inject(self, command: bytes, condition: asyncio.Condition) -> None:
+        try:
+            self.cfg.loop.run_forever()
+        finally:
+            self.shutdown()
+            self.cfg.loop.close()
+
+        if task.done() or task.cancelled():
+            if isinstance(task.exception(), BaseException):
+                raise task.exception() from None  # type: ignore
+
+    async def inject(self, command: bytes, future: asyncio.Future) -> None:
         await self.on_connect.wait()
 
-        transport = self._transport
+        transport = self.transport
         if transport is not None:
             transport.write(command)
 
             logger.info(f"DISPATCHED TRANSPORTER WITH {repr(command)}")
-            self.condition_queue.put_nowait(condition)
-
-    def is_closing(self) -> bool:
-        return self._transport is None or self._transport.is_closing()
+            self.future_queue.put_nowait(future)
 
     async def get_extra_info(
         self, args: t.Tuple[str, ...], *, default: t.Optional[t.Any] = None
     ) -> t.Optional[t.List[t.Any]]:
         await self.on_connect.wait()
-        transport = self._transport
+        transport = self.transport
 
         if transport is not None:
             return [transport.get_extra_info(arg, default=default) for arg in args]
 
         return None
 
-    def ssl_handler(self) -> ssl.SSLContext:
-        sslctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-        sslctx.load_default_certs()
-
-        return sslctx
-
-    def shutdown_handler(self) -> None:
-        for task in asyncio.all_tasks(loop=self.loop):
+    def shutdown(self) -> None:
+        self.on_disconnect.set()
+        for task in asyncio.all_tasks(loop=self.cfg.loop):
             task.cancel()
 
-        self.on_disconnect.set()
-
-        if self._transport is not None:
-            self._transport.close()
-
-        if self.loop.is_running:
-            self.loop.stop()
+        if self.transport is not None:
+            self.transport.close()
