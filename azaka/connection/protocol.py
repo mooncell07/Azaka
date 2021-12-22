@@ -14,16 +14,17 @@ logger = logging.getLogger(__name__)
 
 class Protocol(asyncio.Protocol):
 
-    __slots__ = ("listener", "_command", "on_connect", "on_disconnect")
+    __slots__ = ("listener", "sessiontoken", "_command", "on_connect", "on_disconnect")
 
     def __init__(
         self,
+        sessiontoken,
         listener: t.Callable[[t.Mapping[t.Any, t.Any]], None],
         on_connect: asyncio.Event,
         on_disconnect: asyncio.Event,
     ) -> None:
         self.listener = listener
-
+        self.sessiontoken = sessiontoken
         self.on_connect = on_connect
         self.on_disconnect = on_disconnect
 
@@ -45,8 +46,9 @@ class Protocol(asyncio.Protocol):
         logger.info("PAYLOAD RECEIVED.")
         response = parse_response(data)
 
-        if response.type == "ok":
+        if response.type == "ok" or response.type == "session":
             logger.info("LOGGED IN.")
+            self.sessiontoken.set_result(response.data)
             self.on_connect.set()
 
         elif (response.type == "results") or (response.type == "dbstats"):
