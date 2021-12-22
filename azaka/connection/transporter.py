@@ -3,10 +3,9 @@ from __future__ import annotations
 import asyncio
 import logging
 import typing as t
-import ssl
-from .protocol import Protocol
-from ..tools.queuecontrolmixin import QueueControlMixin
 
+from ..tools.queuecontrolmixin import QueueControlMixin
+from .protocol import Protocol
 
 __all__ = ("Transporter",)
 logger = logging.getLogger(__name__)
@@ -27,22 +26,27 @@ class Transporter(QueueControlMixin):
         )
 
     async def connect(self, command: bytes) -> None:
-
         self.protocol_factory.command = command
+
         try:
-            self.transport, _ = await self.cfg.loop.create_connection(  # type: ignore
-                protocol_factory=lambda: self.protocol_factory,
-                host=self.cfg.ADDR,
-                port=self.cfg.PORT,
-                ssl=self.cfg.ssl_context,
+            self.transport, _ = await asyncio.wait_for(
+                self.cfg.loop.create_connection(  # type: ignore
+                    protocol_factory=lambda: self.protocol_factory,
+                    host=self.cfg.ADDR,
+                    port=self.cfg.PORT,
+                    ssl=self.cfg.ssl_context,
+                ),
+                timeout=5,
             )
             await self.on_disconnect.wait()
-        except Exception:
-            raise
+
+        except Exception as e:
+            raise e from None
+
         finally:
             self.cfg.loop.stop()
 
-    def start(self, command):
+    def start(self, command: bytes):
         task = self.cfg.loop.create_task(self.connect(command))
         task._log_destroy_pending = False  # type: ignore
 
