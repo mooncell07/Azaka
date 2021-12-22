@@ -1,7 +1,7 @@
-__version__ = "0.1.0a1"
+__version__ = "0.1.0a2"
 
 from .client import *
 from .tools import *
 from .connection import *
 from .exceptions import *
-from .config import *
+from .context import *
