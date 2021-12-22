@@ -22,13 +22,15 @@ class Protocol(asyncio.Protocol):
         on_connect: asyncio.Event,
         on_disconnect: asyncio.Event,
     ) -> None:
-        self._command: t.Optional[bytes] = None
         self.listener = listener
+
         self.on_connect = on_connect
         self.on_disconnect = on_disconnect
 
+        self._command: t.Optional[bytes] = None
+
     @property
-    def command(self):
+    def command(self) -> t.Optional[bytes]:
         return self._command
 
     @command.setter

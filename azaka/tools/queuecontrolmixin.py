@@ -10,6 +10,7 @@ class QueueControlMixin:
 
     def __init__(self) -> None:
         self.future_queue: queue.Queue = queue.Queue()
+
         self.on_connect: asyncio.Event = asyncio.Event()
         self.on_disconnect: asyncio.Event = asyncio.Event()
 

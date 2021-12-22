@@ -7,18 +7,21 @@ import typing as t
 from ..tools.queuecontrolmixin import QueueControlMixin
 from .protocol import Protocol
 
+if t.TYPE_CHECKING:
+    from ..context import Context
+
 __all__ = ("Transporter",)
 logger = logging.getLogger(__name__)
 
 
 class Transporter(QueueControlMixin):
 
-    __slots__ = ("transport", "cfg", "protocol_factory")
+    __slots__ = ("ctx", "protocol_factory", "transport")
 
-    def __init__(self, cfg) -> None:
+    def __init__(self, ctx: Context) -> None:
 
+        self.ctx = ctx
         self.transport: t.Optional[asyncio.transports.Transport] = None
-        self.cfg = cfg
 
         super().__init__()
         self.protocol_factory = Protocol(
@@ -30,11 +33,11 @@ class Transporter(QueueControlMixin):
 
         try:
             self.transport, _ = await asyncio.wait_for(
-                self.cfg.loop.create_connection(  # type: ignore
+                self.ctx.loop.create_connection(  # type: ignore
                     protocol_factory=lambda: self.protocol_factory,
-                    host=self.cfg.ADDR,
-                    port=self.cfg.PORT,
-                    ssl=self.cfg.ssl_context,
+                    host=self.ctx.ADDR,
+                    port=self.ctx.PORT,
+                    ssl=self.ctx.ssl_context,
                 ),
                 timeout=5,
             )
@@ -44,17 +47,17 @@ class Transporter(QueueControlMixin):
             raise e from None
 
         finally:
-            self.cfg.loop.stop()
+            self.ctx.loop.stop()
 
-    def start(self, command: bytes):
-        task = self.cfg.loop.create_task(self.connect(command))
+    def start(self, command: bytes) -> None:
+        task = self.ctx.loop.create_task(self.connect(command))
         task._log_destroy_pending = False  # type: ignore
 
         try:
-            self.cfg.loop.run_forever()
+            self.ctx.loop.run_forever()
         finally:
             self.shutdown()
-            self.cfg.loop.close()
+            self.ctx.loop.close()
 
         if task.done() or task.cancelled():
             if isinstance(task.exception(), BaseException):
@@ -83,7 +86,7 @@ class Transporter(QueueControlMixin):
 
     def shutdown(self) -> None:
         self.on_disconnect.set()
-        for task in asyncio.all_tasks(loop=self.cfg.loop):
+        for task in asyncio.all_tasks(loop=self.ctx.loop):
             task.cancel()
 
         if self.transport is not None:
