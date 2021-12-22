@@ -36,9 +36,6 @@ class Protocol(asyncio.Protocol):
         self._command = value
 
     def connection_made(self, transport: transports.Transport) -> None:  # type: ignore
-        logger.info(
-            f"ESTABLISHING CONNECTION WITH {repr(transport.get_extra_info('socket'))}"
-        )
         transport.write(self.command)
         logger.info(f"DISPATCHED TRANSPORTER WITH {repr(self.command)}")
 
