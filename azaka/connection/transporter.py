@@ -16,16 +16,17 @@ logger = logging.getLogger(__name__)
 
 class Transporter(QueueControlMixin):
 
-    __slots__ = ("ctx", "protocol_factory", "transport")
+    __slots__ = ("ctx", "protocol_factory", "sessiontoken", "transport")
 
     def __init__(self, ctx: Context) -> None:
 
         self.ctx = ctx
         self.transport: t.Optional[asyncio.transports.Transport] = None
+        self.sessiontoken = ctx.loop.create_future()
 
         super().__init__()
         self.protocol_factory = Protocol(
-            self.listener, self.on_connect, self.on_disconnect
+            self.sessiontoken, self.listener, self.on_connect, self.on_disconnect
         )
 
     async def connect(self, command: bytes) -> None:
@@ -63,15 +64,20 @@ class Transporter(QueueControlMixin):
             if isinstance(task.exception(), BaseException):
                 raise task.exception() from None  # type: ignore
 
-    async def inject(self, command: bytes, future: asyncio.Future) -> None:
+    async def inject(
+        self, command: t.Union[bytes, str], future: asyncio.Future
+    ) -> None:
         await self.on_connect.wait()
 
         transport = self.transport
         if transport is not None:
-            transport.write(command)
+            if command == "token":
+                future.set_result(self.sessiontoken)
+            else:
+                transport.write(command)
 
-            logger.info(f"DISPATCHED TRANSPORTER WITH {repr(command)}")
-            self.future_queue.put_nowait(future)
+                logger.info(f"DISPATCHED TRANSPORTER WITH {repr(command)}")
+                self.future_queue.put_nowait(future)
 
     async def get_extra_info(
         self, args: t.Tuple[str, ...], *, default: t.Optional[t.Any] = None

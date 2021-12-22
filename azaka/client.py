@@ -54,7 +54,7 @@ class Client:
         else:
             raise TypeError("Callback must be a coroutine.") from None
 
-    def start(self) -> None:
+    def start(self, *, token=None) -> None:
         data = {
             "protocol": self.ctx.PROTOCOL_VERSION,
             "client": self.ctx.CLIENT_NAME,
@@ -63,12 +63,39 @@ class Client:
 
         username = self.ctx.username
         password = self.ctx.password
-        if (username is not None) and (password is not None):
+        if username is not None:
             data["username"] = username
-            data["password"] = password
+
+            if isinstance(token, str):
+                data["sessiontoken"] = token
+                self._cache.put("token", token)
+
+            elif password is not None:
+                data["password"] = password
+
+                if token is True:
+                    data["createsession"] = True
+            else:
+                raise ValueError(
+                    "Either password or session token is required when using username."
+                )
 
         command = make_command("login", args=data)
         self._transporter.start(command)
+
+    async def fetch_token(self):
+        command = "token"
+
+        if command not in self._cache:
+            future = self.ctx.loop.create_future()
+            await self._transporter.inject(command, future)
+
+            result = (await future).result()
+            self._cache.put(command, result)
+
+        else:
+            result = self._cache[command]
+        return result
 
     async def fetch_dbstats(self, update=False) -> DBStats:
         command = make_command("dbstats")

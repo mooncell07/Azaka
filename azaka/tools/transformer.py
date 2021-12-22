@@ -38,6 +38,9 @@ def parse_response(data: bytes):
 
     if len(mapping) > 1:
         response.type = mapping[0]
-        response.data = json.loads(mapping[1])
+        try:
+            response.data = json.loads(mapping[1])
+        except ValueError:
+            response.data = mapping[1]
 
     return response
