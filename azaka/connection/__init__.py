@@ -1,2 +1,2 @@
-from .transporter import *
+from .connector import *
 from .protocol import *
