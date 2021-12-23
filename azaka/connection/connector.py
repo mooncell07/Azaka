@@ -10,11 +10,11 @@ from .protocol import Protocol
 if t.TYPE_CHECKING:
     from ..context import Context
 
-__all__ = ("Transporter",)
+__all__ = ("Connector",)
 logger = logging.getLogger(__name__)
 
 
-class Transporter(QueueControlMixin):
+class Connector(QueueControlMixin):
 
     __slots__ = ("ctx", "protocol_factory", "sessiontoken", "transport")
 
