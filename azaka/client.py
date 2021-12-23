@@ -9,7 +9,7 @@ import asyncio
 import inspect
 import typing as t
 
-from .connection import Transporter
+from .connection import Connector
 from .context import Context
 from .objects import DBStats
 from .tools import Cache, make_command, make_repr
@@ -19,7 +19,7 @@ __all__ = ("Client",)
 
 class Client:
 
-    __slots__ = ("_cache", "_transporter", "ctx")
+    __slots__ = ("_cache", "_connector", "ctx")
 
     def __init__(
         self,
@@ -34,13 +34,13 @@ class Client:
             username=username, password=password, loop=loop, ssl_context=ssl_context
         )
         self._cache = Cache(maxsize=cache_size)
-        self._transporter: Transporter = Transporter(self.ctx)
+        self._connector: Connector = Connector(self.ctx)
 
     @property
     def is_closing(self) -> bool:
         return (
-            self._transporter.transport is None
-            or self._transporter.transport.is_closing()  # noqa
+            self._connector.transport is None
+            or self._connector.transport.is_closing()  # noqa
         )
 
     def register(
@@ -81,14 +81,14 @@ class Client:
                 )
 
         command = make_command("login", args=data)
-        self._transporter.start(command)
+        self._connector.start(command)
 
     async def fetch_token(self):
         command = "token"
 
         if command not in self._cache:
             future = self.ctx.loop.create_future()
-            await self._transporter.inject(command, future)
+            await self._connector.inject(command, future)
 
             result = (await future).result()
             self._cache.put(command, result)
@@ -102,7 +102,7 @@ class Client:
 
         if command not in self._cache or update is True:
             future = self.ctx.loop.create_future()
-            await self._transporter.inject(command, future)
+            await self._connector.inject(command, future)
 
             result = DBStats(await future)
             self._cache.put(command, result)
@@ -114,13 +114,13 @@ class Client:
         command = make_command(data)
 
         future = self.ctx.loop.create_future()
-        await self._transporter.inject(command, future)
+        await self._connector.inject(command, future)
 
         result = await future
         return result
 
     async def get_extra_info(self, *args, default=None) -> t.Optional[t.List[t.Any]]:
-        return await self._transporter.get_extra_info(args, default=default)
+        return await self._connector.get_extra_info(args, default=default)
 
     def close(self) -> None:
         self.ctx.loop.stop()
