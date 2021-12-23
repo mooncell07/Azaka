@@ -1,4 +1,4 @@
-__all__ = ("AzakaException", "InvalidResponseTypeError")
+__all__ = ("AzakaException", "InvalidResponseTypeError", "OperationNotSupportedError")
 
 
 class AzakaException(Exception):
@@ -16,4 +16,12 @@ class InvalidResponseTypeError(AzakaException):
 
     def __init__(self, type, msg) -> None:
         self.type = type
+        super().__init__(msg)
+
+
+class OperationNotSupportedError(AzakaException):
+
+    __slots__ = ("operation",)
+
+    def __init__(self, msg) -> None:
         super().__init__(msg)

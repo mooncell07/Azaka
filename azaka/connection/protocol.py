@@ -53,7 +53,8 @@ class Protocol(asyncio.Protocol):
 
         elif (response.type == "results") or (response.type == "dbstats"):
             self.listener(response.data)
-
+        elif response.type == "error":
+            raise ValueError(response.type, response.data)
         else:
             self.on_disconnect.set()
             raise InvalidResponseTypeError(
