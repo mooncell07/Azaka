@@ -110,6 +110,15 @@ class Client:
             result = self._cache[command]
         return result
 
+    async def get_vn(self, data):
+        command = make_command(data)
+
+        future = self.ctx.loop.create_future()
+        await self._transporter.inject(command, future)
+
+        result = await future
+        return result
+
     async def get_extra_info(self, *args, default=None) -> t.Optional[t.List[t.Any]]:
         return await self._transporter.get_extra_info(args, default=default)
 
