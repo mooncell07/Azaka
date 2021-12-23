@@ -83,6 +83,16 @@ class Client:
         command = make_command("login", args=data)
         self._connector.start(command)
 
+    async def logout(self):
+        command = make_command("logout")
+        token = self._cache.get("token")
+        if token is not None:
+            await self._connector.inject(command, ...)
+        else:
+            raise ValueError(
+                "logout() is only supported when a session token is available."
+            )
+
     async def fetch_token(self):
         command = "token"
 
@@ -122,7 +132,7 @@ class Client:
     async def get_extra_info(self, *args, default=None) -> t.Optional[t.List[t.Any]]:
         return await self._connector.get_extra_info(args, default=default)
 
-    def close(self) -> None:
+    def stop(self) -> None:
         self.ctx.loop.stop()
 
     def __repr__(self) -> str:

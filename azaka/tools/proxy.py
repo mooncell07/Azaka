@@ -27,7 +27,7 @@ class ConditionProxy:
         self.attr = attr
         self.name = attr.name
 
-        self.clean_name = attr.name.replace("_array", "")
+        self.clean_name = attr.name.replace("_ex", "")
 
     def analyze(arg):
         def wrapper(func):
