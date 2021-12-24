@@ -1,37 +1,41 @@
-#  type: ignore
+from __future__ import annotations
 
 import functools
 import json
 import typing as t
 from ..exceptions import OperationNotSupportedError
 
-__all__ = ("ConditionProxy",)
+if t.TYPE_CHECKING:
+    from .condition import Operator
+
+__all__ = ("ConditionProxy", "BoolOProxy")
 
 
 class BoolOProxy:
-    def __init__(self, expression) -> None:
+
+    __slots__ = ("expression",)
+
+    def __init__(self, expression: str) -> None:
         self.expression = f"({expression})"
 
-    def __and__(self, value):
+    def __and__(self, value: BoolOProxy):
         self.expression = f"({self.expression} and {value.expression})"
         return self
 
-    def __or__(self, value):
+    def __or__(self, value: BoolOProxy):
         self.expression = f"({self.expression} or {value.expression})"
         return self
 
 
 class ConditionProxy:
-    def __init__(self, attr_name, operator) -> None:
+    def __init__(self, attr_name: str, operator: Operator) -> None:
         self.name = attr_name
         self.operator = operator
 
-        self.clean_name = attr_name.replace("_ex", "")
-
-    def analyze(arg):
-        def wrapper(func):
+    def analyze(arg: str):
+        def wrapper(func: t.Callable[[ConditionProxy, t.Any], BoolOProxy]):
             @functools.wraps(func)
-            def inner(self, func_arg):
+            def inner(self, func_arg: t.Any) -> BoolOProxy:
                 if arg in self.operator.symbols:
                     return func(self, json.dumps(func_arg))
                 else:
@@ -44,29 +48,29 @@ class ConditionProxy:
         return wrapper
 
     @analyze("=")
-    def __eq__(self, value):
-        return BoolOProxy(f"{self.clean_name} = {value}")
+    def __eq__(self, value: t.Any) -> BoolOProxy:
+        return BoolOProxy(f"{self.name} = {value}")
 
     @analyze("!=")
-    def __ne__(self, value):
-        return BoolOProxy(f"{self.clean_name} != {value}")
+    def __ne__(self, value: t.Any):
+        return BoolOProxy(f"{self.name} != {value}")
 
     @analyze("<")
-    def __lt__(self, value):
-        return BoolOProxy(f"{self.clean_name} < {value}")
+    def __lt__(self, value: t.Any) -> BoolOProxy:
+        return BoolOProxy(f"{self.name} < {value}")
 
     @analyze("<=")
-    def __le__(self, value):
-        return BoolOProxy(f"{self.clean_name} <= {value}")
+    def __le__(self, value: t.Any) -> BoolOProxy:
+        return BoolOProxy(f"{self.name} <= {value}")
 
     @analyze(">")
-    def __gt__(self, value):
-        return BoolOProxy(f"{self.clean_name} > {value}")
+    def __gt__(self, value: t.Any) -> BoolOProxy:
+        return BoolOProxy(f"{self.name} > {value}")
 
     @analyze(">=")
-    def __ge__(self, value):
-        return BoolOProxy(f"{self.clean_name} >= {value}")
+    def __ge__(self, value: t.Any) -> BoolOProxy:
+        return BoolOProxy(f"{self.name} >= {value}")
 
     @analyze("~")
-    def __mod__(self, value):
-        return BoolOProxy(f"{self.clean_name} ~ {value}")
+    def __mod__(self, value: t.Any) -> BoolOProxy:
+        return BoolOProxy(f"{self.name} ~ {value}")
