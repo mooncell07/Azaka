@@ -83,17 +83,19 @@ class Client:
         command = make_command("login", args=data)
         self._connector.start(command)
 
-    async def logout(self):
+    async def logout(self) -> None:
         command = make_command("logout")
         token = self._cache.get("token")
+
         if token is not None:
-            await self._connector.inject(command, ...)
+            await self._connector.inject(command, None)
+
         else:
             raise ValueError(
                 "logout() is only supported when a session token is available."
             )
 
-    async def fetch_token(self):
+    async def fetch_token(self) -> str:
         command = "token"
 
         if command not in self._cache:
