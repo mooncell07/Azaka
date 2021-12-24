@@ -28,7 +28,7 @@ class Client:
         password: t.Optional[str] = None,
         loop: t.Optional[asyncio.BaseEventLoop] = None,
         ssl_context: t.Optional[ssl.SSLContext] = None,
-        cache_size: int = 50
+        cache_size: int = 50,
     ) -> None:
         self.ctx = Context(
             username=username, password=password, loop=loop, ssl_context=ssl_context
@@ -120,8 +120,8 @@ class Client:
             result = self._cache[command]
         return result
 
-    async def get_vn(self, data):
-        command = make_command(data)
+    async def get_vn(self, interface):
+        command = make_command(interface)
 
         future = self.ctx.loop.create_future()
         await self._connector.inject(command, future)

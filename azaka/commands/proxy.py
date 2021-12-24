@@ -3,7 +3,6 @@
 import functools
 import json
 import typing as t
-from .enums import VN
 from ..exceptions import OperationNotSupportedError
 
 __all__ = ("ConditionProxy",)
@@ -23,17 +22,17 @@ class BoolOProxy:
 
 
 class ConditionProxy:
-    def __init__(self, attr: VN) -> None:
-        self.attr = attr
-        self.name = attr.name
+    def __init__(self, attr_name, operator) -> None:
+        self.name = attr_name
+        self.operator = operator
 
-        self.clean_name = attr.name.replace("_ex", "")
+        self.clean_name = attr_name.replace("_ex", "")
 
     def analyze(arg):
         def wrapper(func):
             @functools.wraps(func)
             def inner(self, func_arg):
-                if arg in self.attr.value.symbols:
+                if arg in self.operator.symbols:
                     return func(self, json.dumps(func_arg))
                 else:
                     raise OperationNotSupportedError(
