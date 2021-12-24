@@ -5,4 +5,5 @@ from .tools import *
 from .connection import *
 from .exceptions import *
 from .context import *
-from .condition import *
+from .commands import *
+from .interface import *
