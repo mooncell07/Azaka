@@ -14,14 +14,16 @@ class InvalidResponseTypeError(AzakaException):
 
     __slots__ = ("type",)
 
-    def __init__(self, type, msg) -> None:
-        self.type = type
+    def __init__(self, type_, msg) -> None:
+        self.type = type_
         super().__init__(msg)
 
 
 class OperationNotSupportedError(AzakaException):
+    def __init__(self, msg) -> None:
+        super().__init__(msg)
 
-    __slots__ = ("operation",)
 
+class BrokenConnectorError(AzakaException):
     def __init__(self, msg) -> None:
         super().__init__(msg)

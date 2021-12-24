@@ -5,6 +5,7 @@ import logging
 import typing as t
 
 from ..tools.queuecontrolmixin import QueueControlMixin
+from ..exceptions import BrokenConnectorError
 from .protocol import Protocol
 
 if t.TYPE_CHECKING:
@@ -65,19 +66,24 @@ class Connector(QueueControlMixin):
                 raise task.exception() from None  # type: ignore
 
     async def inject(
-        self, command: t.Union[bytes, str], future: asyncio.Future
+        self, command: t.Union[bytes, str], future: t.Optional[asyncio.Future]
     ) -> None:
         await self.on_connect.wait()
-
         transport = self.transport
-        if transport is not None:
-            if command == "token":
+
+        if transport is None:
+            raise BrokenConnectorError("Transport not available.")
+
+        else:
+            if command == "token" and future is not None:
                 future.set_result(self.sessiontoken)
+
             else:
                 transport.write(command)
-
                 logger.info(f"DISPATCHED TRANSPORTER WITH {repr(command)}")
-                self.future_queue.put_nowait(future)
+
+                if future is not None:
+                    self.future_queue.put_nowait(future)
 
     async def get_extra_info(
         self, args: t.Tuple[str, ...], *, default: t.Optional[t.Any] = None
