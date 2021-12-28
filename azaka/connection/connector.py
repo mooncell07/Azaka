@@ -4,7 +4,7 @@ import asyncio
 import logging
 import typing as t
 
-from ..tools.queuecontrolmixin import QueueControlMixin
+from ..tools import QueueControlMixin
 from ..exceptions import BrokenConnectorError
 from .protocol import Protocol
 

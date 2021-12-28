@@ -26,39 +26,42 @@ class Operator:
 
 
 class VNCondition:
+
+    ID = ConditionProxy("id", operator=Operator.fill_all())
+    ID_ARRAY = ConditionProxy("id", operator=Operator.fill_some())
+
+    TITLE = ConditionProxy("title", operator=Operator.fill_some("~"))
+
+    PLATFORMS = ConditionProxy("platforms", operator=Operator.fill_some())
+    PLATFORMS_ARRAY = PLATFORMS
+
+    RELEASED = ConditionProxy("released", operator=Operator.fill_some())
+    RELEASED_DATE = ConditionProxy("released", operator=Operator.fill_all())
+
+    LANGUAGES = ConditionProxy("languages", operator=Operator.fill_some())
+    LANGUAGES_ARRAY = LANGUAGES
+
+    FIRSTCHAR = ConditionProxy("firstchar", operator=Operator.fill_some())
+
+    ORIG_LANG = ConditionProxy("orig_lang", operator=Operator.fill_some())
+    ORIG_LANG_ARRAY = ORIG_LANG
+
+    SEARCH = ConditionProxy("search", operator=Operator("~"))
+
+    TAGS = ConditionProxy("tags", Operator.fill_some())
+    TAGS_ARRAY = TAGS
+
+    __slots__ = ("_expr",)
+
     def __init__(self) -> None:
+        self._expr: t.Optional[BoolOProxy] = None
 
-        self._exprs: t.List[BoolOProxy] = []
+    def put(self, item: BoolOProxy) -> None:
+        self._expr = item
 
-        self.id = ConditionProxy("id", operator=Operator.fill_all())
-        self.id_array = ConditionProxy("id", operator=Operator.fill_some())
-
-        self.title = ConditionProxy("title", operator=Operator.fill_some("~"))
-
-        self.platforms = ConditionProxy("platforms", operator=Operator.fill_some())
-        self.platforms_array = self.platforms
-
-        self.released = ConditionProxy("released", operator=Operator.fill_some())
-        self.released_date = ConditionProxy("released", operator=Operator.fill_all())
-
-        self.languages = ConditionProxy("languages", operator=Operator.fill_some())
-        self.languages_array = self.languages
-
-        self.firstchar = ConditionProxy("firstchar", operator=Operator.fill_some())
-
-        self.orig_lang = ConditionProxy("orig_lang", operator=Operator.fill_some())
-        self.orig_lang_array = self.orig_lang
-
-        self.search = ConditionProxy("search", operator=Operator("~"))
-
-    def put(self, item: t.Union[t.Tuple[BoolOProxy], BoolOProxy]) -> None:
-        if isinstance(item, tuple):
-            self._exprs.extend(item)
-        else:
-            self._exprs.append(item)
-
-    def __getitem__(self, items: t.Union[t.Tuple[BoolOProxy], BoolOProxy]) -> None:
+    def __getitem__(self, items: BoolOProxy) -> t.Optional[BoolOProxy]:
         self.put(items)
+        return self._expr
 
     def __enter__(self) -> VNCondition:
         return self

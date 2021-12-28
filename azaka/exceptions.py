@@ -1,4 +1,9 @@
-__all__ = ("AzakaException", "InvalidResponseTypeError", "OperationNotSupportedError")
+__all__ = (
+    "AzakaException",
+    "InvalidResponseTypeError",
+    "OperationNotSupportedError",
+    "BrokenConnectorError",
+)
 
 
 class AzakaException(Exception):

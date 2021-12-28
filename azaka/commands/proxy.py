@@ -18,11 +18,11 @@ class BoolOProxy:
     def __init__(self, expression: str) -> None:
         self.expression = f"({expression})"
 
-    def __and__(self, value: BoolOProxy):
+    def __and__(self, value: BoolOProxy) -> BoolOProxy:
         self.expression = f"({self.expression} and {value.expression})"
         return self
 
-    def __or__(self, value: BoolOProxy):
+    def __or__(self, value: BoolOProxy) -> BoolOProxy:
         self.expression = f"({self.expression} or {value.expression})"
         return self
 
@@ -32,10 +32,11 @@ class ConditionProxy:
         self.name = attr_name
         self.operator = operator
 
-    def analyze(arg: str):
+    def analyze(arg: str):  # type: ignore
         def wrapper(func: t.Callable[[ConditionProxy, t.Any], BoolOProxy]):
             @functools.wraps(func)
             def inner(self, func_arg: t.Any) -> BoolOProxy:
+
                 if arg in self.operator.symbols:
                     return func(self, json.dumps(func_arg))
                 else:
