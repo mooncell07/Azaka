@@ -11,15 +11,16 @@ import typing as t
 
 from .connection import Connector
 from .context import Context
+from .interface import Interface
 from .objects import DBStats
-from .tools import Cache, make_command, make_repr
+from .tools import Cache, Presets, make_command, make_repr
 
 __all__ = ("Client",)
 
 
-class Client:
+class Client(Presets):
 
-    __slots__ = ("_cache", "_connector", "ctx")
+    __slots__ = ("_cache", "_connector", "ctx", "_get")
 
     def __init__(
         self,
@@ -35,6 +36,8 @@ class Client:
         )
         self._cache = Cache(maxsize=cache_size)
         self._connector: Connector = Connector(self.ctx)
+
+        super().__init__(self.get, Interface)
 
     @property
     def is_closing(self) -> bool:
@@ -109,7 +112,7 @@ class Client:
             result = self._cache[command]
         return result
 
-    async def fetch_dbstats(self, update=False) -> DBStats:
+    async def dbstats(self, update=False) -> DBStats:
         command = make_command("dbstats")
 
         if command not in self._cache or update is True:
@@ -122,13 +125,11 @@ class Client:
             result = self._cache[command]
         return result
 
-    async def get_vn(self, interface):
-        command = make_command(interface)
-
+    async def get(self, interface: Interface):
         future = self.ctx.loop.create_future()
-        await self._connector.inject(command, future)
-
+        await self._connector.inject(interface._to_command(), future)
         result = await future
+
         return result
 
     async def get_extra_info(self, *args, default=None) -> t.Optional[t.List[t.Any]]:

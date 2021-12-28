@@ -3,7 +3,6 @@ from __future__ import annotations
 import inspect
 import json
 import typing as t
-
 from collections import namedtuple
 
 __all__ = ("TERMINATOR", "make_command", "make_repr", "parse_response")
@@ -13,9 +12,9 @@ TERMINATOR = "\x04"
 def make_command(name: str, **args: t.Any) -> bytes:
     if args:
         newargs = json.dumps(args["args"])
-        cmd = name + newargs + TERMINATOR
+        cmd = f"{name} {newargs}{TERMINATOR}"
     else:
-        cmd = name + TERMINATOR
+        cmd = f"{name}{TERMINATOR}"
     return cmd.encode()
 
 
