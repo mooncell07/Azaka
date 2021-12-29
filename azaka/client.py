@@ -12,7 +12,7 @@ import typing as t
 from .connection import Connector
 from .context import Context
 from .interface import Interface
-from .objects import DBStats
+from .objects import DBStats, VisualNovel
 from .tools import Cache, Presets, make_command, make_repr
 
 __all__ = ("Client",)
@@ -37,7 +37,7 @@ class Client(Presets):
         self._cache = Cache(maxsize=cache_size)
         self._connector: Connector = Connector(self.ctx)
 
-        super().__init__(self.get, Interface)
+        super().__init__(self.get)
 
     @property
     def is_closing(self) -> bool:
@@ -125,12 +125,12 @@ class Client(Presets):
             result = self._cache[command]
         return result
 
-    async def get(self, interface: Interface):
+    async def get(self, interface: Interface) -> t.Iterable[VisualNovel]:
         future = self.ctx.loop.create_future()
         await self._connector.inject(interface._to_command(), future)
         result = await future
 
-        return result
+        return [VisualNovel(data) for data in result["items"]]
 
     async def get_extra_info(self, *args, default=None) -> t.Optional[t.List[t.Any]]:
         return await self._connector.get_extra_info(args, default=default)
