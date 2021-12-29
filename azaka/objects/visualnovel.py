@@ -1,10 +1,15 @@
+import textwrap
 import typing as t
 from dataclasses import dataclass
+
+from ..tools import make_repr
+
+__all__ = ("VisualNovel",)
 
 
 @dataclass
 class ImageFlagging:
-    votecount: int
+    votecount: t.Optional[int] = None
     sexual_avg: t.Optional[int] = None
     violence_avg: t.Optional[int] = None
 
@@ -37,3 +42,103 @@ class Screens:
     flagging: t.Optional[ImageFlagging] = None
     height: t.Optional[int] = None
     width: t.Optional[int] = None
+    nsfw: t.Optional[bool] = None
+
+
+@dataclass
+class Relations:
+    id: int
+    relation: str
+    title: str
+    official: bool
+    original: t.Optional[str] = None
+
+
+@dataclass
+class Links:
+    wikidata: t.Optional[str] = None
+    renai: t.Optional[str] = None
+    wikipedia: t.Optional[str] = None
+    encubed: t.Optional[str] = None
+
+
+class VisualNovel:
+    def __init__(self, data) -> None:
+        self._anime = data.get("anime")
+        self._screens = data.get("screens")
+        self._relations = data.get("relations")
+        self._staff = data.get("staff")
+        self._image_flagging = data.get("image_flagging", {})
+        self._links = data.get("links", {})
+        self._description = data.get("description")
+
+        self.id: int = data["id"]
+        self.tags: t.Iterable[t.Iterable[int]] = data.get("tags")
+        self.title: t.Optional[str] = data.get("title")
+        self.original: t.Optional[str] = data.get("original")
+        self.released: t.Optional[str] = data.get("released")
+        self.languages: t.Optional[t.Iterable[str]] = data.get("languages")
+        self.orig_lang: t.Optional[str] = data.get("orig_lang")
+        self.platforms: t.Optional[t.Iterable[str]] = data.get("platforms")
+        self.aliases: t.Optional[str] = data.get("aliases")
+        self.length: t.Optional[int] = data.get("length")
+        self.image: t.Optional[str] = data.get("image")
+
+    @property
+    def description(self) -> t.Optional[str]:
+        if self._description is not None:
+            return textwrap.shorten(text=self._description, width=100)
+        return None
+
+    @property
+    def anime(self) -> t.Optional[t.Iterable[Anime]]:
+        if self._anime is not None:
+            return [Anime(**data) for data in self._anime]
+        return None
+
+    @property
+    def screens(self) -> t.Optional[t.Iterable[Screens]]:
+        if self._screens is not None:
+            screen_array = []
+            for data in self._screens:
+                if data.get("flagging"):
+                    flagging = ImageFlagging(**data.get("flagging"))
+                    data["flagging"] = flagging
+                screen_array.append(Screens(**data))
+            return screen_array
+        return None
+
+    @property
+    def relations(self) -> t.Optional[t.Iterable[Relations]]:
+        if self._relations is not None:
+            return [Relations(**data) for data in self._relations]
+        return None
+
+    @property
+    def staff(self) -> t.Optional[t.Iterable[Staff]]:
+        if self._staff is not None:
+            return [Staff(**data) for data in self._staff]
+        return None
+
+    @property
+    def image_flagging(self) -> ImageFlagging:
+        return ImageFlagging(**self._image_flagging)
+
+    @property
+    def links(self) -> Links:
+        return Links(**self._links)
+
+    def __repr__(self) -> str:
+        return make_repr(self)
+
+    def __eq__(self, value: object) -> bool:
+        return isinstance(value, self.__class__) and self.id == value.id
+
+    def __hash__(self) -> int:
+        return hash(self.id)
+
+    def __str__(self) -> str:
+        return make_repr(self)
+
+    def __ne__(self, value: object) -> bool:
+        return not self.__eq__(value)
