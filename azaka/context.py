@@ -27,7 +27,9 @@ class Context:
         self.username = username
         self.password = password
 
-        self.loop = loop or self._get_event_loop()
+        self.loop = (
+            loop if isinstance(loop, asyncio.BaseEventLoop) else self._get_event_loop()
+        )
         self.ssl_context = ssl_context or self._get_ssl_context()
 
     def _get_ssl_context(self) -> ssl.SSLContext:

@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import traceback
 import typing as t
 
-from ..tools import QueueControlMixin
+from ..commands import Command
 from ..exceptions import BrokenConnectorError
+from ..tools import QueueControlMixin
 from .protocol import Protocol
 
 if t.TYPE_CHECKING:
@@ -23,12 +25,10 @@ class Connector(QueueControlMixin):
 
         self.ctx = ctx
         self.transport: t.Optional[asyncio.transports.Transport] = None
-        self.sessiontoken = ctx.loop.create_future()
+        self.sessiontoken: asyncio.Future = ctx.loop.create_future()
 
         super().__init__()
-        self.protocol_factory = Protocol(
-            self.sessiontoken, self.listener, self.on_connect, self.on_disconnect
-        )
+        self.protocol_factory = Protocol(self)
 
     async def connect(self, command: bytes) -> None:
         self.protocol_factory.command = command
@@ -44,10 +44,6 @@ class Connector(QueueControlMixin):
                 timeout=5,
             )
             await self.on_disconnect.wait()
-
-        except Exception as e:
-            raise e from None
-
         finally:
             self.ctx.loop.stop()
 
@@ -57,6 +53,9 @@ class Connector(QueueControlMixin):
 
         try:
             self.ctx.loop.run_forever()
+        except KeyboardInterrupt:
+            pass
+
         finally:
             self.shutdown()
             self.ctx.loop.close()
@@ -66,24 +65,25 @@ class Connector(QueueControlMixin):
                 raise task.exception() from None  # type: ignore
 
     async def inject(
-        self, command: t.Union[bytes, str], future: t.Optional[asyncio.Future]
+        self, command: Command, future: t.Optional[asyncio.Future]
     ) -> None:
         await self.on_connect.wait()
+
         transport = self.transport
+        processed_command = command.create()
 
         if transport is None:
             raise BrokenConnectorError("Transport not available.")
 
+        elif command.name == "token" and future is not None:
+            future.set_result(self.sessiontoken)
+
         else:
-            if command == "token" and future is not None:
-                future.set_result(self.sessiontoken)
+            transport.write(processed_command)
+            logger.info(f"DISPATCHED TRANSPORTER WITH {repr(processed_command)}")
 
-            else:
-                transport.write(command)
-                logger.info(f"DISPATCHED TRANSPORTER WITH {repr(command)}")
-
-                if future is not None:
-                    self.future_queue.put_nowait(future)
+            if future is not None:
+                self.future_queue.put_nowait(future)
 
     async def get_extra_info(
         self, args: t.Tuple[str, ...], *, default: t.Optional[t.Any] = None
@@ -97,9 +97,25 @@ class Connector(QueueControlMixin):
         return None
 
     def shutdown(self) -> None:
-        self.on_disconnect.set()
+        self.ctx.loop.run_until_complete(self.ctx.loop.shutdown_default_executor())
+        self.ctx.loop.run_until_complete(self.ctx.loop.shutdown_asyncgens())
+
         for task in asyncio.all_tasks(loop=self.ctx.loop):
             task.cancel()
 
+            try:
+                self.ctx.loop.run_until_complete(task)
+            except asyncio.CancelledError:
+                pass
+
         if self.transport is not None:
             self.transport.close()
+
+        self.ctx.loop.call_soon_threadsafe(self.ctx.loop.stop)
+
+    async def handle_user_exceptions(self, coro: t.Coroutine):
+        try:
+            await coro
+        except Exception as e:
+            tb = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+            logger.error(f"IGNORING EXCEPTION IN {coro.__qualname__}:\n{tb}")

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import typing as t
 
-from .commands.condition import VNCondition
-from .tools import TERMINATOR, Flags, Type
+from .commands.condition import VNCondition, ReleaseCondition
+from .tools import Flags, Type
 
 if t.TYPE_CHECKING:
     from .commands import BoolOProxy
@@ -16,8 +16,8 @@ class Interface:
     __slots__ = ("condition", "_condition", "_type", "_flags")
 
     def __init__(self, type: Type, flags: t.Optional[t.Iterable[Flags]] = None) -> None:
-        if type.name == "VN":
-            self.condition = VNCondition
+        condition_map = {"vn": VNCondition, "release": ReleaseCondition}
+        self.condition = condition_map[type.value]
 
         self._type: Type = type
         self._condition: t.Optional[BoolOProxy] = None
@@ -29,15 +29,6 @@ class Interface:
 
     def __exit__(self, *ex) -> None:
         ...
-
-    def _to_command(self) -> bytes:
-
-        if self._flags and self._condition:
-            flags = ",".join(i.value for i in self._flags)
-            formation = f"get {self._type.value} {flags} {self._condition.expression}{TERMINATOR}"
-            return formation.encode()
-        else:
-            raise NotImplementedError
 
     def set_condition(self, item: BoolOProxy) -> None:
         if not self._condition:

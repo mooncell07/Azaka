@@ -2,19 +2,19 @@ import textwrap
 import typing as t
 from dataclasses import dataclass
 
-from ..tools import make_repr
+from ..tools import ReprMixin
 
 __all__ = ("VisualNovel",)
 
 
-@dataclass
+@dataclass(slots=True)  # type: ignore
 class ImageFlagging:
     votecount: t.Optional[int] = None
     sexual_avg: t.Optional[int] = None
     violence_avg: t.Optional[int] = None
 
 
-@dataclass
+@dataclass(slots=True)  # type: ignore
 class Anime:
     id: int
     ann_id: t.Optional[int] = None
@@ -25,7 +25,7 @@ class Anime:
     type: t.Optional[str] = None
 
 
-@dataclass
+@dataclass(slots=True)  # type: ignore
 class Staff:
     sid: int
     aid: int
@@ -35,7 +35,7 @@ class Staff:
     note: t.Optional[str] = None
 
 
-@dataclass
+@dataclass(slots=True)  # type: ignore
 class Screens:
     image: t.Optional[str] = None
     rid: t.Optional[int] = None
@@ -45,7 +45,7 @@ class Screens:
     nsfw: t.Optional[bool] = None
 
 
-@dataclass
+@dataclass(slots=True)  # type: ignore
 class Relations:
     id: int
     relation: str
@@ -54,7 +54,7 @@ class Relations:
     original: t.Optional[str] = None
 
 
-@dataclass
+@dataclass(slots=True)  # type: ignore
 class Links:
     wikidata: t.Optional[str] = None
     renai: t.Optional[str] = None
@@ -62,7 +62,28 @@ class Links:
     encubed: t.Optional[str] = None
 
 
-class VisualNovel:
+class VisualNovel(ReprMixin):
+    __slots__ = (
+        "_anime",
+        "_screens",
+        "_relations",
+        "_staff",
+        "_image_flagging",
+        "_links",
+        "_description",
+        "id",
+        "tags",
+        "title",
+        "original",
+        "released",
+        "languages",
+        "orig_lang",
+        "platforms",
+        "aliases",
+        "length",
+        "image",
+    )
+
     def __init__(self, data) -> None:
         self._anime = data.get("anime")
         self._screens = data.get("screens")
@@ -83,6 +104,8 @@ class VisualNovel:
         self.aliases: t.Optional[str] = data.get("aliases")
         self.length: t.Optional[int] = data.get("length")
         self.image: t.Optional[str] = data.get("image")
+
+        super(ReprMixin, self).__init__()
 
     @property
     def description(self) -> t.Optional[str]:
@@ -128,17 +151,11 @@ class VisualNovel:
     def links(self) -> Links:
         return Links(**self._links)
 
-    def __repr__(self) -> str:
-        return make_repr(self)
-
     def __eq__(self, value: object) -> bool:
         return isinstance(value, self.__class__) and self.id == value.id
 
     def __hash__(self) -> int:
         return hash(self.id)
-
-    def __str__(self) -> str:
-        return make_repr(self)
 
     def __ne__(self, value: object) -> bool:
         return not self.__eq__(value)

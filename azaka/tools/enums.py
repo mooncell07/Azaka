@@ -1,6 +1,6 @@
 import enum
 
-__all__ = ("Type", "Flags")
+__all__ = ("Type", "Flags", "ResponseType", "ErrorType")
 
 
 class Type(enum.Enum):
@@ -33,3 +33,25 @@ class Flags(enum.Enum):
     INSTANCES = "instances"
     ALIASES = "aliases"
     LABELS = "labels"
+
+
+class ResponseType(enum.Enum):
+    OK = "ok"
+    RESULTS = "results"
+    SESSION = "session"
+    DBSTATS = "dbstats"
+    ERROR = "error"
+
+
+class ErrorType(enum.Enum):
+    PARSE = "parse"
+    MISSING = "missing"
+    BADARG = "badarg"
+    NEEDLOGIN = "needlogin"
+    THROTTLED = "throttled"
+    AUTH = "auth"
+    LOGGEDIN = "loggedin"
+    GETTYPE = "gettype"
+    GETINFO = "getinfo"
+    FILTER = "filter"
+    SETTYPE = "settype"
