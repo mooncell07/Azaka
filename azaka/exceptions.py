@@ -12,6 +12,9 @@ __all__ = (
     "MissingFieldError",
     "BadFieldError",
     "AuthorizationError",
+    "UnknownGetTypeError",
+    "UnknownGetFlagError",
+    "CommandSyntaxError",
 )
 
 
@@ -45,7 +48,7 @@ class BrokenConnectorError(AzakaException):
 
 class CommandError(AzakaException):
 
-    __all__ = ("id",)
+    __slots__ = ("id",)
 
     def __init__(self, **kwargs: t.Any) -> None:
         self.id = ErrorType(kwargs["id"])
@@ -58,11 +61,15 @@ class CommandFilterError(CommandError):
 
     def __init__(self, **kwargs: t.Any) -> None:
 
+        self.field = kwargs.get("field")
         self.op = kwargs.get("op")
         self.value = kwargs.get("value")
-        self.field = kwargs.get("field")
 
         super().__init__(**kwargs)
+
+    @property
+    def expression(self) -> str:
+        return f"({self.field} {self.op} {self.value})"
 
 
 class MissingFieldError(CommandError):
@@ -87,5 +94,30 @@ class AuthorizationError(CommandError):
 
     __slots__ = ()
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, **kwargs: t.Any) -> None:
+        super().__init__(**kwargs)
+
+
+class UnknownGetTypeError(CommandError):
+
+    __slots__ = ()
+
+    def __init__(self, **kwargs: t.Any) -> None:
+        super().__init__(**kwargs)
+
+
+class UnknownGetFlagError(CommandError):
+
+    __slots__ = ("flag",)
+
+    def __init__(self, **kwargs: t.Any) -> None:
+        self.flag = kwargs["flag"]
+        super().__init__(**kwargs)
+
+
+class CommandSyntaxError(CommandError):
+
+    __slots__ = ()
+
+    def __init__(self, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)

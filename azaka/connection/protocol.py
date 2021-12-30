@@ -2,17 +2,21 @@ from __future__ import annotations
 
 import asyncio
 import logging
-import typing as t
+import contextlib
 import queue
+import typing as t
 from asyncio import transports
 
 from ..commands import Response
 from ..exceptions import (
-    InvalidResponseTypeError,
-    CommandFilterError,
-    MissingFieldError,
-    BadFieldError,
     AuthorizationError,
+    BadFieldError,
+    CommandFilterError,
+    CommandSyntaxError,
+    InvalidResponseTypeError,
+    MissingFieldError,
+    UnknownGetFlagError,
+    UnknownGetTypeError,
 )
 from ..tools import ResponseType
 
@@ -25,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 class Protocol(asyncio.Protocol):
 
-    __slots__ = ("connector", "_command", "_errors")
+    __slots__ = ("_command", "_errors", "connector")
 
     def __init__(self, connector: Connector) -> None:
         self.connector = connector
@@ -34,6 +38,9 @@ class Protocol(asyncio.Protocol):
             "missing": MissingFieldError,
             "badarg": BadFieldError,
             "auth": AuthorizationError,
+            "gettype": UnknownGetTypeError,
+            "getinfo": UnknownGetFlagError,
+            "parse": CommandSyntaxError,
         }
         self._command: t.Optional[bytes] = None
 
@@ -62,15 +69,15 @@ class Protocol(asyncio.Protocol):
 
         elif response.type in {ResponseType.RESULTS, ResponseType.DBSTATS}:
             if isinstance(response.body, dict):
-                self.connector.listener(response.body)
+                self.connector.listener(payload=response.body)
 
         elif response.type == ResponseType.ERROR:
             if isinstance(response.body, dict):
                 error = self._errors[response.body["id"]](**response.body)
-                try:
+                self.connector.listener(exc=error)
+
+                with contextlib.suppress(queue.Empty):
                     self.connector.on_error.get_nowait()(error)
-                except queue.Empty:
-                    raise error
 
         else:
             raise InvalidResponseTypeError(

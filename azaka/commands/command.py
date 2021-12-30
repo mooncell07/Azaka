@@ -16,14 +16,14 @@ class Command:
 
     def create(self) -> bytes:
         if self.interface:
-            flatten_flags = ", ".join(i.value for i in self.interface._flags)
+            flatten_flags = ",".join(i.value for i in self.interface._flags)
             filter_expression = self.interface._condition.expression
 
             formation = (
                 f"{self.name} "
                 f"{self.interface._type.value} "
                 f"{flatten_flags} "
-                f"{filter_expression} "
+                f"{filter_expression}"
                 f"{TERMINATOR}"
             )
 
@@ -38,7 +38,7 @@ class Command:
 
 
 class Response:
-    def __init__(self, data: bytes):
+    def __init__(self, data: bytes) -> None:
         self._data: str = data.decode()
         self.type: t.Optional[ResponseType] = None
         self.body: t.Optional[t.Union[t.Mapping[t.Any, t.Any], str]] = None
