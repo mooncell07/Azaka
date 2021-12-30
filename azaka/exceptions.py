@@ -8,7 +8,7 @@ __all__ = (
     "OperationNotSupportedError",
     "BrokenConnectorError",
     "CommandError",
-    "CommandSyntaxError",
+    "CommandFilterError",
 )
 
 
@@ -16,7 +16,7 @@ class AzakaException(Exception):
 
     __slots__ = ("message",)
 
-    def __init__(self, msg) -> None:
+    def __init__(self, msg: str) -> None:
         self.message = msg
         super().__init__(msg)
 
@@ -50,7 +50,7 @@ class CommandError(AzakaException):
         super().__init__(kwargs["msg"])
 
 
-class CommandSyntaxError(CommandError):
+class CommandFilterError(CommandError):
 
     __slots__ = ("op", "value", "field")
 
