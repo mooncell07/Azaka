@@ -9,18 +9,20 @@ import asyncio
 import inspect
 import typing as t
 
+from .commands import Command, Presets
 from .connection import Connector
 from .context import Context
+from .exceptions import AzakaException
 from .interface import Interface
-from .objects import DBStats, VisualNovel
-from .tools import Cache, Presets, make_command, make_repr
+from .objects import DBStats, VisualNovel, Release
+from .tools import Cache
 
 __all__ = ("Client",)
 
 
 class Client(Presets):
 
-    __slots__ = ("_cache", "_connector", "ctx", "_get")
+    __slots__ = ("_cache", "_connector", "_models", "ctx")
 
     def __init__(
         self,
@@ -31,13 +33,14 @@ class Client(Presets):
         ssl_context: t.Optional[ssl.SSLContext] = None,
         cache_size: int = 50,
     ) -> None:
-        self.ctx = Context(
+        self.ctx: Context = Context(
             username=username, password=password, loop=loop, ssl_context=ssl_context
         )
-        self._cache = Cache(maxsize=cache_size)
+        self._cache: Cache = Cache(maxsize=cache_size)
         self._connector: Connector = Connector(self.ctx)
+        self._models = {"vn": VisualNovel, "release": Release}
 
-        super().__init__(self.get)
+        super().__init__(self)
 
     @property
     def is_closing(self) -> bool:
@@ -50,14 +53,17 @@ class Client(Presets):
         self,
         coro: t.Callable[..., t.Any],
     ) -> None:
-        create_task = self.ctx.loop.create_task
-
         if inspect.iscoroutinefunction(coro):
-            create_task(coro(self.ctx))
+            self.ctx.loop.create_task(
+                self._connector.handle_user_exceptions(coro(self.ctx))
+            )
         else:
             raise TypeError("Callback must be a coroutine.") from None
 
-    def start(self, *, token=None) -> None:
+    def on_error(self, func: t.Callable[..., t.Any]) -> None:
+        self._connector.error_listener(func)
+
+    def start(self, *, token: t.Optional[t.Union[bool, str]] = None) -> None:
         data = {
             "protocol": self.ctx.PROTOCOL_VERSION,
             "client": self.ctx.CLIENT_NAME,
@@ -71,7 +77,7 @@ class Client(Presets):
 
             if isinstance(token, str):
                 data["sessiontoken"] = token
-                self._cache.put("token", token)
+                self._cache.put(Command("token"), token)
 
             elif password is not None:
                 data["password"] = password
@@ -79,27 +85,31 @@ class Client(Presets):
                 if token is True:
                     data["createsession"] = True
             else:
-                raise ValueError(
+                raise AzakaException(
                     "Either password or session token is required when using username."
                 )
 
-        command = make_command("login", args=data)
-        self._connector.start(command)
+        command = Command("login", **data)
+        try:
+            self._connector.start(command.create())
+        except asyncio.CancelledError:
+            pass
 
     async def logout(self) -> None:
-        command = make_command("logout")
+        command = Command("logout")
         token = self._cache.get("token")
 
         if token is not None:
             await self._connector.inject(command, None)
+            self.stop()
 
         else:
-            raise ValueError(
+            raise AzakaException(
                 "logout() is only supported when a session token is available."
             )
 
     async def fetch_token(self) -> str:
-        command = "token"
+        command = Command("token")
 
         if command not in self._cache:
             future = self.ctx.loop.create_future()
@@ -113,7 +123,7 @@ class Client(Presets):
         return result
 
     async def dbstats(self, update=False) -> DBStats:
-        command = make_command("dbstats")
+        command = Command("dbstats")
 
         if command not in self._cache or update is True:
             future = self.ctx.loop.create_future()
@@ -125,21 +135,17 @@ class Client(Presets):
             result = self._cache[command]
         return result
 
-    async def get(self, interface: Interface) -> t.Iterable[VisualNovel]:
-        future = self.ctx.loop.create_future()
-        await self._connector.inject(interface._to_command(), future)
-        result = await future
+    async def get(self, interface: Interface) -> t.Any:
+        command = Command("get", interface=interface)
 
-        return [VisualNovel(data) for data in result["items"]]
+        future = self.ctx.loop.create_future()
+        await self._connector.inject(command, future)
+
+        result = await future
+        return [self._models[interface._type.value](data) for data in result["items"]]
 
     async def get_extra_info(self, *args, default=None) -> t.Optional[t.List[t.Any]]:
         return await self._connector.get_extra_info(args, default=default)
 
     def stop(self) -> None:
         self.ctx.loop.stop()
-
-    def __repr__(self) -> str:
-        return make_repr(self)
-
-    def __str__(self) -> str:
-        return make_repr(self)

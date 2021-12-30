@@ -3,6 +3,7 @@ from __future__ import annotations
 import functools
 import json
 import typing as t
+
 from ..exceptions import OperationNotSupportedError
 
 if t.TYPE_CHECKING:

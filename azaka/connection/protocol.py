@@ -3,10 +3,15 @@ from __future__ import annotations
 import asyncio
 import logging
 import typing as t
+import queue
 from asyncio import transports
 
-from ..exceptions import InvalidResponseTypeError
-from ..tools import parse_response
+from ..commands import Response
+from ..exceptions import InvalidResponseTypeError, CommandSyntaxError
+from ..tools import ResponseType
+
+if t.TYPE_CHECKING:
+    from .connector import Connector
 
 __all__ = ("Protocol",)
 logger = logging.getLogger(__name__)
@@ -14,21 +19,10 @@ logger = logging.getLogger(__name__)
 
 class Protocol(asyncio.Protocol):
 
-    __slots__ = ("listener", "sessiontoken", "_command", "on_connect", "on_disconnect")
+    __slots__ = ("connector", "_command")
 
-    def __init__(
-        self,
-        sessiontoken,
-        listener: t.Callable[[t.Mapping[t.Any, t.Any]], None],
-        on_connect: asyncio.Event,
-        on_disconnect: asyncio.Event,
-    ) -> None:
-        self.listener = listener
-        self.sessiontoken = sessiontoken
-        self.on_connect = on_connect
-        self.on_disconnect = on_disconnect
-
-        self._command: t.Optional[bytes] = None
+    def __init__(self, connector: Connector) -> None:
+        self.connector = connector
 
     @property
     def command(self) -> t.Optional[bytes]:
@@ -44,23 +38,31 @@ class Protocol(asyncio.Protocol):
 
     def data_received(self, data: bytes) -> None:
         logger.info("PAYLOAD RECEIVED.")
-        response = parse_response(data)
+        self._direct(data)
 
-        if response.type == "ok" or response.type == "session":
-            logger.info("LOGGED IN.")
-            self.sessiontoken.set_result(response.data)
-            self.on_connect.set()
+    def _direct(self, data: bytes) -> None:
+        response = Response(data)
 
-        elif (response.type == "results") or (response.type == "dbstats"):
-            self.listener(response.data)
-        elif response.type == "error":
-            raise ValueError(response.type, response.data)
+        if response.type in {ResponseType.OK, ResponseType.SESSION}:
+            self.connector.sessiontoken.set_result(response.body)
+            self.connector.on_connect.set()
+
+        elif response.type in {ResponseType.RESULTS, ResponseType.DBSTATS}:
+            if isinstance(response.body, dict):
+                self.connector.listener(response.body)
+
+        elif response.type == ResponseType.ERROR:
+            if isinstance(response.body, dict):
+                error = CommandSyntaxError(**response.body)
+                try:
+                    self.connector.on_error.get_nowait()(error)
+                except queue.Empty:
+                    raise error
         else:
-            self.on_disconnect.set()
             raise InvalidResponseTypeError(
                 response.type, "Couldn't recognize the type of response."
             ) from None
 
     def connection_lost(self, exc: t.Optional[Exception]) -> None:
         logger.info("CONNECTION CLOSED.")
-        self.on_disconnect.set()
+        self.connector.on_disconnect.set()
