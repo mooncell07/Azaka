@@ -7,7 +7,7 @@ import queue
 from asyncio import transports
 
 from ..commands import Response
-from ..exceptions import InvalidResponseTypeError, CommandSyntaxError
+from ..exceptions import InvalidResponseTypeError, CommandFilterError
 from ..tools import ResponseType
 
 if t.TYPE_CHECKING:
@@ -53,7 +53,7 @@ class Protocol(asyncio.Protocol):
 
         elif response.type == ResponseType.ERROR:
             if isinstance(response.body, dict):
-                error = CommandSyntaxError(**response.body)
+                error = CommandFilterError(**response.body)
                 try:
                     self.connector.on_error.get_nowait()(error)
                 except queue.Empty:
