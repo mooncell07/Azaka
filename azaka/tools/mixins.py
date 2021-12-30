@@ -16,9 +16,17 @@ class QueueControlMixin:
         self.on_connect: asyncio.Event = asyncio.Event()
         self.on_disconnect: asyncio.Event = asyncio.Event()
 
-    def listener(self, payload: t.Mapping[t.Any, t.Any]) -> None:
+    def listener(
+        self,
+        *,
+        payload: t.Optional[t.Mapping[t.Any, t.Any]] = None,
+        exc: t.Optional[Exception] = None,
+    ) -> None:
         future = self.future_queue.get_nowait()
-        future.set_result(payload)
+        if exc is not None:
+            future.set_exception(exc)
+        else:
+            future.set_result(payload)
 
     def error_listener(self, func: t.Callable) -> None:
         self.on_error.put_nowait(func)
