@@ -1,11 +1,11 @@
 import typing as t
 
-from azaka.tools.transformer import make_repr
+from ..tools import ReprMixin
 
 __all__ = ("DBStats",)
 
 
-class DBStats:
+class DBStats(ReprMixin):
 
     __slots__ = (
         "_data",
@@ -34,5 +34,4 @@ class DBStats:
         self.users: t.Optional[int] = self._data.get("users")
         self.vn: t.Optional[int] = self._data.get("vn")
 
-    def __repr__(self) -> str:
-        return make_repr(self)
+        super(ReprMixin, self).__init__()
