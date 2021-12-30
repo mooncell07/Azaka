@@ -9,6 +9,9 @@ __all__ = (
     "BrokenConnectorError",
     "CommandError",
     "CommandFilterError",
+    "MissingFieldError",
+    "BadFieldError",
+    "AuthorizationError",
 )
 
 
@@ -46,7 +49,6 @@ class CommandError(AzakaException):
 
     def __init__(self, **kwargs: t.Any) -> None:
         self.id = ErrorType(kwargs["id"])
-
         super().__init__(kwargs["msg"])
 
 
@@ -60,4 +62,30 @@ class CommandFilterError(CommandError):
         self.value = kwargs.get("value")
         self.field = kwargs.get("field")
 
+        super().__init__(**kwargs)
+
+
+class MissingFieldError(CommandError):
+
+    __slots__ = ("field",)
+
+    def __init__(self, **kwargs: t.Any) -> None:
+        self.field = kwargs["field"]
+        super().__init__(**kwargs)
+
+
+class BadFieldError(CommandError):
+
+    __slots__ = ("field",)
+
+    def __init__(self, **kwargs: t.Any) -> None:
+        self.field = kwargs["field"]
+        super().__init__(**kwargs)
+
+
+class AuthorizationError(CommandError):
+
+    __slots__ = ()
+
+    def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)

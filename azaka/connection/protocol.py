@@ -7,7 +7,13 @@ import queue
 from asyncio import transports
 
 from ..commands import Response
-from ..exceptions import InvalidResponseTypeError, CommandFilterError
+from ..exceptions import (
+    InvalidResponseTypeError,
+    CommandFilterError,
+    MissingFieldError,
+    BadFieldError,
+    AuthorizationError,
+)
 from ..tools import ResponseType
 
 if t.TYPE_CHECKING:
@@ -19,10 +25,17 @@ logger = logging.getLogger(__name__)
 
 class Protocol(asyncio.Protocol):
 
-    __slots__ = ("connector", "_command")
+    __slots__ = ("connector", "_command", "_errors")
 
     def __init__(self, connector: Connector) -> None:
         self.connector = connector
+        self._errors = {
+            "filter": CommandFilterError,
+            "missing": MissingFieldError,
+            "badarg": BadFieldError,
+            "auth": AuthorizationError,
+        }
+        self._command: t.Optional[bytes] = None
 
     @property
     def command(self) -> t.Optional[bytes]:
@@ -53,11 +66,12 @@ class Protocol(asyncio.Protocol):
 
         elif response.type == ResponseType.ERROR:
             if isinstance(response.body, dict):
-                error = CommandFilterError(**response.body)
+                error = self._errors[response.body["id"]](**response.body)
                 try:
                     self.connector.on_error.get_nowait()(error)
                 except queue.Empty:
                     raise error
+
         else:
             raise InvalidResponseTypeError(
                 response.type, "Couldn't recognize the type of response."
