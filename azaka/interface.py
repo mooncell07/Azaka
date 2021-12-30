@@ -13,7 +13,7 @@ __all__ = ("Interface",)
 
 
 class Interface:
-    __slots__ = ("condition", "_condition", "_type", "_flags")
+    __slots__ = ("_condition", "_type", "_flags", "condition")
 
     def __init__(self, type: Type, flags: t.Optional[t.Iterable[Flags]] = None) -> None:
         condition_map = {"vn": VNCondition, "release": ReleaseCondition}
