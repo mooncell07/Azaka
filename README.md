@@ -12,7 +12,7 @@ This wrapper is aimed to provide 100% API coverage being extremely simple to use
 - [Disadvantages](https://github.com/mooncell07/Azaka#disadvantages--)
 - [Installation](https://github.com/mooncell07/Azaka#installation--)
 - [Usage](https://github.com/mooncell07/Azaka#usage--)
-- [Docs. & Tuts](https://github.com/mooncell07/Azaka#documentation--tutorial--)
+- [Docs. & Tuts.](https://github.com/mooncell07/Azaka#documentation--tutorial--)
 - [Thanks](https://github.com/mooncell07/Azaka#thanks)
 
 ## ADVANTAGES -
