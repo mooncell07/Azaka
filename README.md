@@ -8,12 +8,12 @@ This wrapper is aimed to provide 100% API coverage being extremely simple to use
 
 # LINKS -
 
-- [Advantages](https://github.com/mooncell07/Azaka/new/master?readme=1#advantages--)
-- [Disadvantages](https://github.com/mooncell07/Azaka/new/master?readme=1#disadvantages--)
-- [Installation](https://github.com/mooncell07/Azaka/new/master?readme=1#installation--)
-- [Usage](https://github.com/mooncell07/Azaka/new/master?readme=1#usage--)
-- [Docs. & Tuts](https://github.com/mooncell07/Azaka/new/master?readme=1#documentation--tutorial--)
-- [Thanks](https://github.com/mooncell07/Azaka/new/master?readme=1#thanks)
+- [Advantages](https://github.com/mooncell07/Azaka#advantages--)
+- [Disadvantages](https://github.com/mooncell07/Azaka#disadvantages--)
+- [Installation](https://github.com/mooncell07/Azaka#installation--)
+- [Usage](https://github.com/mooncell07/Azaka#usage--)
+- [Docs. & Tuts](https://github.com/mooncell07/Azaka#documentation--tutorial--)
+- [Thanks](https://github.com/mooncell07/Azaka#thanks)
 
 ## ADVANTAGES -
 
