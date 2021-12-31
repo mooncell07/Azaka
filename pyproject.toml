@@ -1,15 +1,14 @@
 [tool.poetry]
 name = "Azaka"
-version = "0.1.0a2"
+version = "0.1.0a3"
 description = "A work in progress API Wrapper around The Visual Novel Database (VNDB) written in Python."
 authors = ["mooncell07 <mooncell07@users.noreply.github.com>"]
 license = "MIT"
-readme = "README.rst"
+readme = "README.md"
 keywords = ["vndb", "apiwrapper", "async", "visualnovel", "python"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-black = "^21.12b0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
