@@ -1,30 +1,30 @@
 import typing as t
 from dataclasses import dataclass
-from ..tools import ReprMixin
-from .visualnovel import ImageFlagging
+
+from .vn import ImageFlagging
+from .baseobject import BaseObject
 
 
 @dataclass(slots=True)  # type: ignore
 class Voiced:
-    id: t.Optional[int] = None
+    id: int
+    vid: int
     aid: t.Optional[int] = None
-    vid: t.Optional[int] = None
     note: t.Optional[str] = None
 
 
 @dataclass(slots=True)  # type: ignore
 class Instances:
-    id: t.Optional[int] = None
+    id: int
     spoiler: t.Optional[int] = None
     name: t.Optional[str] = None
     original: t.Optional[str] = None
 
 
-class Character(ReprMixin):
+class Character(BaseObject):
     __slots__ = (
         "_links",
         "_relations",
-        "id",
         "name",
         "original",
         "type",
@@ -44,32 +44,33 @@ class Character(ReprMixin):
         "vns",
     )
 
-    def __init__(self, data) -> None:
+    def __init__(self, data: t.Mapping[str, t.Any]) -> None:
+        super().__init__(data["id"])
+
         self._image_flagging = data.get("image_flagging", {})
         self._voiced = data.get("voiced")
         self._instances = data.get("instances")
 
-        self.id = data["id"]
-        self.name = data.get("name")
-        self.original = data.get("original")
-        self.gender = data.get("gender")
-        self.spoil_gender = data.get("spoil_gender")
-        self.bloodt = data.get("bloodt")
-        self.birthday = data.get("birthday")
-        self.aliases = data.get("aliases")
-        self.description = data.get("description")
-        self.age = data.get("age")
-        self.image = data.get("image")
+        self.name: t.Optional[str] = data.get("name")
+        self.original: t.Optional[str] = data.get("original")
+        self.gender: t.Optional[str] = data.get("gender")
+        self.spoil_gender: t.Optional[str] = data.get("spoil_gender")
+        self.bloodt: t.Optional[str] = data.get("bloodt")
+        self.birthday: t.Optional[t.Iterable[int]] = data.get("birthday")
+        self.aliases: t.Optional[str] = data.get("aliases")
+        self.description: t.Optional[str] = data.get("description")
+        self.age: t.Optional[int] = data.get("age")
+        self.image: t.Optional[str] = data.get("image")
 
-        self.bust = data.get("bust")
-        self.waist = data.get("waist")
-        self.hip = data.get("hip")
-        self.cup_size = data.get("cup_size")
-        self.weight = data.get("weight")
-        self.height = data.get("height")
+        self.bust: t.Optional[int] = data.get("bust")
+        self.waist: t.Optional[int] = data.get("waist")
+        self.hip: t.Optional[int] = data.get("hip")
+        self.cup_size: t.Optional[str] = data.get("cup_size")
+        self.weight: t.Optional[int] = data.get("weight")
+        self.height: t.Optional[int] = data.get("height")
 
-        self.traits = data.get("traits")
-        self.vns = data.get("vns")
+        self.traits: t.Optional[t.Iterable[t.Iterable[int]]] = data.get("traits")
+        self.vns: t.Optional[t.Iterable[t.Iterable[int]]] = data.get("vns")
 
     @property
     def image_flagging(self) -> ImageFlagging:

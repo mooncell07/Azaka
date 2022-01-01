@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import typing as t
+
 from ..tools.enums import ResponseType
 
 __all__ = ("TERMINATOR", "Command", "Response")
