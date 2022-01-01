@@ -5,8 +5,18 @@ from .proxy import ConditionProxy
 
 if t.TYPE_CHECKING:
     from .proxy import BoolOProxy
+    from ..tools import Type
 
-__all__ = ("VNCondition", "ReleaseCondition")
+
+__all__ = (
+    "VNCondition",
+    "ReleaseCondition",
+    "ProducerCondition",
+    "CharacterCondition",
+    "StaffCondition",
+    "QuoteCondition",
+    "_condition_selector",
+)
 
 
 class Operator:
@@ -25,11 +35,31 @@ class Operator:
         return cls("=", "!=", ">", ">=", "<", "<=", *symbols)
 
 
-class VNCondition:
+class BaseCondition:
 
     ID = ConditionProxy("id", operator=Operator.fill_all())
     ID_ARRAY = ConditionProxy("id", operator=Operator.fill_some())
 
+    __slots__ = ("_expr",)
+
+    def __init__(self) -> None:
+        self._expr: t.Optional[BoolOProxy] = None
+
+    def put(self, item: BoolOProxy) -> None:
+        self._expr = item
+
+    def __getitem__(self, items: BoolOProxy) -> t.Optional[BoolOProxy]:
+        self.put(items)
+        return self._expr
+
+    def __enter__(self) -> BaseCondition:
+        return self
+
+    def __exit__(self, *ex) -> None:
+        ...
+
+
+class VNCondition(BaseCondition):
     TITLE = ConditionProxy("title", operator=Operator.fill_some("~"))
 
     PLATFORMS = ConditionProxy("platforms", operator=Operator.fill_some())
@@ -51,29 +81,10 @@ class VNCondition:
     TAGS = ConditionProxy("tags", Operator.fill_some())
     TAGS_ARRAY = TAGS
 
-    __slots__ = ("_expr",)
-
-    def __init__(self) -> None:
-        self._expr: t.Optional[BoolOProxy] = None
-
-    def put(self, item: BoolOProxy) -> None:
-        self._expr = item
-
-    def __getitem__(self, items: BoolOProxy) -> t.Optional[BoolOProxy]:
-        self.put(items)
-        return self._expr
-
-    def __enter__(self) -> VNCondition:
-        return self
-
-    def __exit__(self, *ex) -> None:
-        ...
+    __slots__ = ()
 
 
-class ReleaseCondition:
-    ID = ConditionProxy("id", operator=Operator.fill_all())
-    ID_ARRAY = ConditionProxy("id", operator=Operator.fill_some())
-
+class ReleaseCondition(BaseCondition):
     VN = ConditionProxy("vn", operator=Operator.fill_some())
     VN_ARRAY = VN
 
@@ -98,18 +109,56 @@ class ReleaseCondition:
     PLATFORMS = ConditionProxy("platforms", operator=Operator.fill_some())
     PLATFORMS_ARRAY = PLATFORMS
 
-    def __init__(self) -> None:
-        self._expr: t.Optional[BoolOProxy] = None
+    __slots__ = ()
 
-    def put(self, item: BoolOProxy) -> None:
-        self._expr = item
 
-    def __getitem__(self, items: BoolOProxy) -> t.Optional[BoolOProxy]:
-        self.put(items)
-        return self._expr
+class ProducerCondition(BaseCondition):
+    NAME = ConditionProxy("name", operator=Operator.fill_some("~"))
+    ORIGINAL = ConditionProxy("original", operator=Operator.fill_some("~"))
+    TYPE = ConditionProxy("type", operator=Operator.fill_some())
 
-    def __enter__(self) -> ReleaseCondition:
-        return self
+    LANGUAGE = ConditionProxy("language", operator=Operator.fill_some())
+    LANGUAGES_ARRAY = LANGUAGE
 
-    def __exit__(self, *ex) -> None:
-        ...
+    SEARCH = ConditionProxy("search", operator=Operator("~"))
+
+    __slots__ = ()
+
+
+class CharacterCondition(BaseCondition):
+    NAME = ConditionProxy("name", operator=Operator.fill_some("~"))
+    ORIGINAL = ConditionProxy("original", operator=Operator.fill_some("~"))
+    SEARCH = ConditionProxy("search", operator=Operator("~"))
+
+    VN = ConditionProxy("vn", operator=Operator("="))
+    VN_ARRAY = VN
+
+    TRAITS = ConditionProxy("traits", operator=Operator.fill_some())
+    TRAITS_ARRAY = TRAITS
+
+    __slots__ = ()
+
+
+class StaffCondition(BaseCondition):
+    AID = ConditionProxy("aid", operator=Operator("="))
+    AID_ARRAY = AID
+
+    SEARCH = ConditionProxy("search", operator=Operator("~"))
+
+    __slots__ = ()
+
+
+class QuoteCondition(BaseCondition):
+    __slots__ = ()
+
+
+def _condition_selector(type: Type):
+    condition_map = {
+        "vn": VNCondition,
+        "release": ReleaseCondition,
+        "producer": ProducerCondition,
+        "character": CharacterCondition,
+        "staff": StaffCondition,
+        "quote": QuoteCondition,
+    }
+    return condition_map[type.value]

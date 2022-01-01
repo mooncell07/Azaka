@@ -14,15 +14,27 @@ from .connection import Connector
 from .context import Context
 from .exceptions import AzakaException
 from .interface import Interface
-from .objects import DBStats, VisualNovel, Release
-from .tools import Cache
+from .objects import DBStats, VN, Release, Producer, Character, Staff, Quote
+from .tools import Cache, Type
 
 __all__ = ("Client",)
 
 
+def _model_selector(type: Type):
+    models = {
+        "vn": VN,
+        "release": Release,
+        "producer": Producer,
+        "character": Character,
+        "staff": Staff,
+        "quote": Quote,
+    }
+    return models[type.value]
+
+
 class Client(Presets):
 
-    __slots__ = ("_cache", "_connector", "_models", "ctx")
+    __slots__ = ("_cache", "_connector", "ctx")
 
     def __init__(
         self,
@@ -38,7 +50,6 @@ class Client(Presets):
         )
         self._cache: Cache = Cache(maxsize=cache_size)
         self._connector: Connector = Connector(self.ctx)
-        self._models = {"vn": VisualNovel, "release": Release}
 
         super().__init__(self)
 
@@ -142,7 +153,7 @@ class Client(Presets):
         await self._connector.inject(command, future)
 
         result = await future
-        return [self._models[interface._type.value](data) for data in result["items"]]
+        return [_model_selector(interface._type)(data) for data in result["items"]]
 
     async def get_extra_info(self, *args, default=None) -> t.Optional[t.List[t.Any]]:
         return await self._connector.get_extra_info(args, default=default)

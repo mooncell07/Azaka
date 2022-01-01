@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from ..tools import ReprMixin
 
-__all__ = ("VisualNovel",)
+__all__ = ("VN", "ImageFlagging")
 
 
 @dataclass(slots=True)  # type: ignore
@@ -62,7 +62,7 @@ class Links:
     encubed: t.Optional[str] = None
 
 
-class VisualNovel(ReprMixin):
+class VN(ReprMixin):
     __slots__ = (
         "_anime",
         "_screens",
