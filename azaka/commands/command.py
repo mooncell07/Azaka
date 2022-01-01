@@ -9,6 +9,8 @@ TERMINATOR = "\x04"
 
 
 class Command:
+    __slots__ = ("name", "kwargs", "interface")
+
     def __init__(self, name: str, **kwargs: t.Any) -> None:
         self.name = name
         self.kwargs = kwargs
@@ -26,7 +28,6 @@ class Command:
                 f"{filter_expression}"
                 f"{TERMINATOR}"
             )
-
             return formation.encode()
 
         elif self.kwargs:
@@ -38,6 +39,9 @@ class Command:
 
 
 class Response:
+
+    __slots__ = ("_data", "type", "body")
+
     def __init__(self, data: bytes) -> None:
         self._data: str = data.decode()
         self.type: t.Optional[ResponseType] = None
