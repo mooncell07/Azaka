@@ -14,13 +14,25 @@ from .connection import Connector
 from .context import Context
 from .exceptions import AzakaException
 from .interface import Interface
-from .objects import DBStats, VN, Release, Producer, Character, Staff, Quote
+from .objects import (
+    VN,
+    BaseObject,
+    Character,
+    DBStats,
+    Producer,
+    Quote,
+    Release,
+    Staff,
+    User,
+    UlistLabels,
+    Ulist,
+)
 from .tools import Cache, Type
 
 __all__ = ("Client",)
 
 
-def _model_selector(type: Type):
+def _model_selector(type: Type) -> t.Type[BaseObject]:
     models = {
         "vn": VN,
         "release": Release,
@@ -28,6 +40,9 @@ def _model_selector(type: Type):
         "character": Character,
         "staff": Staff,
         "quote": Quote,
+        "user": User,
+        "ulist-labels": UlistLabels,
+        "ulist": Ulist,
     }
     return models[type.value]
 
@@ -133,7 +148,7 @@ class Client(Presets):
             result = self._cache[command]
         return result
 
-    async def dbstats(self, update=False) -> DBStats:
+    async def dbstats(self, update: bool = False) -> DBStats:
         command = Command("dbstats")
 
         if command not in self._cache or update is True:
@@ -146,7 +161,7 @@ class Client(Presets):
             result = self._cache[command]
         return result
 
-    async def get(self, interface: Interface) -> t.Any:
+    async def get(self, interface: Interface) -> t.Iterable[BaseObject]:
         command = Command("get", interface=interface)
 
         future = self.ctx.loop.create_future()
@@ -155,8 +170,13 @@ class Client(Presets):
         result = await future
         return [_model_selector(interface._type)(data) for data in result["items"]]
 
-    async def get_extra_info(self, *args, default=None) -> t.Optional[t.List[t.Any]]:
+    async def get_extra_info(
+        self, *args: str, default: t.Optional[bool] = None
+    ) -> t.Optional[t.List[t.Any]]:
         return await self._connector.get_extra_info(args, default=default)
 
     def stop(self) -> None:
         self.ctx.loop.stop()
+
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__} connected={not self.is_closing}>"

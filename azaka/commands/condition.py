@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import typing as t
+
 from .proxy import ConditionProxy
 
 if t.TYPE_CHECKING:
-    from .proxy import BoolOProxy
     from ..tools import Type
+    from .proxy import BoolOProxy
 
 
 __all__ = (
@@ -15,6 +16,9 @@ __all__ = (
     "CharacterCondition",
     "StaffCondition",
     "QuoteCondition",
+    "UserCondition",
+    "UlistLabelsCondition",
+    "UlistCondition",
     "_condition_selector",
 )
 
@@ -152,7 +156,46 @@ class QuoteCondition(BaseCondition):
     __slots__ = ()
 
 
-def _condition_selector(type: Type):
+class UserCondition(BaseCondition):
+    USERNAME = ConditionProxy("username", operator=Operator.fill_some("~"))
+    USERNAME_ARRAY = ConditionProxy("username", operator=Operator("="))
+
+    __slots__ = ()
+
+
+class UlistLabelsCondition:
+    UID = ConditionProxy("uid", operator=Operator("="))
+
+    __slots__ = ("_expr",)
+
+    def __init__(self) -> None:
+        self._expr: t.Optional[BoolOProxy] = None
+
+    def put(self, item: BoolOProxy) -> None:
+        self._expr = item
+
+    def __getitem__(self, items: BoolOProxy) -> t.Optional[BoolOProxy]:
+        self.put(items)
+        return self._expr
+
+    def __enter__(self) -> UlistLabelsCondition:
+        return self
+
+    def __exit__(self, *ex) -> None:
+        ...
+
+
+class UlistCondition(UlistLabelsCondition):
+    VN = ConditionProxy("vn", operator=Operator.fill_all())
+    VN_ARRAY = ConditionProxy("vn", operator=Operator.fill_some())
+    LABEL = ConditionProxy("label", operator=Operator("~"))
+
+    __slots__ = ()
+
+
+def _condition_selector(
+    type: Type,
+) -> t.Union[t.Type[BaseCondition], t.Type[UlistLabelsCondition], t.Any]:
     condition_map = {
         "vn": VNCondition,
         "release": ReleaseCondition,
@@ -160,5 +203,8 @@ def _condition_selector(type: Type):
         "character": CharacterCondition,
         "staff": StaffCondition,
         "quote": QuoteCondition,
+        "user": UserCondition,
+        "ulist-labels": UlistLabelsCondition,
+        "ulist": UlistCondition,
     }
     return condition_map[type.value]

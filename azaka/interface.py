@@ -13,6 +13,7 @@ __all__ = ("Interface",)
 
 
 class Interface:
+
     __slots__ = ("_condition", "_type", "_flags", "condition")
 
     def __init__(self, type: Type, flags: t.Optional[t.Iterable[Flags]] = None) -> None:
@@ -20,7 +21,6 @@ class Interface:
 
         self._type: Type = type
         self._condition: t.Optional[BoolOProxy] = None
-
         self._flags: t.Optional[t.Iterable[Flags]] = flags
 
     def __enter__(self) -> Interface:

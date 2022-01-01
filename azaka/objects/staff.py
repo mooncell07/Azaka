@@ -1,7 +1,7 @@
 import typing as t
 from dataclasses import dataclass
-from ..tools import ReprMixin
 
+from .baseobject import BaseObject
 
 __all__ = ("Staff",)
 
@@ -18,7 +18,7 @@ class Links:
 
 @dataclass(slots=True)  # type: ignore
 class Vns:
-    id: t.Optional[int] = None
+    id: int
     aid: t.Optional[int] = None
     role: t.Optional[str] = None
     note: t.Optional[str] = None
@@ -26,18 +26,17 @@ class Vns:
 
 @dataclass(slots=True)  # type: ignore
 class Voiced:
-    id: t.Optional[int] = None
+    id: int
+    cid: int
     aid: t.Optional[int] = None
-    cid: t.Optional[int] = None
     note: t.Optional[str] = None
 
 
-class Staff(ReprMixin):
+class Staff(BaseObject):
     __slots__ = (
         "_links",
         "_vns",
         "_voiced",
-        "id",
         "name",
         "original",
         "gender",
@@ -47,19 +46,22 @@ class Staff(ReprMixin):
         "main_alias",
     )
 
-    def __init__(self, data):
+    def __init__(self, data: t.Mapping[str, t.Any]) -> None:
+        super().__init__(data["id"])
+
         self._links = data.get("links", {})
         self._vns = data.get("vns")
         self._voiced = data.get("voiced")
 
-        self.id = data["id"]
-        self.name = data.get("name")
-        self.original = data.get("original")
-        self.gender = data.get("gender")
-        self.langauage = data.get("language")
-        self.description = data.get("description")
-        self.aliases = data.get("aliases")
-        self.main_alias = data.get("main_alias")
+        self.name: t.Optional[str] = data.get("name")
+        self.original: t.Optional[str] = data.get("original")
+        self.gender: t.Optional[str] = data.get("gender")
+        self.language: t.Optional[str] = data.get("language")
+        self.description: t.Optional[str] = data.get("description")
+        self.aliases: t.Optional[t.Iterable[t.Iterable[int]]] = data.get("aliases")
+        self.main_alias: t.Optional[t.Iterable[t.Iterable[int]]] = data.get(
+            "main_alias"
+        )
 
     @property
     def links(self) -> Links:

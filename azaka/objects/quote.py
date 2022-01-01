@@ -1,12 +1,15 @@
-from ..tools import ReprMixin
+import typing as t
+from .baseobject import BaseObject
 
 __all__ = ("Quote",)
 
 
-class Quote(ReprMixin):
-    __slots__ = ("id", "title", "quote")
+class Quote(BaseObject):
 
-    def __init__(self, data) -> None:
-        self.id = data["id"]
-        self.title = data.get("title")
-        self.quote = data.get("quote")
+    __slots__ = ("title", "quote")
+
+    def __init__(self, data: t.Mapping[str, t.Any]) -> None:
+        super().__init__(data["id"])
+
+        self.title: t.Optional[str] = data.get("title")
+        self.quote: t.Optional[str] = data.get("quote")
