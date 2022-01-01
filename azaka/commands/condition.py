@@ -6,7 +6,6 @@ from .proxy import ConditionProxy
 
 if t.TYPE_CHECKING:
     from ..tools import Type
-    from .proxy import BoolOProxy
 
 
 __all__ = (
@@ -44,23 +43,7 @@ class BaseCondition:
     ID = ConditionProxy("id", operator=Operator.fill_all())
     ID_ARRAY = ConditionProxy("id", operator=Operator.fill_some())
 
-    __slots__ = ("_expr",)
-
-    def __init__(self) -> None:
-        self._expr: t.Optional[BoolOProxy] = None
-
-    def put(self, item: BoolOProxy) -> None:
-        self._expr = item
-
-    def __getitem__(self, items: BoolOProxy) -> t.Optional[BoolOProxy]:
-        self.put(items)
-        return self._expr
-
-    def __enter__(self) -> BaseCondition:
-        return self
-
-    def __exit__(self, *ex) -> None:
-        ...
+    __slots__ = ()
 
 
 class VNCondition(BaseCondition):
@@ -165,24 +148,6 @@ class UserCondition(BaseCondition):
 
 class UlistLabelsCondition:
     UID = ConditionProxy("uid", operator=Operator("="))
-
-    __slots__ = ("_expr",)
-
-    def __init__(self) -> None:
-        self._expr: t.Optional[BoolOProxy] = None
-
-    def put(self, item: BoolOProxy) -> None:
-        self._expr = item
-
-    def __getitem__(self, items: BoolOProxy) -> t.Optional[BoolOProxy]:
-        self.put(items)
-        return self._expr
-
-    def __enter__(self) -> UlistLabelsCondition:
-        return self
-
-    def __exit__(self, *ex) -> None:
-        ...
 
 
 class UlistCondition(UlistLabelsCondition):
