@@ -29,6 +29,9 @@ class BoolOProxy:
 
 
 class ConditionProxy:
+
+    __slots__ = ("name", "operator")
+
     def __init__(self, attr_name: str, operator: Operator) -> None:
         self.name = attr_name
         self.operator = operator
