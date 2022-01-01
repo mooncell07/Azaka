@@ -12,7 +12,7 @@ class Context:
     PROTOCOL_VERSION = 1
 
     CLIENT_NAME = "Azaka"
-    CLIENT_VERSION = "0.1.0a3"
+    CLIENT_VERSION = "0.1.0a4"
 
     __slots__ = ("loop", "password", "ssl_context", "username")
 
