@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing as t
 
-from .commands.condition import VNCondition, ReleaseCondition
+from .commands import _condition_selector
 from .tools import Flags, Type
 
 if t.TYPE_CHECKING:
@@ -16,8 +16,7 @@ class Interface:
     __slots__ = ("_condition", "_type", "_flags", "condition")
 
     def __init__(self, type: Type, flags: t.Optional[t.Iterable[Flags]] = None) -> None:
-        condition_map = {"vn": VNCondition, "release": ReleaseCondition}
-        self.condition = condition_map[type.value]
+        self.condition = _condition_selector(type)
 
         self._type: Type = type
         self._condition: t.Optional[BoolOProxy] = None
