@@ -1,7 +1,7 @@
 import typing as t
 from dataclasses import dataclass
 
-from ..tools import ReprMixin
+from .baseobject import BaseObject
 
 __all__ = ("Release",)
 
@@ -14,15 +14,15 @@ class Media:
 
 @dataclass(slots=True)  # type: ignore
 class Vn:
+    id: int
     title: t.Optional[str] = None
     rtype: t.Optional[str] = None
-    id: t.Optional[int] = None
     original: t.Optional[str] = None
 
 
 @dataclass(slots=True)  # type: ignore
 class Producers:
-    id: t.Optional[int] = None
+    id: int
     name: t.Optional[str] = None
     original: t.Optional[str] = None
     developer: t.Optional[bool] = None
@@ -30,12 +30,11 @@ class Producers:
     type: t.Optional[str] = None
 
 
-class Release(ReprMixin):
+class Release(BaseObject):
     __slots__ = (
         "_vn",
         "_producers",
         "_media",
-        "id",
         "title",
         "original",
         "released",
@@ -54,16 +53,17 @@ class Release(ReprMixin):
         "animation",
     )
 
-    def __init__(self, data) -> None:
+    def __init__(self, data: t.Mapping[str, t.Any]) -> None:
+        super().__init__(data["id"])
+
         self._vn = data.get("vn")
         self._producers = data.get("producers")
         self._media = data.get("media")
 
-        self.id: int = data["id"]
         self.title: t.Optional[str] = data.get("title")
         self.original: t.Optional[str] = data.get("original")
         self.released: t.Optional[str] = data.get("released")
-        self.languages: t.Optional[t.Iterable[str]] = data.get("languages")
+
         self.type: t.Optional[str] = data.get("type")
         self.patch: t.Optional[bool] = data.get("patch")
         self.freeware: t.Optional[bool] = data.get("freeware")
@@ -75,9 +75,9 @@ class Release(ReprMixin):
         self.catalog: t.Optional[str] = data.get("catalog")
         self.resolution: t.Optional[str] = data.get("resolution")
         self.voiced: t.Optional[int] = data.get("voiced")
-        self.animation: t.Optional[t.Iterable[int]] = data.get("animation")
 
-        super(ReprMixin, self).__init__()
+        self.animation: t.Optional[t.Iterable[int]] = data.get("animation")
+        self.languages: t.Optional[t.Iterable[str]] = data.get("languages")
 
     @property
     def media(self) -> t.Optional[t.Iterable[Media]]:

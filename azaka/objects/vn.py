@@ -1,8 +1,8 @@
-import textwrap
 import typing as t
 from dataclasses import dataclass
 
-from ..tools import ReprMixin
+from .baseobject import BaseObject
+
 
 __all__ = ("VN", "ImageFlagging")
 
@@ -27,10 +27,10 @@ class Anime:
 
 @dataclass(slots=True)  # type: ignore
 class Staff:
-    sid: int
-    aid: int
-    name: str
-    role: str
+    sid: t.Optional[str] = None
+    aid: t.Optional[int] = None
+    name: t.Optional[str] = None
+    role: t.Optional[str] = None
     original: t.Optional[str] = None
     note: t.Optional[str] = None
 
@@ -48,9 +48,9 @@ class Screens:
 @dataclass(slots=True)  # type: ignore
 class Relations:
     id: int
-    relation: str
-    title: str
-    official: bool
+    relation: t.Optional[str] = None
+    title: t.Optional[str] = None
+    official: t.Optional[bool] = None
     original: t.Optional[str] = None
 
 
@@ -62,7 +62,7 @@ class Links:
     encubed: t.Optional[str] = None
 
 
-class VN(ReprMixin):
+class VN(BaseObject):
     __slots__ = (
         "_anime",
         "_screens",
@@ -70,8 +70,7 @@ class VN(ReprMixin):
         "_staff",
         "_image_flagging",
         "_links",
-        "_description",
-        "id",
+        "description",
         "tags",
         "title",
         "original",
@@ -84,34 +83,28 @@ class VN(ReprMixin):
         "image",
     )
 
-    def __init__(self, data) -> None:
+    def __init__(self, data: t.Mapping[str, t.Any]) -> None:
+        super().__init__(data["id"])
+
         self._anime = data.get("anime")
         self._screens = data.get("screens")
         self._relations = data.get("relations")
         self._staff = data.get("staff")
         self._image_flagging = data.get("image_flagging", {})
         self._links = data.get("links", {})
-        self._description = data.get("description")
 
-        self.id: int = data["id"]
-        self.tags: t.Iterable[t.Iterable[int]] = data.get("tags")
+        self.description: t.Optional[str] = data.get("description")
         self.title: t.Optional[str] = data.get("title")
         self.original: t.Optional[str] = data.get("original")
         self.released: t.Optional[str] = data.get("released")
-        self.languages: t.Optional[t.Iterable[str]] = data.get("languages")
         self.orig_lang: t.Optional[str] = data.get("orig_lang")
-        self.platforms: t.Optional[t.Iterable[str]] = data.get("platforms")
         self.aliases: t.Optional[str] = data.get("aliases")
         self.length: t.Optional[int] = data.get("length")
         self.image: t.Optional[str] = data.get("image")
 
-        super(ReprMixin, self).__init__()
-
-    @property
-    def description(self) -> t.Optional[str]:
-        if self._description is not None:
-            return textwrap.shorten(text=self._description, width=100)
-        return None
+        self.platforms: t.Optional[t.Iterable[str]] = data.get("platforms")
+        self.languages: t.Optional[t.Iterable[str]] = data.get("languages")
+        self.tags: t.Optional[t.Iterable[t.Iterable[int]]] = data.get("tags")
 
     @property
     def anime(self) -> t.Optional[t.Iterable[Anime]]:
@@ -150,12 +143,3 @@ class VN(ReprMixin):
     @property
     def links(self) -> Links:
         return Links(**self._links)
-
-    def __eq__(self, value: object) -> bool:
-        return isinstance(value, self.__class__) and self.id == value.id
-
-    def __hash__(self) -> int:
-        return hash(self.id)
-
-    def __ne__(self, value: object) -> bool:
-        return not self.__eq__(value)

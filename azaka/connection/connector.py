@@ -60,6 +60,8 @@ class Connector(QueueControlMixin):
             self.shutdown()
             self.ctx.loop.close()
 
+            logger.debug("SHUTDOWN ENDED.")
+
         if task.done() or task.cancelled():
             if isinstance(task.exception(), BaseException):
                 raise task.exception() from None  # type: ignore
@@ -97,6 +99,9 @@ class Connector(QueueControlMixin):
         return None
 
     def shutdown(self) -> None:
+
+        logger.debug("SHUTDOWN STARTED.")
+
         self.ctx.loop.run_until_complete(self.ctx.loop.shutdown_default_executor())
         self.ctx.loop.run_until_complete(self.ctx.loop.shutdown_asyncgens())
 
@@ -113,7 +118,7 @@ class Connector(QueueControlMixin):
 
         self.ctx.loop.call_soon_threadsafe(self.ctx.loop.stop)
 
-    async def handle_user_exceptions(self, coro: t.Coroutine):
+    async def handle_user_exceptions(self, coro: t.Coroutine) -> None:
         try:
             await coro
         except Exception as e:

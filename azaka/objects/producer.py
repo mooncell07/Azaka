@@ -1,7 +1,7 @@
 import typing as t
 from dataclasses import dataclass
 
-from ..tools import ReprMixin
+from .baseobject import BaseObject
 
 __all__ = ("Producer",)
 
@@ -21,11 +21,10 @@ class Relation:
     original: t.Optional[str] = None
 
 
-class Producer(ReprMixin):
+class Producer(BaseObject):
     __slots__ = (
         "_links",
         "_relations",
-        "id",
         "name",
         "original",
         "type",
@@ -34,11 +33,12 @@ class Producer(ReprMixin):
         "description",
     )
 
-    def __init__(self, data) -> None:
+    def __init__(self, data: t.Mapping[str, t.Any]) -> None:
+        super().__init__(data["id"])
+
         self._links = data.get("links", {})
         self._relations = data.get("relations")
 
-        self.id = data["id"]
         self.name = data.get("name")
         self.original = data.get("original")
         self.type = data.get("type")
