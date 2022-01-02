@@ -41,6 +41,7 @@ class Protocol(asyncio.Protocol):
             "gettype": UnknownGetTypeError,
             "getinfo": UnknownGetFlagError,
             "parse": CommandSyntaxError,
+            "needlogin": AuthorizationError,
         }
         self._command: t.Optional[bytes] = None
 
@@ -64,8 +65,11 @@ class Protocol(asyncio.Protocol):
         response = Response(data)
 
         if response.type in {ResponseType.OK, ResponseType.SESSION}:
-            self.connector.sessiontoken.set_result(response.body)
-            self.connector.on_connect.set()
+            if not self.connector.on_connect.is_set():
+                self.connector.sessiontoken.set_result(response.body)
+                self.connector.on_connect.set()
+            else:
+                self.connector.listener(payload=ResponseType.OK)
 
         elif response.type in {ResponseType.RESULTS, ResponseType.DBSTATS}:
             if isinstance(response.body, dict):
