@@ -18,7 +18,7 @@ class QueueControlMixin:
     def listener(
         self,
         *,
-        payload: t.Optional[t.Mapping[t.Any, t.Any]] = None,
+        payload: t.Optional[t.Union[t.Mapping[t.Any, t.Any], t.Any]] = None,
         exc: t.Optional[Exception] = None,
     ) -> None:
         future = self.future_queue.get_nowait()
