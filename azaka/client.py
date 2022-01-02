@@ -27,7 +27,7 @@ from .objects import (
     UlistLabels,
     Ulist,
 )
-from .tools import Cache, Type
+from .tools import Cache, Type, ResponseType
 
 __all__ = ("Client",)
 
@@ -169,6 +169,15 @@ class Client(Presets):
 
         result = await future
         return [_model_selector(interface._type)(data) for data in result["items"]]
+
+    async def set_ulist(self, id: int, **kwargs: t.Mapping[str, t.Any]) -> ResponseType:
+        command = Command(f"set ulist {id}", **kwargs)
+
+        future = self.ctx.loop.create_future()
+        await self._connector.inject(command, future)
+        result = await future
+
+        return result
 
     async def get_extra_info(
         self, *args: str, default: t.Optional[bool] = None
