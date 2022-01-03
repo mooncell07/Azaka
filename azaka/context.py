@@ -2,6 +2,13 @@ import asyncio
 import ssl
 import typing as t
 
+try:
+    import uvloop
+
+    UV = True
+except ModuleNotFoundError:
+    UV = False
+
 __all__ = ("Context",)
 
 
@@ -21,7 +28,7 @@ class Context:
         *,
         username: t.Optional[str] = None,
         password: t.Optional[str] = None,
-        loop: t.Optional[asyncio.BaseEventLoop] = None,
+        loop: t.Optional[asyncio.AbstractEventLoop] = None,
         ssl_context: t.Optional[ssl.SSLContext] = None
     ) -> None:
         self.username = username
@@ -42,7 +49,10 @@ class Context:
         try:
             loop = asyncio.get_running_loop()
         except RuntimeError:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
+            if UV:
+                loop = uvloop.new_event_loop()
+            else:
+                loop = asyncio.new_event_loop()
 
+            asyncio.set_event_loop(loop)
         return loop
