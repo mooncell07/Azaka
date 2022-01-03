@@ -5,6 +5,14 @@ import typing as t
 
 from ..tools.enums import ResponseType
 
+try:
+    import orjson
+
+    ORJ = True
+except ModuleNotFoundError:
+    ORJ = False
+
+
 __all__ = ("TERMINATOR", "Command", "Response")
 TERMINATOR = "\x04"
 
@@ -33,11 +41,12 @@ class Command:
                 f"{dumped_options}"
                 f"{TERMINATOR}"
             )
-            print(formation)
             return formation.encode()
 
         elif self.kwargs:
-            formation = f"{self.name} {json.dumps(self.kwargs)}{TERMINATOR}"
+
+            dumped = json.dumps(self.kwargs)
+            formation = f"{self.name} {dumped}{TERMINATOR}"
             return formation.encode()
 
         formation = f"{self.name}{TERMINATOR}"
@@ -63,7 +72,10 @@ class Response:
 
         if len(resp_info) > 1:
             try:
-                self.body = json.loads(resp_info[1])
+                if ORJ:
+                    self.body = orjson.loads(resp_info[1])
+                else:
+                    self.body = json.loads(resp_info[1])
             except ValueError:
                 self.body = resp_info[1]
             return None
