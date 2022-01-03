@@ -14,7 +14,7 @@ __all__ = ("Interface",)
 
 class Interface:
 
-    __slots__ = ("_condition", "_type", "_flags", "condition")
+    __slots__ = ("_condition", "_type", "_flags", "condition", "_options")
 
     def __init__(self, type: Type, flags: t.Optional[t.Iterable[Flags]] = None) -> None:
         self.condition = _condition_selector(type)
@@ -22,6 +22,7 @@ class Interface:
         self._type: Type = type
         self._condition: t.Optional[BoolOProxy] = None
         self._flags: t.Optional[t.Iterable[Flags]] = flags
+        self._options: t.Optional[t.Mapping[str, t.Any]] = None
 
     def __enter__(self) -> Interface:
         return self
@@ -36,6 +37,9 @@ class Interface:
             raise ValueError(
                 "This interface only supports single filter (condition) expression."
             )
+
+    def add_option(self, **kwargs: t.Any) -> None:
+        self._options = kwargs
 
     @property
     def set_flags(self) -> t.Optional[t.Iterable[Flags]]:

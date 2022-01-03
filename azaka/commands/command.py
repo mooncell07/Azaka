@@ -20,15 +20,20 @@ class Command:
     def create(self) -> bytes:
         if self.interface:
             flatten_flags = ",".join(i.value for i in self.interface._flags)
-            filter_expression = self.interface._condition.expression
+            filter_expressions = self.interface._condition.expression
+            dumped_options = (
+                json.dumps(self.interface._options) if self.interface._options else None
+            )
 
             formation = (
                 f"{self.name} "
                 f"{self.interface._type.value} "
                 f"{flatten_flags} "
-                f"{filter_expression}"
+                f"{filter_expressions}"
+                f"{dumped_options}"
                 f"{TERMINATOR}"
             )
+            print(formation)
             return formation.encode()
 
         elif self.kwargs:

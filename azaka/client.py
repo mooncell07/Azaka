@@ -27,7 +27,7 @@ from .objects import (
     UlistLabels,
     Ulist,
 )
-from .tools import Cache, Type, ResponseType
+from .tools import Cache, Type, ResponseType, Paginator
 
 __all__ = ("Client",)
 
@@ -161,14 +161,26 @@ class Client(Presets):
             result = self._cache[command]
         return result
 
-    async def get(self, interface: Interface) -> t.Iterable[BaseObject]:
+    async def get(
+        self, interface: Interface, paginate=False, **kwargs: bool
+    ) -> t.Union[
+        t.Iterable[BaseObject], Paginator, t.Tuple[t.Iterable[BaseObject], bool, int]
+    ]:
+        if paginate:
+            return Paginator(self, interface)
+
         command = Command("get", interface=interface)
 
         future = self.ctx.loop.create_future()
         await self._connector.inject(command, future)
 
         result = await future
-        return [_model_selector(interface._type)(data) for data in result["items"]]
+        obj = [_model_selector(interface._type)(data) for data in result["items"]]
+
+        if kwargs.get("metadata"):
+            return (obj, result["more"], result["num"])
+
+        return obj
 
     async def set_ulist(self, id: int, **kwargs: t.Mapping[str, t.Any]) -> ResponseType:
         command = Command(f"set ulist {id}", **kwargs)
