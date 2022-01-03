@@ -41,7 +41,14 @@ You can install Azaka using pip.
 
 `pip install -U azaka`
 
-That's it! There is no other required or optional requirement.
+That's it! There is no other required requirement.
+
+Additionally, you can also install
+
+- [uvloop](https://pypi.org/project/uvloop/)
+- [orjson](https://pypi.org/project/orjson/)
+
+for speeding up the stuff!
 
 ## USAGE -
 

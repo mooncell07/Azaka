@@ -37,7 +37,7 @@ class Paginator:
         data = await self.next_page()
 
         if not data:
-            raise StopAsyncIteration
+            raise ValueError
 
         return data
 
