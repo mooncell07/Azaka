@@ -17,6 +17,7 @@ from ..exceptions import (
     MissingFieldError,
     UnknownGetFlagError,
     UnknownGetTypeError,
+    ThrottledError,
 )
 from ..tools import ResponseType
 
@@ -42,6 +43,7 @@ class Protocol(asyncio.Protocol):
             "getinfo": UnknownGetFlagError,
             "parse": CommandSyntaxError,
             "needlogin": AuthorizationError,
+            "throttled": ThrottledError,
         }
         self._command: t.Optional[bytes] = None
 

@@ -60,7 +60,7 @@ class Connector(QueueControlMixin):
             self.shutdown()
             self.ctx.loop.close()
 
-            logger.debug("SHUTDOWN ENDED.")
+            logger.debug("SHUTDOWN COMPLETED.")
 
         if task.done() or task.cancelled():
             if isinstance(task.exception(), BaseException):

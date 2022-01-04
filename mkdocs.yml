@@ -1,0 +1,41 @@
+site_name: Marsworks
+site_description: Documentation for Azaka. An API Wrapper for VNDB written in Python.
+site_author: mooncell07
+
+theme:
+  features:
+    - navigation.top
+  name: material
+  palette:
+    - scheme: slate
+      primary: red
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - scheme: default
+      primary: red
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+
+nav:
+  - Home: index.md
+
+plugins:
+- search
+- mkdocstrings
+
+repo_name: mooncell07/Azaka
+repo_url: https://github.com/mooncell07/Azaka
+
+extra_css:
+- ./css/margin.css
+- ./css/extra.css
+copyright: Copyright 2021 - Present &copy; mooncell07
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - admonition
+  - toc:
+      permalink: "+"
