@@ -15,6 +15,7 @@ __all__ = (
     "UnknownGetTypeError",
     "UnknownGetFlagError",
     "CommandSyntaxError",
+    "ThrottledError",
 )
 
 
@@ -120,4 +121,16 @@ class CommandSyntaxError(CommandError):
     __slots__ = ()
 
     def __init__(self, **kwargs: t.Any) -> None:
+        super().__init__(**kwargs)
+
+
+class ThrottledError(CommandError):
+
+    __slots__ = ("type", "minwait", "fullwait")
+
+    def __init__(self, **kwargs: t.Any) -> None:
+        self.type = kwargs["type"]
+        self.minwait = kwargs["minwait"]
+        self.fullwait = kwargs["fullwait"]
+
         super().__init__(**kwargs)
