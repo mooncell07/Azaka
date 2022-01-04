@@ -30,7 +30,7 @@ class Command:
             flatten_flags = ",".join(i.value for i in self.interface._flags)
             filter_expressions = self.interface._condition.expression
             dumped_options = (
-                json.dumps(self.interface._options) if self.interface._options else None
+                json.dumps(self.interface._options) if self.interface._options else ""
             )
 
             formation = (
