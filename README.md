@@ -8,14 +8,14 @@ This wrapper is aimed to provide 100% API coverage being extremely simple to use
 
 # LINKS -
 
-- [Advantages](https://github.com/mooncell07/Azaka#advantages--)
-- [Disadvantages](https://github.com/mooncell07/Azaka#disadvantages--)
+- [Features](https://github.com/mooncell07/Azaka#features--)
+- [Problems](https://github.com/mooncell07/Azaka#problems--)
 - [Installation](https://github.com/mooncell07/Azaka#installation--)
 - [Usage](https://github.com/mooncell07/Azaka#usage--)
 - [Docs. & Tuts.](https://github.com/mooncell07/Azaka#documentation--tutorial--)
 - [Thanks](https://github.com/mooncell07/Azaka#thanks)
 
-## ADVANTAGES -
+## FEATURES -
 
 - **Fully Asynchronous** - Everything which poses a threat of blocking the I/O for a significant amount of time is async.
 - **Caching** - Azaka supports caching responses, which saves us from getting throttled quickly!
@@ -24,7 +24,7 @@ This wrapper is aimed to provide 100% API coverage being extremely simple to use
 - **No Dependency requirement** - No third party dependency is required to do anything in entire library.
 
 
-## DISADVANTAGES -
+## PROBLEMS -
 
 *(yes, i am a gud person)*
 
