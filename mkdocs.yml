@@ -6,6 +6,8 @@ theme:
   features:
     - navigation.top
   name: material
+  logo: img/mask.png
+  favicon: img/mask.ico
   palette:
     - scheme: slate
       primary: light blue
@@ -22,6 +24,7 @@ nav:
   - Home: index.md
   - API-Reference:
     - Client: API-Reference/client.md
+    - Context: API-Reference/context.md
 
 plugins:
 - search
