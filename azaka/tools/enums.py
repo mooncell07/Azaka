@@ -1,6 +1,6 @@
 import enum
 
-__all__ = ("Type", "Flags", "ResponseType", "ErrorType")
+__all__ = ("Type", "Flags", "ResponseType", "ErrorType", "Gender", "Spoiler", "Roles")
 
 
 class Type(enum.Enum):
@@ -55,3 +55,22 @@ class ErrorType(enum.Enum):
     GETINFO = "getinfo"
     FILTER = "filter"
     SETTYPE = "settype"
+
+
+class Gender(enum.Enum):
+    MALE = "m"
+    FEMALE = "f"
+    BOTH = "b"
+
+
+class Spoiler(enum.IntEnum):
+    NONE = 0
+    MINOR = 1
+    MAJOR = 2
+
+
+class Roles(enum.Enum):
+    MAIN = "main"
+    PRIMARY = "primary"
+    SIDE = "side"
+    APPEARS = "appears"

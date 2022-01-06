@@ -25,6 +25,8 @@ nav:
   - API-Reference:
     - Client: API-Reference/client.md
     - Context: API-Reference/context.md
+    - Objects:
+      - Character: API-Reference/objects/character.md
 
 plugins:
 - search
@@ -32,7 +34,9 @@ plugins:
     handlers:
       python:
         rendering:
-          members_order: source
+            show_source: false
+            show_root_heading: true
+            members_order: "source"
         import:
           - https://docs.python.org/3.10/objects.inv
 
