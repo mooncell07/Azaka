@@ -206,6 +206,12 @@ class Client(Presets):
             )
 
     async def fetch_token(self) -> str:
+        """
+        Fetches the session token. Only works when `token` arg of `.start` was set to `True`.
+
+        Returns:
+            The session token.
+        """
         command = Command("token")
 
         if command not in self._cache:
