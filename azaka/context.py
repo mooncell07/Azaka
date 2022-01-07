@@ -16,7 +16,7 @@ class Context:
     """
     A context holding all the necessary info and objects to connect to the VNDB API.
     This same object is given to the 0th arg of every coroutine function decorated
-    with [Client.register](../API-Reference/client.md#azaka.client.Client.register).
+    with [Client.register](../client#azaka.client.Client.register).
 
     Attributes:
         ADDR (str): The address of the VNDB API.
