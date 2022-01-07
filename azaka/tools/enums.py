@@ -1,6 +1,17 @@
 import enum
 
-__all__ = ("Type", "Flags", "ResponseType", "ErrorType", "Gender", "Spoiler", "Roles")
+__all__ = (
+    "Type",
+    "Flags",
+    "ResponseType",
+    "ErrorType",
+    "Gender",
+    "Spoiler",
+    "Roles",
+    "VoicedType",
+    "AnimationType",
+    "Rtype",
+)
 
 
 class Type(enum.Enum):
@@ -63,10 +74,10 @@ class Gender(enum.Enum):
     BOTH = "b"
 
 
-class Spoiler(enum.IntEnum):
-    NONE = 0
-    MINOR = 1
-    MAJOR = 2
+class Rtype(enum.Enum):
+    TRIAL = "trial"
+    PARTIAL = "partial"
+    COMPLETE = "complete"
 
 
 class Roles(enum.Enum):
@@ -74,3 +85,23 @@ class Roles(enum.Enum):
     PRIMARY = "primary"
     SIDE = "side"
     APPEARS = "appears"
+
+
+class Spoiler(enum.IntEnum):
+    NONE = 0
+    MINOR = 1
+    MAJOR = 2
+
+
+class VoicedType(enum.IntEnum):
+    NOT_VOICED = 1
+    ONLY_ERO_VOICED = 2
+    PARTIALLY_VOICED = 3
+    FULLY_VOICED = 4
+
+
+class AnimationType(enum.IntEnum):
+    NO_ANIMATIONS = 1
+    SIMPLE_ANIMATIONS = 2
+    PARTIAL_ANIMATIONS = 3
+    FULL_ANIMATIONS = 4

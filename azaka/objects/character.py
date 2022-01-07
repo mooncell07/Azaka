@@ -12,10 +12,10 @@ class Voiced:
     A dataclass representing a Voiced.
 
     Attributes:
-        id (int): staff ID.
-        vid (int): VN ID.
-        AID (t.Optional[int]): The staff alias ID being used.
-        note (t.Optional[str]): The staff note.
+        id: staff ID.
+        vid: VN ID.
+        AID: The staff alias ID being used.
+        note: The staff note.
     """
 
     id: int
@@ -30,10 +30,10 @@ class Instances:
     A dataclass representing a Instances.
 
     Attributes:
-        id (int): staff ID.
-        spoiler (t.Optional[Spoiler]): A [Spoiler][] object representing the sevearity of spoiler.
-        name (t.Optional[str]): Character name.
-        original (t.Optional[str]): Character's original name.
+        id: staff ID.
+        spoiler: A [Spoiler][] object representing the sevearity of spoiler.
+        name: Character name.
+        original: Character's original name.
     """
 
     id: int
@@ -135,7 +135,7 @@ class Character(BaseObject):
     def vns(self) -> t.Optional[t.List[t.List[int]]]:
         """
         List of VNs linked to this character.
-        Each VN is a [list][] of 4 elements: VN id, release ID (`0 = all releases`),
+        Each VN is a [list][] of 4 elements: VN id, release ID (0 = all releases),
         spoiler level ([Spoiler][]) and the role ([Roles][]).
         """
         vn_list = []
