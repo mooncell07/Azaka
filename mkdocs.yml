@@ -27,6 +27,10 @@ nav:
     - Context: API-Reference/context.md
     - Objects:
       - Character: API-Reference/objects/character.md
+      - DBStats: API-Reference/objects/dbstats.md
+      - Producer: API-Reference/objects/producer.md
+      - Quote: API-Reference/objects/quote.md
+      - Release: API-Reference/objects/release.md
 
 plugins:
 - search

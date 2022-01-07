@@ -5,6 +5,20 @@ __all__ = ("Quote",)
 
 
 class Quote(BaseObject):
+    """
+    A class representing a quote.
+
+    Note:
+        This class is not meant to be instantiated directly.
+
+    Note:
+        Every Attribute is optional and may return `None`.
+
+    Attributes:
+        id (int): The quote's id.
+        title (str): The quote's title.
+        quote (str): The quote's text.
+    """
 
     __slots__ = ("title", "quote")
 

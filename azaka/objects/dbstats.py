@@ -4,6 +4,27 @@ __all__ = ("DBStats",)
 
 
 class DBStats:
+    """
+    A class representing a dbstats.
+
+    Note:
+        This class is not meant to be instantiated directly.
+
+    Note:
+        Every Attribute is optional and may return `None`.
+
+    Attributes:
+        chars (int): The number of characters.
+        posts (int): The number of posts.
+        producers (int): The number of producers.
+        releases (int): The number of releases.
+        staff (int): The number of staff.
+        tags (int): The number of tags.
+        threads (int): The number of threads.
+        traits (int): The number of traits.
+        users (int): The number of users.
+        vn (int): The number of VNs.
+    """
 
     __slots__ = (
         "_data",
