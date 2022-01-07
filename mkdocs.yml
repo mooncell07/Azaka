@@ -23,14 +23,18 @@ theme:
 nav:
   - Home: index.md
   - API-Reference:
-    - Client: API-Reference/client.md
-    - Context: API-Reference/context.md
-    - Objects:
-      - Character: API-Reference/objects/character.md
-      - DBStats: API-Reference/objects/dbstats.md
-      - Producer: API-Reference/objects/producer.md
-      - Quote: API-Reference/objects/quote.md
-      - Release: API-Reference/objects/release.md
+    - public:
+      - Client: API-Reference/public/client.md
+      - Context: API-Reference/public/context.md
+      - Objects:
+        - Character: API-Reference/public/objects/character.md
+        - DBStats: API-Reference/public/objects/dbstats.md
+        - Producer: API-Reference/public/objects/producer.md
+        - Quote: API-Reference/public/objects/quote.md
+        - Release: API-Reference/public/objects/release.md
+    - internal:
+      - Tools:
+        - Mixins: API-Reference/internals/tools/mixins.md
 
 plugins:
 - search
