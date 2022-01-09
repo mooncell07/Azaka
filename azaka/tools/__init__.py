@@ -1,5 +1,5 @@
-from ..commands import *
+from .enums import *
 from .cache import *
 from .mixins import *
-from .enums import *
 from .paginator import *
+from ..commands import *

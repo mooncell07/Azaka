@@ -27,6 +27,9 @@ class BoolOProxy:
         self.expression = f"({self.expression} or {value.expression})"
         return self
 
+    def __repr__(self) -> str:
+        return self.expression
+
 
 class ConditionProxy:
 
