@@ -1,9 +1,37 @@
+from __future__ import annotations
+
 import asyncio
 import ssl
 import typing as t
 
+from .interface import Interface
+from .commands import (
+    UserCondition,
+    VNCondition,
+    BoolOProxy,
+    ReleaseCondition,
+    QuoteCondition,
+    CharacterCondition,
+    StaffCondition,
+    UlistCondition,
+    UlistLabelsCondition,
+    ProducerCondition,
+)
+from .tools import Flags
+from .objects import (
+    VN,
+    Character,
+    Producer,
+    Quote,
+    Release,
+    Staff,
+    User,
+    UlistLabels,
+    Ulist,
+)
+
 try:
-    import uvloop
+    import uvloop  # type: ignore
 
     UV = True
 except ModuleNotFoundError:
@@ -11,10 +39,13 @@ except ModuleNotFoundError:
 
 __all__ = ("Context",)
 
+if t.TYPE_CHECKING:
+    from .client import Client
+
 
 class Context:
     """
-    A context holding all the necessary info and objects to connect to the VNDB API.
+    A context holding all the necessary info and objects to connect and interact with the VNDB API.
     This same object is given to the 0th arg of every coroutine function decorated
     with [Client.register](../client#azaka.client.Client.register).
 
@@ -32,12 +63,28 @@ class Context:
     PROTOCOL_VERSION = 1
 
     CLIENT_NAME = "Azaka"
-    CLIENT_VERSION = "0.1.0a4"
+    CLIENT_VERSION = "0.1.0a5"
 
-    __slots__ = ("loop", "password", "ssl_context", "username")
+    __slots__ = (
+        "client",
+        "loop",
+        "password",
+        "ssl_context",
+        "username",
+        "vn",
+        "character",
+        "quote",
+        "user",
+        "ulist",
+        "ulist_labels",
+        "release",
+        "staff",
+        "producer",
+    )
 
     def __init__(
         self,
+        client: Client,
         *,
         username: t.Optional[str] = None,
         password: t.Optional[str] = None,
@@ -45,14 +92,19 @@ class Context:
         ssl_context: t.Optional[ssl.SSLContext] = None
     ) -> None:
         """
-        Context Constructor. This is where all the necessary info and object are stored.
+        Context Constructor. This is where all the necessary info and objects are stored.
 
         Args:
+            client: The client object that is using this context.
             username: Username to use for logging in.
             password: Password to use for logging in.
             loop: The [asyncio.AbstractEventLoop][] subclass to use.
             ssl_context: The [ssl.SSLContext][] to use. If not provided, a default context will be used.
+
+        Warning:
+            This object is not meant to be constructed by users.
         """
+        self.client = client
         self.username = username
         self.password = password
 
@@ -60,6 +112,16 @@ class Context:
             loop if isinstance(loop, asyncio.BaseEventLoop) else self._get_event_loop()
         )
         self.ssl_context = ssl_context or self._get_ssl_context()
+
+        self.vn = VN
+        self.character = Character
+        self.producer = Producer
+        self.release = Release
+        self.staff = Staff
+        self.quote = Quote
+        self.user = User
+        self.ulist_labels = UlistLabels
+        self.ulist = Ulist
 
     def _get_ssl_context(self) -> ssl.SSLContext:
         sslctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
@@ -78,3 +140,272 @@ class Context:
 
             asyncio.set_event_loop(loop)
         return loop
+
+    async def get_vn(
+        self,
+        predicate: t.Callable[[t.Type[VNCondition]], BoolOProxy],
+        *,
+        details: bool = False
+    ) -> t.Optional[t.List[VN]]:
+        """
+        Get VNs matching the predicate. By default this will use [Basic][] flag.
+        If you want to append [Details][] flag, you need to pass `details=True` as an argument.
+
+        Args:
+            predicate: A callable that takes a [VNCondition][] and returns a [BoolOProxy][].
+            details: Whether to get the basic and detailed info of the vn.
+
+        Returns:
+            A [list][] of [VN]s matching the predicate.
+
+        Example:
+            ```python
+            @register
+            async def main(ctx):
+                await ctx.get_vn(lambda VN: VN.ID == 11)
+            ```
+
+        All the `get_x` methods in this class can be used in same way as `get_vn`.
+
+        Info:
+            This and all `get_x` methods in this class are an abstraction over
+            [Client.get](../client#azaka.client.Client.get)
+            and provides lesser flexibility.
+        """
+        flags = (
+            (
+                Flags.BASIC,
+                Flags.DETAILS,
+            )
+            if details
+            else (Flags.BASIC,)
+        )
+
+        with Interface(type=self.vn, flags=flags) as interface:
+            interface.set_condition(predicate(VNCondition))
+
+        result = await self.client.get(interface)
+        if isinstance(result, list):
+            return result
+
+        return None
+
+    async def get_staff(
+        self,
+        predicate: t.Callable[[t.Type[StaffCondition]], BoolOProxy],
+        *,
+        details: bool = False
+    ) -> t.Optional[t.List[Staff]]:
+        """
+        Get Staff matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
+
+        Args:
+            predicate: A callable that takes a [StaffCondition][] and returns a [BoolOProxy][].
+
+        Returns:
+            A [list][] of [Staff]s matching the predicate.
+        """
+        flags = (
+            (
+                Flags.BASIC,
+                Flags.DETAILS,
+            )
+            if details
+            else (Flags.BASIC,)
+        )
+
+        with Interface(type=self.staff, flags=flags) as interface:
+            interface.set_condition(predicate(StaffCondition))
+
+        result = await self.client.get(interface)
+        if isinstance(result, list):
+            return result
+
+        return None
+
+    async def get_release(
+        self,
+        predicate: t.Callable[[t.Type[ReleaseCondition]], BoolOProxy],
+        *,
+        details: bool = False
+    ) -> t.Optional[t.List[Release]]:
+        """
+        Get Releases matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
+
+        Args:
+            predicate: A callable that takes a [ReleaseCondition][] and returns a [BoolOProxy][].
+            details: Whether to get the basic and detailed info of the release.
+
+        Returns:
+            A [list][] of [Release]s matching the predicate.
+        """
+
+        flags = (
+            (
+                Flags.BASIC,
+                Flags.DETAILS,
+            )
+            if details
+            else (Flags.BASIC,)
+        )
+
+        with Interface(type=self.release, flags=flags) as interface:
+            interface.set_condition(predicate(ReleaseCondition))
+
+        result = await self.client.get(interface)
+        if isinstance(result, list):
+            return result
+
+        return None
+
+    async def get_character(
+        self,
+        predicate: t.Callable[[t.Type[CharacterCondition]], BoolOProxy],
+        *,
+        details: bool = False
+    ) -> t.Optional[t.List[Character]]:
+        """
+        Get Characters matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
+
+        Args:
+            predicate: A callable that takes a [CharacterCondition][] and returns a [BoolOProxy][].
+            details: Whether to get the basic and detailed info of the character.
+
+        Returns:
+            A [list][] of [Character]s matching the predicate.
+        """
+        flags = (
+            (
+                Flags.BASIC,
+                Flags.DETAILS,
+            )
+            if details
+            else (Flags.BASIC,)
+        )
+
+        with Interface(type=self.character, flags=flags) as interface:
+            interface.set_condition(predicate(CharacterCondition))
+
+        result = await self.client.get(interface)
+        if isinstance(result, list):
+            return result
+
+        return None
+
+    async def get_producer(
+        self,
+        predicate: t.Callable[[t.Type[ProducerCondition]], BoolOProxy],
+        *,
+        details: bool = False
+    ) -> t.Optional[t.List[Producer]]:
+        """
+        Get Producers matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
+
+        Args:
+            predicate: A callable that takes a [ProducerCondition][] and returns a [BoolOProxy][].
+            details: Whether to get the basic and detailed info of the producer.
+
+        Returns:
+            A [list][] of [Producer]s matching the predicate.
+        """
+        flags = (
+            (
+                Flags.BASIC,
+                Flags.DETAILS,
+            )
+            if details
+            else (Flags.BASIC,)
+        )
+
+        with Interface(type=self.producer, flags=flags) as interface:
+            interface.set_condition(predicate(ProducerCondition))
+
+        result = await self.client.get(interface)
+        if isinstance(result, list):
+            return result
+
+        return None
+
+    async def get_quote(
+        self, predicate: t.Callable[[t.Type[QuoteCondition]], BoolOProxy]
+    ) -> t.Optional[t.List[Quote]]:
+        """
+        Get Quotes matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
+
+        Args:
+            predicate: A callable that takes a [QuoteCondition][] and returns a [BoolOProxy][].
+
+        Returns:
+            A [list][] of [Quote]s matching the predicate.
+        """
+        with Interface(type=self.quote, flags=(Flags.BASIC,)) as interface:
+            interface.set_condition(predicate(QuoteCondition))
+
+        result = await self.client.get(interface)
+        if isinstance(result, list):
+            return result
+
+        return None
+
+    async def get_user(
+        self, predicate: t.Callable[[t.Type[UserCondition]], BoolOProxy]
+    ) -> t.Optional[t.List[User]]:
+        """
+        Get Users matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
+
+        Args:
+            predicate: A callable that takes a [UserCondition][] and returns a [BoolOProxy][].
+
+        Returns:
+            A [list][] of [User]s matching the predicate.
+        """
+        with Interface(type=self.user, flags=(Flags.BASIC,)) as interface:
+            interface.set_condition(predicate(UserCondition))
+
+        result = await self.client.get(interface)
+        if isinstance(result, list):
+            return result
+
+        return None
+
+    async def get_ulist(
+        self, predicate: t.Callable[[t.Type[UlistCondition]], BoolOProxy]
+    ) -> t.Optional[t.List[Ulist]]:
+        """
+        Get Ulists matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
+
+        Args:
+            predicate: A callable that takes a [UlistCondition][] and returns a [BoolOProxy][].
+
+        Returns:
+            A [list][] of [Ulist]s matching the predicate.
+        """
+        with Interface(type=self.ulist, flags=(Flags.BASIC,)) as interface:
+            interface.set_condition(predicate(UlistCondition))
+
+        result = await self.client.get(interface)
+        if isinstance(result, list):
+            return result
+
+        return None
+
+    async def get_ulist_labels(
+        self, predicate: t.Callable[[t.Type[UlistLabelsCondition]], BoolOProxy]
+    ) -> t.Optional[t.List[UlistLabels]]:
+        """
+        Get Ulist Labels matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
+
+        Args:
+            predicate: A callable that takes a [UlistLabelsCondition][] and returns a [BoolOProxy][].
+
+        Returns:
+            A [list][] of [UlistLabels]s matching the predicate.
+        """
+        with Interface(type=self.ulist_labels, flags=(Flags.BASIC,)) as interface:
+            interface.set_condition(predicate(UlistLabelsCondition))
+
+        result = await self.client.get(interface)
+        if isinstance(result, list):
+            return result
+
+        return None

@@ -6,7 +6,7 @@ import typing as t
 from ..tools.enums import ResponseType
 
 try:
-    import orjson
+    import orjson  # type: ignore
 
     ORJ = True
 except ModuleNotFoundError:
@@ -35,7 +35,7 @@ class Command:
 
             formation = (
                 f"{self.name} "
-                f"{self.interface._type.value} "
+                f"{self.interface._type.__name__.lower()} "
                 f"{flatten_flags} "
                 f"{filter_expressions}"
                 f"{dumped_options}"

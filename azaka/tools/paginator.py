@@ -11,6 +11,18 @@ __all__ = ("Paginator",)
 
 
 class Paginator:
+    """
+    A Paginator returned by the [Client.get](../client#azaka.client.Client.get) method
+    used to provide async and stateful iteration over the results of `get` command (s).
+
+    Attributes:
+        current_page (t.Optiona[t.Iterable[BaseObject]]): The current page of results.
+        current_page_num (int): The current page number.
+        more (bool): If there are more pages to fetch.
+    """
+
+    __slots__ = ("_client", "_interface", "current_page", "current_page_num", "more")
+
     def __init__(self, client: Client, interface: Interface) -> None:
         self._client = client
         self._interface = interface
@@ -19,12 +31,24 @@ class Paginator:
         self.more: bool = True
 
     async def next_page(self) -> t.Optional[t.Iterable[BaseObject]]:
+        """
+        Fetches the next page of results.
+
+        Returns:
+            The next page of results.
+        """
         if self.more:
             self.current_page_num += 1
             return await self.generate()
         return None
 
     async def previous_page(self) -> t.Optional[t.Iterable[BaseObject]]:
+        """
+        Fetches the previous page of results.
+
+        Returns:
+            The previous page of results.
+        """
         if self.current_page_num > 1:
             self.current_page_num -= 1
             return await self.generate()
@@ -42,6 +66,12 @@ class Paginator:
         return data
 
     async def generate(self) -> t.Optional[t.Iterable[BaseObject]]:
+        """
+        Generates the page of results.
+
+        Returns:
+            The page of results.
+        """
         self._interface.add_option(page=self.current_page_num)
         data = await self._client.get(self._interface, metadata=True)
 
