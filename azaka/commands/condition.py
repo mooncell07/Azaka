@@ -4,12 +4,10 @@ import typing as t
 
 from .proxy import ConditionProxy
 
-if t.TYPE_CHECKING:
-    from ..tools import Type
-
 
 __all__ = (
     "VNCondition",
+    "BaseCondition",
     "ReleaseCondition",
     "ProducerCondition",
     "CharacterCondition",
@@ -159,7 +157,7 @@ class UlistCondition(UlistLabelsCondition):
 
 
 def _condition_selector(
-    type: Type,
+    type: t.Any,
 ) -> t.Union[t.Type[BaseCondition], t.Type[UlistLabelsCondition], t.Any]:
     condition_map = {
         "vn": VNCondition,
@@ -172,4 +170,4 @@ def _condition_selector(
         "ulist-labels": UlistLabelsCondition,
         "ulist": UlistCondition,
     }
-    return condition_map[type.value]
+    return condition_map[type.__name__.lower()]

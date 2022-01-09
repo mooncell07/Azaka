@@ -9,45 +9,18 @@ import asyncio
 import inspect
 import typing as t
 
-from .commands import Command, Presets
+from .commands import Command
 from .connection import Connector
 from .context import Context
 from .exceptions import AzakaException
 from .interface import Interface
-from .objects import (
-    VN,
-    BaseObject,
-    Character,
-    DBStats,
-    Producer,
-    Quote,
-    Release,
-    Staff,
-    User,
-    UlistLabels,
-    Ulist,
-)
-from .tools import Cache, Type, ResponseType, Paginator
+from .objects import DBStats
+from .tools import Cache, ResponseType, Paginator
 
 __all__ = ("Client",)
 
 
-def _model_selector(type: Type) -> t.Type[BaseObject]:
-    models = {
-        "vn": VN,
-        "release": Release,
-        "producer": Producer,
-        "character": Character,
-        "staff": Staff,
-        "quote": Quote,
-        "user": User,
-        "ulist-labels": UlistLabels,
-        "ulist": Ulist,
-    }
-    return models[type.value]
-
-
-class Client(Presets):
+class Client:
 
     __slots__ = ("_cache", "_connector", "ctx")
 
@@ -77,12 +50,14 @@ class Client(Presets):
             A password or session token should be provided if passing an username.
         """
         self.ctx: Context = Context(
-            username=username, password=password, loop=loop, ssl_context=ssl_context
+            self,
+            username=username,
+            password=password,
+            loop=loop,
+            ssl_context=ssl_context,
         )
         self._cache: Cache = Cache(maxsize=cache_size)
         self._connector: Connector = Connector(self.ctx)
-
-        super().__init__(self)
 
     @property
     def is_closing(self) -> bool:
@@ -249,9 +224,9 @@ class Client(Presets):
 
     async def get(
         self, interface: Interface, paginate=False, **kwargs: bool
-    ) -> t.Union[t.Iterable[BaseObject], Paginator]:
+    ) -> t.Union[t.Iterable[t.Any], Paginator]:
         """
-        Issue a `get` command to the API.
+        Issue a `get` command to the API. This method provides a centralised way to fetch data from the VNDB API.
 
         Args:
             interface: The [Interface][] to use.
@@ -259,6 +234,22 @@ class Client(Presets):
 
         Returns:
             [list][] of [BaseObject][] if paginate is set to `False` else [Paginator][] if paginate is set to `True`.
+
+        Info:
+            This is a low level generic method.
+            Use the `get_x` methods of [Context](../context) instead if you want to do basic queries.
+
+        Example:
+            ```py
+            @register
+            async def get_vn_animes(ctx):
+                with Interface(type=ctx.vn, flags=(Flags.ANIMES,)) as interface:
+                    VN = interface.condition()
+                    interface.set_condition(VN.ID == 123)
+                await ctx.get(interface)
+            ```
+
+        Detailed info about this method can be found in the [tutorial][].
         """
         if paginate:
             return Paginator(self, interface)
@@ -269,7 +260,7 @@ class Client(Presets):
         await self._connector.inject(command, future)
 
         result = await future
-        obj = [_model_selector(interface._type)(data) for data in result["items"]]
+        obj = [interface._type(data) for data in result["items"]]
 
         if kwargs.get("metadata"):
             return (obj, result["more"], result["num"])  # type: ignore
