@@ -71,8 +71,7 @@ class Client:
         )
 
     def register(
-        self,
-        coro: t.Callable[..., t.Any],
+        self, coro: t.Callable[..., t.Any], *args: t.Any, **kwargs: t.Any
     ) -> None:
         """
         Register a coroutine to be called when client is ready to issue commands.
@@ -93,7 +92,7 @@ class Client:
 
         if inspect.iscoroutinefunction(coro):
             self.ctx.loop.create_task(
-                self._connector.handle_user_exceptions(coro(self.ctx))
+                self._connector.handle_user_exceptions(coro(self.ctx, *args, **kwargs))
             )
         else:
             raise TypeError("Callback must be a coroutine.") from None
