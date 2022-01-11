@@ -7,9 +7,9 @@ __all__ = ("Producer",)
 
 
 @dataclass
-class Link:
+class ProducerLinks:
     """
-    A dataclass representing a link.
+    A dataclass representing a links.
 
     Attributes:
         homepage: Official homepage.
@@ -23,9 +23,9 @@ class Link:
 
 
 @dataclass
-class Relation:
+class ProducerRelation:
     """
-    A dataclass representing a relation.
+    A dataclass representing a producerrelation.
 
     Attributes:
         id: The relation's ID.
@@ -50,12 +50,19 @@ class Producer(BaseObject):
     Note:
         Every Attribute is optional and may return `None`.
 
+    ## FLAG: NONE
     Attributes:
         id (int): The producer's id.
+
+    ## FLAG: [BASIC](../enums.md#azaka.tools.enums.Flags)
+    Attributes:
         name (str): The producer's name. (romaji)
         original (str): The producer's original/official name.
         type (str): The producer's type.
         language (str): The producer's primary language.
+
+    ## FLAG: [DETAILS](../enums.md#azaka.tools.enums.Flags)
+    Attributes:
         aliases (t.List[str]): [list][] of producer's aliases (alternative names).
         description (str): The producer's description/notes.
     """
@@ -74,30 +81,35 @@ class Producer(BaseObject):
     def __init__(self, data: t.Mapping[str, t.Any]) -> None:
         super().__init__(data["id"])
 
-        self._link = data.get("links", {})
+        self._link = data.get("links")
         self._relations = data.get("relations", [])
 
-        self.name = data.get("name")
-        self.original = data.get("original")
-        self.type = data.get("type")
-        self.language = data.get("language")
-        self.aliases = data.get("aliases")
-        self.description = data.get("description")
+        self.name: t.Optional[str] = data.get("name")
+        self.original: t.Optional[str] = data.get("original")
+        self.type: t.Optional[str] = data.get("type")
+        self.language: t.Optional[str] = data.get("language")
+        self.aliases: t.List[str] = data.get("aliases", [])
+        self.description: t.Optional[str] = data.get("description")
 
     @property
-    def link(self) -> Link:
+    def links(self) -> t.Optional[ProducerLinks]:
         """
-        Returns the [Link](./#azaka.objects.producer.Link) object.
+        Returns the [ProducerLinks](./#azaka.objects.producer.ProducerLinks) object.
+
+        Info:
+            This returns a [ProducerLinks](./#azaka.objects.producer.ProducerLinks)
+            object only when the command was issued with
+            the `DETAILS` [Flags](../enums.md#azaka.tools.enums.Flags) otherwise it is `None`.
         """
-        return Link(**self._link)
+        return ProducerLinks(**self._link) if self._link else None
 
     @property
-    def relations(self) -> t.List[Relation]:
+    def relations(self) -> t.List[ProducerRelation]:
         """
-        Returns a [list][] of [Relation](./#azaka.objects.producer.Relation) objects.
+        Returns a [list][] of [ProducerRelation](./#azaka.objects.producer.ProducerRelation) objects.
 
         Info:
             The [list][] is populated only when the command was issued with
             the `RELATIONS` [Flags](../enums.md#azaka.tools.enums.Flags) otherwise it is empty.
         """
-        return [Relation(**data) for data in self._relations]
+        return [ProducerRelation(**data) for data in self._relations]

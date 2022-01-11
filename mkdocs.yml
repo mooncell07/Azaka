@@ -34,6 +34,7 @@ nav:
         - Producer: API-Reference/public/objects/producer.md
         - Quote: API-Reference/public/objects/quote.md
         - Release: API-Reference/public/objects/release.md
+        - Staff: API-Reference/public/objects/staff.md
     - internal:
       - Tools:
         - Mixins: API-Reference/internals/tools/mixins.md
