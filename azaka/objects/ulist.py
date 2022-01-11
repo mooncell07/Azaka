@@ -5,7 +5,7 @@ from .baseobject import BaseObject
 __all__ = ("Ulist",)
 
 
-@dataclass(slots=True)  # type: ignore
+@dataclass
 class Labels:
     id: int
     label: t.Optional[str] = None

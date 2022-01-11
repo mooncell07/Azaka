@@ -1,3 +1,3 @@
 ::: azaka.objects.Character
-::: azaka.objects.character.Voiced
-::: azaka.objects.character.Instances
+::: azaka.objects.character.CharacterVoiced
+::: azaka.objects.character.Instance
