@@ -6,10 +6,10 @@ from .baseobject import BaseObject
 __all__ = ("Producer",)
 
 
-@dataclass(slots=True)  # type: ignore
-class Links:
+@dataclass
+class Link:
     """
-    A dataclass representing a links.
+    A dataclass representing a link.
 
     Attributes:
         homepage: Official homepage.
@@ -22,7 +22,7 @@ class Links:
     wikipedia: t.Optional[str] = None
 
 
-@dataclass(slots=True)  # type: ignore
+@dataclass
 class Relation:
     """
     A dataclass representing a relation.
@@ -61,7 +61,7 @@ class Producer(BaseObject):
     """
 
     __slots__ = (
-        "_links",
+        "_link",
         "_relations",
         "name",
         "original",
@@ -74,8 +74,8 @@ class Producer(BaseObject):
     def __init__(self, data: t.Mapping[str, t.Any]) -> None:
         super().__init__(data["id"])
 
-        self._links = data.get("links", {})
-        self._relations = data.get("relations")
+        self._link = data.get("links", {})
+        self._relations = data.get("relations", [])
 
         self.name = data.get("name")
         self.original = data.get("original")
@@ -85,17 +85,19 @@ class Producer(BaseObject):
         self.description = data.get("description")
 
     @property
-    def links(self) -> Links:
+    def link(self) -> Link:
         """
-        Returns the [Links][] dataclass.
+        Returns the [Link](./#azaka.objects.producer.Link) object.
         """
-        return Links(**self._links)
+        return Link(**self._link)
 
     @property
-    def relations(self) -> t.Optional[t.Iterable[Relation]]:
+    def relations(self) -> t.List[Relation]:
         """
-        Returns a [list][] of [Relations][] dataclasses.
+        Returns a [list][] of [Relation](./#azaka.objects.producer.Relation) objects.
+
+        Info:
+            The [list][] is populated only when the command was issued with
+            the `RELATIONS` [Flags](../enums.md#azaka.tools.enums.Flags) otherwise it is empty.
         """
-        if self._relations is not None:
-            return [Relation(**data) for data in self._relations]
-        return None
+        return [Relation(**data) for data in self._relations]

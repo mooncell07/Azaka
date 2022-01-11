@@ -1,4 +1,4 @@
 ::: azaka.objects.Release
-::: azaka.objects.release.Vn
+::: azaka.objects.release.PartialVN
 ::: azaka.objects.release.Media
-::: azaka.objects.release.Producers
+::: azaka.objects.release.PartialProducer
