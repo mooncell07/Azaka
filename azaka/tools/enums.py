@@ -16,6 +16,7 @@ __all__ = (
 class Flags(enum.Enum):
     """
     An [enum.Enum][] of all the available flags.
+    These flags decide what data the API should return.
 
     Attributes:
         BASIC: The `basic` flag.
@@ -35,6 +36,9 @@ class Flags(enum.Enum):
         INSTANCES: The `instances` flag.
         ALIASES: The `aliases`flag.
         LABELS: The `labels` flag.
+
+    Info:
+        These can be stacked together using a tuple.
     """
 
     BASIC: str = "basic"
@@ -59,6 +63,9 @@ class Flags(enum.Enum):
 class ResponseType(enum.Enum):
     """
     An [enum.Enum][] of all the available response types.
+    These are the possible response types API can return and
+    in most cases you will not need to use or get them directly.
+    except for [Client.set_ulist](../client#azaka.client.Client.set_ulist).
 
     Attributes:
         OK: The `ok` response type.
@@ -78,6 +85,8 @@ class ResponseType(enum.Enum):
 class ErrorType(enum.Enum):
     """
     An [enum.Enum][] of all the available error types.
+    These are the possible error types API can return.
+    These are present as an attribute of all errors which inherit from [AzakaException]().
 
     Attributes:
         PARSE: The `parse` error type.
@@ -137,27 +146,66 @@ class Rtype(enum.Enum):
 
 
 class Roles(enum.Enum):
-    MAIN = "main"
-    PRIMARY = "primary"
-    SIDE = "side"
-    APPEARS = "appears"
+    """
+    An [enum.Enum][] of all available character roles.
+
+    Attributes:
+        MAIN: The `main` role.
+        PRIMARY: The `primary` role.
+        SIDE: The `side` role.
+        APPEARS: The `appears` role.
+    """
+
+    MAIN: str = "main"
+    PRIMARY: str = "primary"
+    SIDE: str = "side"
+    APPEARS: str = "appears"
 
 
 class Spoiler(enum.IntEnum):
-    NONE = 0
-    MINOR = 1
-    MAJOR = 2
+    """
+    An [enum.IntEnum][] of all available spoiler levels.
+
+    Attributes:
+        NONE: The `0` spoiler level.
+        MINOR: The `1` spoiler level.
+        MAJOR: The `2` spoiler level.
+    """
+
+    NONE: int = 0
+    MINOR: int = 1
+    MAJOR: int = 2
 
 
 class VoicedType(enum.IntEnum):
-    NOT_VOICED = 1
-    ONLY_ERO_VOICED = 2
-    PARTIALLY_VOICED = 3
-    FULLY_VOICED = 4
+    """
+    An [enum.IntEnum][] of all available voiced types.
+
+    Attributes:
+        NOT_VOICED: The `1` voiced type.
+        ONLY_ERO_VOICED: The `2` voiced type.
+        PARTIALLY_VOICED: The `3` voiced type.
+        FULLY_VOICED: The `4` voiced type.
+    """
+
+    NOT_VOICED: int = 1
+    ONLY_ERO_VOICED: int = 2
+    PARTIALLY_VOICED: int = 3
+    FULLY_VOICED: int = 4
 
 
 class AnimationType(enum.IntEnum):
-    NO_ANIMATIONS = 1
-    SIMPLE_ANIMATIONS = 2
-    PARTIAL_ANIMATIONS = 3
-    FULL_ANIMATIONS = 4
+    """
+    An [enum.IntEnum][] of all available animation types.
+
+    Attributes:
+        NO_ANIMATIONS: The `1` animation type.
+        SIMPLE_ANIMATIONS: The `2` animation type.
+        PARTIAL_ANIMATIONS: The `3` animation type.
+        FULL_ANIMATIONS: The `4` animation type.
+    """
+
+    NO_ANIMATIONS: int = 1
+    SIMPLE_ANIMATIONS: int = 2
+    PARTIAL_ANIMATIONS: int = 3
+    FULL_ANIMATIONS: int = 4
