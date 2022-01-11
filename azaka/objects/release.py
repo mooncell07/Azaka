@@ -7,7 +7,7 @@ from ..tools import VoicedType, AnimationType, Rtype
 __all__ = ("Release",)
 
 
-@dataclass(slots=True)  # type: ignore
+@dataclass
 class Media:
     """
     A dataclass representing a media.
@@ -21,13 +21,15 @@ class Media:
     medium: t.Optional[str] = None
 
 
-@dataclass(slots=True)  # type: ignore
-class Vn:
+@dataclass
+class PartialVN:
     """
-    A dataclass representing a vn.
+    A dataclass representing a partialvn.
 
     Note:
-        This vn is different from [VN][]. This one is an object returned by the [Release.vn][] property.
+        This vn is different from [VN][].
+        This one is an object returned by the [Release.partial_vns](./#azaka.objects.release.Release.partial_vns)
+        property and doesn't contain all the attributes of the VN.
 
     Attributes:
         id: The vn's id.
@@ -42,18 +44,23 @@ class Vn:
     original: t.Optional[str] = None
 
 
-@dataclass(slots=True)  # type: ignore
-class Producers:
+@dataclass
+class PartialProducer:
     """
-    A dataclass representing a producers.
+    A dataclass representing a partialproducer.
+
+    Note:
+        This producer is different from [VN][]. This one is an object returned by the
+        [Release.partial_producers](./#azaka.objects.release.Release.partial_producers)
+        property and doesn't contain all the attributes of the producer.
 
     Attributes:
-        id: The producers' id.
-        name: The producers' name. (romaji)
-        original: The producers' original/official name.
+        id: The producer's id.
+        name: The producer's name. (romaji)
+        original: The producer's original/official name.
         developer: The producer is a developer.
         publisher: The producer is a publisher.
-        type: The producers' type.
+        type: The producer's type.
     """
 
     id: int
@@ -96,10 +103,10 @@ class Release(BaseObject):
     """
 
     __slots__ = (
-        "_vn",
+        "_vns",
         "_producers",
-        "_media",
-        "_animation",
+        "_medias",
+        "_animations",
         "title",
         "original",
         "released",
@@ -121,10 +128,10 @@ class Release(BaseObject):
     def __init__(self, data: t.Mapping[str, t.Any]) -> None:
         super().__init__(data["id"])
 
-        self._vn = data.get("vn")
-        self._producers = data.get("producers")
-        self._media = data.get("media")
-        self._animation: t.Optional[t.Iterable[int]] = data.get("animation")
+        self._vns = data.get("vn")
+        self._producers = data.get("producers", [])
+        self._medias = data.get("media", [])
+        self._animations = data.get("animation", [])
 
         self.title: t.Optional[str] = data.get("title")
         self.original: t.Optional[str] = data.get("original")
@@ -148,50 +155,49 @@ class Release(BaseObject):
         self.languages: t.Optional[t.Iterable[str]] = data.get("languages")
 
     @property
-    def animation(self) -> t.Optional[t.List[t.Optional[AnimationType]]]:
+    def animations(self) -> t.List[AnimationType]:
         """
-        Returns a [list][] of [AnimationType][].
+        Returns a [list][] of [AnimationType](../enums.md#azaka.tools.enums.AnimationType) enums.
 
         Note:
             The [list][] has two members of an [enum][] type [AnimationType][],
             the first one indicating the story animations,
             the second the ero scene animations. Both members can be None if unknown or not applicable.
         """
-        anims = []
-        if self._animation:
-            for data in self._animation:
-                atype = AnimationType(data) if data else None
-                anims.append(atype)
-            return anims
-        return None
+        return [AnimationType(data) for data in self._animations]
 
     @property
-    def media(self) -> t.Optional[t.Iterable[Media]]:
+    def medias(self) -> t.List[Media]:
         """
-        Returns a [list][] of [Media][] dataclasses.
+        Returns a [list][] of [Media](./#azaka.objects.release.Media) objects.
         """
-        if self._media is not None:
-            return [Media(**data) for data in self._media]
-        return None
+        return [Media(**data) for data in self._medias]
 
     @property
-    def vn(self) -> t.Optional[t.Iterable[Vn]]:
+    def partial_vns(self) -> t.List[PartialVN]:
         """
-        Returns a [list][] of [Vn][] dataclasses related to this release.
+        Returns a [list][] of [PartialVN](./#azaka.objects.release.PartialVN) objects.
+
+        Info:
+            The [list][] is populated only when the command was issued with
+            the `VN` [Flags](../enums.md#azaka.tools.enums.Flags) otherwise it is empty.
         """
         vns = []
-        if self._vn is not None:
-            for vn in self._vn:
+
+        if self._vns:
+            for vn in self._vns:
                 vn["rtype"] = Rtype(vn["rtype"]) if vn.get("rtype") else None
-                vns.append(Vn(**vn))
-            return vns
-        return None
+                vns.append(PartialVN(**vn))
+
+        return vns
 
     @property
-    def producers(self) -> t.Optional[t.Iterable[Producers]]:
+    def partial_producers(self) -> t.List[PartialProducer]:
         """
-        Returns a [list][] of [Producers][] dataclasses.
+        Returns a [list][] of [PartialProducer](./#azaka.objects.release.PartialProducer) objects.
+
+        Info:
+            The [list][] is populated only when the command was issued with
+            the `PRODUCERS` [Flags](../enums.md#azaka.tools.enums.Flags) otherwise it is empty.
         """
-        if self._producers is not None:
-            return [Producers(**data) for data in self._producers]
-        return None
+        return [PartialProducer(**data) for data in self._producers]
