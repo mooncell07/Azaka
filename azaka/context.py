@@ -148,15 +148,16 @@ class Context:
         details: bool = False
     ) -> t.Optional[t.List[VN]]:
         """
-        Get VNs matching the predicate. By default this will use [Basic][] flag.
-        If you want to append [Details][] flag, you need to pass `details=True` as an argument.
+        Get VNs matching the predicate. By default this will use [BASIC](./enums.md#azaka.tools.enums.Flags) flag.
+        If you want to append [DETAILS](./enums.md#azaka.tools.enums.Flags) flag,
+        you need to pass `details=True` as an argument.
 
         Args:
-            predicate: A callable that takes a [VNCondition][] and returns a [BoolOProxy][].
+            predicate: A callable that takes a [VNCondition]() and returns a [BoolOProxy]().
             details: Whether to get the basic and detailed info of the vn.
 
         Returns:
-            A [list][] of [VN]s matching the predicate.
+            A [list][] of [VN](./objects/vn.md#azaka.objects.vn.VN) matching the predicate.
 
         Example:
             ```python
@@ -200,10 +201,10 @@ class Context:
         Get Staff matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [StaffCondition][] and returns a [BoolOProxy][].
+            predicate: A callable that takes a [StaffCondition]() and returns a [BoolOProxy]().
 
         Returns:
-            A [list][] of [Staff]s matching the predicate.
+            A [list][] of [Staff](./objects/staff.md#azaka.objects.staff.Staff)s matching the predicate.
         """
         flags = (
             (
@@ -233,11 +234,11 @@ class Context:
         Get Releases matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [ReleaseCondition][] and returns a [BoolOProxy][].
+            predicate: A callable that takes a [ReleaseCondition]() and returns a [BoolOProxy]().
             details: Whether to get the basic and detailed info of the release.
 
         Returns:
-            A [list][] of [Release]s matching the predicate.
+            A [list][] of [Release](./objects/release.md#azaka.objects.release.Release)s matching the predicate.
         """
 
         flags = (
@@ -268,11 +269,11 @@ class Context:
         Get Characters matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [CharacterCondition][] and returns a [BoolOProxy][].
+            predicate: A callable that takes a [CharacterCondition]() and returns a [BoolOProxy]().
             details: Whether to get the basic and detailed info of the character.
 
         Returns:
-            A [list][] of [Character]s matching the predicate.
+            A [list][] of [Character](./objects/character.md#azaka.objects.character.Character)s matching the predicate.
         """
         flags = (
             (
@@ -302,11 +303,11 @@ class Context:
         Get Producers matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [ProducerCondition][] and returns a [BoolOProxy][].
+            predicate: A callable that takes a [ProducerCondition]() and returns a [BoolOProxy]().
             details: Whether to get the basic and detailed info of the producer.
 
         Returns:
-            A [list][] of [Producer]s matching the predicate.
+            A [list][] of [Producer](./objects/producer.md#azaka.objects.producer.Producer)s matching the predicate.
         """
         flags = (
             (
@@ -333,10 +334,10 @@ class Context:
         Get Quotes matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [QuoteCondition][] and returns a [BoolOProxy][].
+            predicate: A callable that takes a [QuoteCondition]() and returns a [BoolOProxy]().
 
         Returns:
-            A [list][] of [Quote]s matching the predicate.
+            A [list][] of [Quote](./objects/quote.md#azaka.objects.quote.Quote)s matching the predicate.
         """
         with Interface(type=self.quote, flags=(Flags.BASIC,)) as interface:
             interface.set_condition(predicate(QuoteCondition))
@@ -354,10 +355,10 @@ class Context:
         Get Users matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [UserCondition][] and returns a [BoolOProxy][].
+            predicate: A callable that takes a [UserCondition]() and returns a [BoolOProxy]().
 
         Returns:
-            A [list][] of [User]s matching the predicate.
+            A [list][] of [User](./objects/user.md#azaka.objects.user.User)s matching the predicate.
         """
         with Interface(type=self.user, flags=(Flags.BASIC,)) as interface:
             interface.set_condition(predicate(UserCondition))
@@ -375,10 +376,10 @@ class Context:
         Get Ulists matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [UlistCondition][] and returns a [BoolOProxy][].
+            predicate: A callable that takes a [UlistCondition]() and returns a [BoolOProxy]().
 
         Returns:
-            A [list][] of [Ulist]s matching the predicate.
+            A [list][] of [Ulist](./objects/ulist.md#azaka.objects.ulist.Ulist)s matching the predicate.
         """
         with Interface(type=self.ulist, flags=(Flags.BASIC,)) as interface:
             interface.set_condition(predicate(UlistCondition))
@@ -396,10 +397,12 @@ class Context:
         Get Ulist Labels matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [UlistLabelsCondition][] and returns a [BoolOProxy][].
+            predicate: A callable that takes a [UlistLabelsCondition]() and returns a [BoolOProxy]().
 
         Returns:
-            A [list][] of [UlistLabels]s matching the predicate.
+            A [list][] of
+            [UlistLabels](./objects/ulistlabels.md#azaka.objects.ulistlabels.UlistLabels)s
+            matching the predicate.
         """
         with Interface(type=self.ulist_labels, flags=(Flags.BASIC,)) as interface:
             interface.set_condition(predicate(UlistLabelsCondition))

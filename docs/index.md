@@ -13,5 +13,5 @@ Hi and welcome to the documentation of Azaka, an API Wrapper around VNDB API.
 
 ## Getting Started
 - Tutorial.
-- [API-Reference](API-Reference/client.md).
+- [API-Reference](API-Reference/public/client).
 - Logging and other utility.
