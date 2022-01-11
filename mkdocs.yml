@@ -35,6 +35,10 @@ nav:
         - Quote: API-Reference/public/objects/quote.md
         - Release: API-Reference/public/objects/release.md
         - Staff: API-Reference/public/objects/staff.md
+        - Ulist: API-Reference/public/objects/ulist.md
+        - UlistLabels: API-Reference/public/objects/ulistlabels.md
+        - User: API-Reference/public/objects/user.md
+        - VN: API-Reference/public/objects/vn.md
     - internal:
       - Tools:
         - Mixins: API-Reference/internals/tools/mixins.md

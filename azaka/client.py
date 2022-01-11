@@ -71,16 +71,19 @@ class Client:
         )
 
     def register(
-        self, coro: t.Callable[..., t.Any], *args: t.Any, **kwargs: t.Any
+        self,
+        coro: t.Callable[..., t.Coroutine[t.Any, t.Any, t.Any]],
+        *args: t.Any,
+        **kwargs: t.Any,
     ) -> None:
         """
-        Register a coroutine to be called when client is ready to issue commands.
+        Register a coroutine-function to be called when client is ready to issue commands.
 
         Args:
             coro: The coroutine to call.
 
         Info:
-            The coroutine must be a function that takes a single argument of type [Context][].
+            The coroutine-function must take a single argument of type [Context](./context.md#azaka.context.Context).
 
         Example:
             ```py
@@ -105,7 +108,7 @@ class Client:
             func: The function to call.
 
         Info:
-            The function must take a single argument of type [AzakaException][].
+            The function must take a single argument of type [AzakaException]().
 
         Example:
             ```py
@@ -181,7 +184,8 @@ class Client:
 
     async def fetch_token(self) -> str:
         """
-        Fetches the session token. Only works when `token` arg of `.start` was set to `True`.
+        Fetches the session token.
+        Only works when `token` arg of [Client.start](./#azaka.client,Client.start) was set to `True`.
 
         Returns:
             The session token.
@@ -207,7 +211,7 @@ class Client:
             update: If set to `True`, the client makes an api call to get data else it returns cached data.
 
         Returns:
-            [DBStats][]
+            [DBStats](./objects/dbstats.md#azaka.objects.DBStats)
         """
         command = Command("dbstats")
 
@@ -228,15 +232,17 @@ class Client:
         Issue a `get` command to the API. This method provides a centralised way to fetch data from the VNDB API.
 
         Args:
-            interface: The [Interface][] to use.
-            paginate: If set to `True`, the client will return a [Paginator][] instance.
+            interface: The [Interface](./interface.md#azaka.interface.Interface) to use.
+            paginate: If set to `True`, it returns a [Paginator](./paginator.md#azaka.tools.paginator.Paginator).
 
         Returns:
-            [list][] of [BaseObject][] if paginate is set to `False` else [Paginator][] if paginate is set to `True`.
+            [list][] of subclass of [BaseObject]()
+            if paginate is set to `False` else [Paginator](./paginator.md#azaka.tools.paginator.Paginator)
 
         Info:
             This is a low level generic method.
-            Use the `get_x` methods of [Context](../context) instead if you want to do basic queries.
+            Use the `get_x` methods of [Context](./context.md#azaka.context.Context)
+            instead if you want to do basic queries.
 
         Example:
             ```py
@@ -248,7 +254,7 @@ class Client:
                 await ctx.get(interface)
             ```
 
-        Detailed info about this method can be found in the [tutorial][].
+        Detailed info about this method can be found in the [tutorial]().
         """
         if paginate:
             return Paginator(self, interface)
@@ -288,7 +294,7 @@ class Client:
                 - labels
 
         Returns:
-            [ResponseType][]
+            [ResponseType](./enums.md#azaka.tools.enums.ResponseType)
         """
         command = Command(f"set ulist {id}", **kwargs)
 
