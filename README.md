@@ -20,7 +20,7 @@ This wrapper is aimed to provide 100% API coverage being extremely simple to use
 - **Fully Asynchronous** - Everything which poses a threat of blocking the I/O for a significant amount of time is async.
 - **Caching** - Azaka supports caching responses, which saves us from getting throttled quickly!
 - **Easy to Use** - Azaka provides a really easy to use interface for creating complex commands and a bunch of ready-made presets for those in hurry.
-- **Global Exception handling** - Azaka provides utility for handling command errors globally to save you from try-except hell! Also it does alot behind the screen to save you from sending and receiving bad stuff anyways!
+- **Well Typehinted** - Everything in this library is properly typehinted.
 - **No Dependency requirement** - No third party dependency is required to do anything in entire library.
 
 
@@ -29,9 +29,8 @@ This wrapper is aimed to provide 100% API coverage being extremely simple to use
 *(yes, i am a gud person)*
 
 - **Bloat** - A few decisions have been taken which have caused the lib. to weigh too much but trust me, it's not dead weight, they help with UX.
-- **Syntax Requirement** - I know, a lot of things are needed to be done even by the user to make it operational. I am working on fixing it.
 - **Slow Development & bug hunting** - I am the only person working on entire lib and i have a lot of work irl too so sorrryyy.
-- **Models are not well optimized** - All the models are fully constructed even if there is no need of some members. Working on it.
+- **Models are not well optimized** - All the models are fully constructed even if there is no need of some members.
 - **Support** - Well.. i can only help with it so yea you can contact me on discord `Nova#3379`.
 
 
@@ -56,19 +55,18 @@ for speeding up the stuff!
 
 ```py
 import azaka
-from azaka import VNCondition as VN
 
 client = azaka.Client()
 
 @client.register
 async def main(ctx) -> None:
-    vn = await client.get_basic_vn_info(VN.ID == 60)
+    vn = await ctx.get_vn(lambda VN: VN.ID == 11)
     print(vn[0])
 
 client.start()
 ```
 
-Above example used a preset (`client.get_basic_vn_info`), you can use azaka's Interface to build a command yourself!
+Above example used a preset (`client.get_vn`), you can use azaka's Interface to build a command yourself!
 
 ```py
 import azaka
