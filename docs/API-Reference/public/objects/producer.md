@@ -1,3 +1,3 @@
 ::: azaka.objects.Producer
-::: azaka.objects.producer.Link
-::: azaka.objects.producer.Relation
+::: azaka.objects.producer.ProducerLinks
+::: azaka.objects.producer.ProducerRelation

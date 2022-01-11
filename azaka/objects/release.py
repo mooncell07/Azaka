@@ -22,14 +22,9 @@ class Media:
 
 
 @dataclass
-class PartialVN:
+class ReleaseVN:
     """
-    A dataclass representing a partialvn.
-
-    Note:
-        This vn is different from [VN][].
-        This one is an object returned by the [Release.partial_vns](./#azaka.objects.release.Release.partial_vns)
-        property and doesn't contain all the attributes of the VN.
+    A dataclass representing a releasevn.
 
     Attributes:
         id: The vn's id.
@@ -45,14 +40,9 @@ class PartialVN:
 
 
 @dataclass
-class PartialProducer:
+class ReleaseProducer:
     """
-    A dataclass representing a partialproducer.
-
-    Note:
-        This producer is different from [VN][]. This one is an object returned by the
-        [Release.partial_producers](./#azaka.objects.release.Release.partial_producers)
-        property and doesn't contain all the attributes of the producer.
+    A dataclass representing a releaseproducer.
 
     Attributes:
         id: The producer's id.
@@ -81,8 +71,12 @@ class Release(BaseObject):
     Note:
         Every Attribute is optional and may return `None`.
 
+    ## FLAG: NONE
     Attributes:
         id (int): The release's ID.
+
+    ## FLAG: [BASIC](../enums.md#azaka.tools.enums.Flags)
+    Attributes:
         title (str): The release's title. (romaji)
         original (str): The release's original/official title.
         released (str): The release date.
@@ -91,6 +85,9 @@ class Release(BaseObject):
         freeware (bool): Whether the release is freeware.
         doujin (bool): Whether the release is doujin.
         languages (t.iterable[str]): The release's languages.
+
+    ## FLAG: [DETAILS](../enums.md#azaka.tools.enums.Flags)
+    Attributes:
         website (str): The release's official website url.
         notes (str): The release's notes.
         minage (int): The release's age rating. (0 = all ages)
@@ -99,7 +96,6 @@ class Release(BaseObject):
         platforms (t.iterable[str]): The release's platforms. (Empty [list][] when platform is unknown)
         resolution (str): The release's resolution.
         voiced (VoicedType): The release's voiced status.
-
     """
 
     __slots__ = (
@@ -146,13 +142,13 @@ class Release(BaseObject):
         self.minage: t.Optional[int] = data.get("minage")
         self.gtin: t.Optional[str] = data.get("gtin")
         self.catalog: t.Optional[str] = data.get("catalog")
-        self.platforms: t.Optional[t.Iterable[str]] = data.get("platforms")
+        self.platforms: t.Optional[t.List[str]] = data.get("platforms")
         self.resolution: t.Optional[str] = data.get("resolution")
         self.voiced: t.Optional[VoicedType] = (
             VoicedType(data["voiced"]) if data.get("voiced") else None
         )
 
-        self.languages: t.Optional[t.Iterable[str]] = data.get("languages")
+        self.languages: t.Optional[t.List[str]] = data.get("languages")
 
     @property
     def animations(self) -> t.List[AnimationType]:
@@ -163,6 +159,10 @@ class Release(BaseObject):
             The [list][] has two members of an [enum][] type [AnimationType][],
             the first one indicating the story animations,
             the second the ero scene animations. Both members can be None if unknown or not applicable.
+
+        Info:
+            The [list][] is populated only when the command was issued with
+            the `DETAILS` [Flags](../enums.md#azaka.tools.enums.Flags) otherwise it is empty.
         """
         return [AnimationType(data) for data in self._animations]
 
@@ -170,13 +170,17 @@ class Release(BaseObject):
     def medias(self) -> t.List[Media]:
         """
         Returns a [list][] of [Media](./#azaka.objects.release.Media) objects.
+
+        Info:
+            The [list][] is populated only when the command was issued with
+            the `DETAILS` [Flags](../enums.md#azaka.tools.enums.Flags) otherwise it is empty.
         """
         return [Media(**data) for data in self._medias]
 
     @property
-    def partial_vns(self) -> t.List[PartialVN]:
+    def release_vns(self) -> t.List[ReleaseVN]:
         """
-        Returns a [list][] of [PartialVN](./#azaka.objects.release.PartialVN) objects.
+        Returns a [list][] of [ReleaseVN](./#azaka.objects.release.ReleaseVN) objects.
 
         Info:
             The [list][] is populated only when the command was issued with
@@ -187,17 +191,17 @@ class Release(BaseObject):
         if self._vns:
             for vn in self._vns:
                 vn["rtype"] = Rtype(vn["rtype"]) if vn.get("rtype") else None
-                vns.append(PartialVN(**vn))
+                vns.append(ReleaseVN(**vn))
 
         return vns
 
     @property
-    def partial_producers(self) -> t.List[PartialProducer]:
+    def release_producers(self) -> t.List[ReleaseProducer]:
         """
-        Returns a [list][] of [PartialProducer](./#azaka.objects.release.PartialProducer) objects.
+        Returns a [list][] of [ReleaseProducer](./#azaka.objects.release.ReleaseProducer) objects.
 
         Info:
             The [list][] is populated only when the command was issued with
             the `PRODUCERS` [Flags](../enums.md#azaka.tools.enums.Flags) otherwise it is empty.
         """
-        return [PartialProducer(**data) for data in self._producers]
+        return [ReleaseProducer(**data) for data in self._producers]

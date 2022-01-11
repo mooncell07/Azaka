@@ -7,14 +7,14 @@ from .baseobject import BaseObject
 __all__ = ("VN", "ImageFlagging")
 
 
-@dataclass(slots=True)  # type: ignore
+@dataclass
 class ImageFlagging:
     votecount: t.Optional[int] = None
     sexual_avg: t.Optional[int] = None
     violence_avg: t.Optional[int] = None
 
 
-@dataclass(slots=True)  # type: ignore
+@dataclass
 class Anime:
     id: int
     ann_id: t.Optional[int] = None
@@ -25,7 +25,7 @@ class Anime:
     type: t.Optional[str] = None
 
 
-@dataclass(slots=True)  # type: ignore
+@dataclass
 class Staff:
     sid: t.Optional[str] = None
     aid: t.Optional[int] = None
@@ -35,7 +35,7 @@ class Staff:
     note: t.Optional[str] = None
 
 
-@dataclass(slots=True)  # type: ignore
+@dataclass
 class Screens:
     image: t.Optional[str] = None
     rid: t.Optional[int] = None
@@ -45,7 +45,7 @@ class Screens:
     nsfw: t.Optional[bool] = None
 
 
-@dataclass(slots=True)  # type: ignore
+@dataclass
 class Relations:
     id: int
     relation: t.Optional[str] = None
@@ -54,7 +54,7 @@ class Relations:
     original: t.Optional[str] = None
 
 
-@dataclass(slots=True)  # type: ignore
+@dataclass
 class Links:
     wikidata: t.Optional[str] = None
     renai: t.Optional[str] = None

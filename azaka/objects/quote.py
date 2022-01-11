@@ -14,8 +14,12 @@ class Quote(BaseObject):
     Note:
         Every Attribute is optional and may return `None`.
 
+    ## FLAG: NONE
     Attributes:
         id (int): The quote's id.
+
+    ## FLAG: [BASIC](../enums.md#azaka.tools.enums.Flags)
+    Attributes:
         title (str): The quote's title.
         quote (str): The quote's text.
     """
