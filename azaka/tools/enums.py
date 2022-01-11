@@ -20,7 +20,7 @@ class Flags(enum.Enum):
 
     Attributes:
         BASIC: The `basic` flag.
-        DETAILSl The `details` flag.
+        DETAILS: The `details` flag.
         ANIME: The `anime` flag.
         RELATIONS: The `relations` flag.
         TAGS: The `tags` flag.
