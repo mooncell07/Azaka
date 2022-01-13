@@ -21,6 +21,12 @@ __all__ = (
 
 
 class AzakaException(Exception):
+    """
+    Base class for all Azaka exceptions.
+
+    Attributes:
+        message (str): The error message.
+    """
 
     __slots__ = ("message",)
 
@@ -30,6 +36,12 @@ class AzakaException(Exception):
 
 
 class InvalidResponseTypeError(AzakaException):
+    """
+    An exception that is raised when the response type is invalid.
+
+    Attributes:
+        type (str): The response type API returned.
+    """
 
     __slots__ = ("type",)
 
@@ -39,6 +51,10 @@ class InvalidResponseTypeError(AzakaException):
 
 
 class OperationNotSupportedError(AzakaException):
+    """
+    An exception that is raised when an operation is not supported between the field and value.
+    """
+
     __slots__ = ()
 
     def __init__(self, msg: str) -> None:
@@ -46,6 +62,10 @@ class OperationNotSupportedError(AzakaException):
 
 
 class BrokenConnectorError(AzakaException):
+    """
+    An exception that is raised when the connector is broken/not available.
+    """
+
     __slots__ = ()
 
     def __init__(self, msg: str) -> None:
@@ -53,6 +73,12 @@ class BrokenConnectorError(AzakaException):
 
 
 class CommandError(AzakaException):
+    """
+    Base class for all command errors.
+
+    Attributes:
+        id (ErrorType): The error ID. (An [enum][] of [ErrorType](./tools/enum.md#ErrorType))
+    """
 
     __slots__ = ("id",)
 
@@ -62,6 +88,14 @@ class CommandError(AzakaException):
 
 
 class CommandFilterError(CommandError):
+    """
+    An exception that is raised when a command filter is invalid.
+
+    Attributes:
+        field (str): The field used in the filter.
+        op (str): The operator.
+        value (str): The value.
+    """
 
     __slots__ = ("op", "value", "field")
 
@@ -75,10 +109,19 @@ class CommandFilterError(CommandError):
 
     @property
     def expression(self) -> str:
+        """
+        Returns a string representation of the filter.
+        """
         return f"({self.field} {self.op} {self.value})"
 
 
 class MissingFieldError(CommandError):
+    """
+    An exception that is raised when a field is missing.
+
+    Attributes:
+        field (str): The missing field.
+    """
 
     __slots__ = ("field",)
 
@@ -88,6 +131,12 @@ class MissingFieldError(CommandError):
 
 
 class BadFieldError(CommandError):
+    """
+    An exception that is raised when a field is invalid.
+
+    Attributes:
+        field (str): The invalid field.
+    """
 
     __slots__ = ("field",)
 
@@ -97,6 +146,9 @@ class BadFieldError(CommandError):
 
 
 class AuthorizationError(CommandError):
+    """
+    An exception that is raised when the credentials to login are invalid.
+    """
 
     __slots__ = ()
 
@@ -105,6 +157,9 @@ class AuthorizationError(CommandError):
 
 
 class UnknownGetTypeError(CommandError):
+    """
+    An exception that is raised when the type of a get command is unknown.
+    """
 
     __slots__ = ()
 
@@ -114,6 +169,13 @@ class UnknownGetTypeError(CommandError):
 
 class UnknownGetFlagError(CommandError):
 
+    """
+    An exception that is raised when the flag of a get command is unknown.
+
+    Attributes:
+        flag (str): The unknown flag.
+    """
+
     __slots__ = ("flag",)
 
     def __init__(self, **kwargs: t.Any) -> None:
@@ -122,6 +184,9 @@ class UnknownGetFlagError(CommandError):
 
 
 class CommandSyntaxError(CommandError):
+    """
+    An exception that is raised when the syntax of a command is invalid.
+    """
 
     __slots__ = ()
 
@@ -130,6 +195,14 @@ class CommandSyntaxError(CommandError):
 
 
 class ThrottledError(CommandError):
+    """
+    An exception that is raised when the user is getting rate limited.
+
+    Attributes:
+        type (str): The type of the rate limit.
+        minwait (float): The minimum wait time.
+        fullwait (float): The full wait time.
+    """
 
     __slots__ = ("type", "minwait", "fullwait")
 
@@ -142,6 +215,9 @@ class ThrottledError(CommandError):
 
 
 class InterfaceError(AzakaException):
+    """
+    An exception that is raised when the interface is broken.
+    """
 
     __slots__ = ()
 
