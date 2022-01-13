@@ -1,0 +1,14 @@
+::: azaka.AzakaException
+::: azaka.InvalidResponseTypeError
+::: azaka.OperationNotSupportedError
+::: azaka.BrokenConnectorError
+::: azaka.CommandError
+::: azaka.CommandFilterError
+::: azaka.MissingFieldError
+::: azaka.BadFieldError
+::: azaka.AuthorizationError
+::: azaka.UnknownGetTypeError
+::: azaka.UnknownGetFlagError
+::: azaka.CommandSyntaxError
+::: azaka.ThrottledError
+::: azaka.InterfaceError
