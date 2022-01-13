@@ -7,7 +7,7 @@ theme:
     - navigation.top
   name: material
   logo: img/mask.png
-  custom_dir: docs/overrides/
+  custom_dir: overrides
   favicon: img/mask.ico
   palette:
     - scheme: slate
