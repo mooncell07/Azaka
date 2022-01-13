@@ -16,6 +16,7 @@ __all__ = (
     "UnknownGetFlagError",
     "CommandSyntaxError",
     "ThrottledError",
+    "InterfaceError",
 )
 
 
@@ -138,3 +139,11 @@ class ThrottledError(CommandError):
         self.fullwait: float = kwargs["fullwait"]
 
         super().__init__(**kwargs)
+
+
+class InterfaceError(AzakaException):
+
+    __slots__ = ()
+
+    def __init__(self, msg: str) -> None:
+        super().__init__(msg)

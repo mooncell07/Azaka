@@ -4,6 +4,8 @@ import json
 import typing as t
 
 from ..tools.enums import ResponseType
+from ..objects import UlistLabels
+
 
 try:
     import orjson  # type: ignore
@@ -11,6 +13,10 @@ try:
     ORJ = True
 except ModuleNotFoundError:
     ORJ = False
+
+
+if t.TYPE_CHECKING:
+    from ..interface import Interface
 
 
 __all__ = ("TERMINATOR", "Command", "Response")
@@ -23,33 +29,42 @@ class Command:
     def __init__(self, name: str, **kwargs: t.Any) -> None:
         self.name = name
         self.kwargs = kwargs
-        self.interface = kwargs.get("interface", False)
+        self.interface: t.Optional[Interface] = kwargs.get("interface")
 
     def create(self) -> bytes:
         if self.interface:
-            flatten_flags = ",".join(i.value for i in self.interface._flags)
-            filter_expressions = self.interface._condition.expression
-            dumped_options = (
-                json.dumps(self.interface._options) if self.interface._options else ""
-            )
-
-            formation = (
-                f"{self.name} "
-                f"{self.interface._type.__name__.lower()} "
-                f"{flatten_flags} "
-                f"{filter_expressions}"
-                f"{dumped_options}"
-                f"{TERMINATOR}"
-            )
-            return formation.encode()
+            return self._from_interface()
 
         elif self.kwargs:
-
             dumped = json.dumps(self.kwargs)
             formation = f"{self.name} {dumped}{TERMINATOR}"
             return formation.encode()
 
         formation = f"{self.name}{TERMINATOR}"
+        return formation.encode()
+
+    @t.no_type_check
+    def _from_interface(self) -> bytes:
+        self.interface._verify()
+        filter_expressions = self.interface._condition.expression
+        flatten_flags = ",".join(i.value for i in self.interface._flags)
+        dumped_options = (
+            json.dumps(self.interface._options) if self.interface._options else ""
+        )
+
+        resolved_type = (
+            self.interface._type.__name__.lower()
+            if self.interface._type != UlistLabels
+            else "ulist-labels"
+        )
+        formation = (
+            f"{self.name} "
+            f"{resolved_type} "
+            f"{flatten_flags} "
+            f"{filter_expressions}"
+            f"{dumped_options}"
+            f"{TERMINATOR}"
+        )
         return formation.encode()
 
 
@@ -72,11 +87,9 @@ class Response:
 
         if len(resp_info) > 1:
             try:
-                if ORJ:
-                    self.body = orjson.loads(resp_info[1])
-                else:
-                    self.body = json.loads(resp_info[1])
+                self.body = (
+                    orjson.loads(resp_info[1]) if ORJ else json.loads(resp_info[1])
+                )
             except ValueError:
                 self.body = resp_info[1]
-            return None
         return None

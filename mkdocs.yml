@@ -27,6 +27,7 @@ nav:
       - Client: API-Reference/public/client.md
       - Context: API-Reference/public/context.md
       - Paginator: API-Reference/public/paginator.md
+      - Interface: API-Reference/public/interface.md
       - Enums: API-Reference/public/enums.md
       - Objects:
         - Character: API-Reference/public/objects/character.md

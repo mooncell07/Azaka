@@ -3,6 +3,7 @@ from __future__ import annotations
 import typing as t
 
 from .proxy import ConditionProxy
+from ..objects import UlistLabels
 
 
 __all__ = (
@@ -158,7 +159,7 @@ class UlistCondition(UlistLabelsCondition):
 
 def _condition_selector(
     type: t.Any,
-) -> t.Union[t.Type[BaseCondition], t.Type[UlistLabelsCondition], t.Any]:
+) -> t.Any:
     condition_map = {
         "vn": VNCondition,
         "release": ReleaseCondition,
@@ -170,4 +171,6 @@ def _condition_selector(
         "ulist-labels": UlistLabelsCondition,
         "ulist": UlistCondition,
     }
-    return condition_map[type.__name__.lower()]
+    return condition_map[
+        type.__name__.lower() if type != UlistLabels else "ulist-labels"
+    ]
