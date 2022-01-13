@@ -55,7 +55,6 @@ class Context:
         PROTOCOL_VERSION (int): The version of the protocol this client is using. Currently, this is `1`.
         CLIENT_NAME (str): The name of the client. Defaults to `Azaka`.
         CLIENT_VERSION (str): The version of the client.
-
     """
 
     ADDR = "api.vndb.org"
@@ -63,7 +62,7 @@ class Context:
     PROTOCOL_VERSION = 1
 
     CLIENT_NAME = "Azaka"
-    CLIENT_VERSION = "0.1.0a5"
+    CLIENT_VERSION = "0.1.0a6"
 
     __slots__ = (
         "client",
@@ -94,15 +93,31 @@ class Context:
         """
         Context Constructor. This is where all the necessary info and objects are stored.
 
-        Args:
+        Attributes:
             client: The client object that is using this context.
             username: Username to use for logging in.
             password: Password to use for logging in.
             loop: The [asyncio.AbstractEventLoop][] subclass to use.
             ssl_context: The [ssl.SSLContext][] to use. If not provided, a default context will be used.
 
+        ## COMMAND TYPE ATTRIBUTES
+        Below are the attributes which are meant to be used as
+        argument for the `type` parameter of [Interface.__init__](./interface.md#azaka.interface.Interface.__init__).
+
+        Attributes:
+            vn: The `vn` command type.
+            character: The `character` command type.
+            producer: The `producer` command type.
+            release: The `release` command type.
+            staff: The `staff` command type.
+            quote: The `quote` command type.
+            user: The `user` command type.
+            ulist_labels: The `ulist-labels` command type.
+            ulist: The `ulist` command type.
+
         Warning:
             This object is not meant to be constructed by users.
+
         """
         self.client = client
         self.username = username
@@ -113,15 +128,15 @@ class Context:
         )
         self.ssl_context = ssl_context or self._get_ssl_context()
 
-        self.vn = VN
-        self.character = Character
-        self.producer = Producer
-        self.release = Release
-        self.staff = Staff
-        self.quote = Quote
-        self.user = User
-        self.ulist_labels = UlistLabels
-        self.ulist = Ulist
+        self.vn: t.Type[VN] = VN
+        self.character: t.Type[Character] = Character
+        self.producer: t.Type[Producer] = Producer
+        self.release: t.Type[Release] = Release
+        self.staff: t.Type[Staff] = Staff
+        self.quote: t.Type[Quote] = Quote
+        self.user: t.Type[User] = User
+        self.ulist_labels: t.Type[UlistLabels] = UlistLabels
+        self.ulist: t.Type[Ulist] = Ulist
 
     def _get_ssl_context(self) -> ssl.SSLContext:
         sslctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
@@ -171,7 +186,7 @@ class Context:
         Info:
             This and all `get_x` methods in this class are an abstraction over
             [Client.get](../client#azaka.client.Client.get)
-            and provides lesser flexibility.
+            and provide lesser flexibility.
         """
         flags = (
             (
