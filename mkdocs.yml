@@ -31,6 +31,8 @@ nav:
       - Interface: API-Reference/public/interface.md
       - Exceptions: API-Reference/public/exceptions.md
       - Enums: API-Reference/public/enums.md
+      - Condition: API-Reference/public/condition.md
+
       - Objects:
         - Character: API-Reference/public/objects/character.md
         - DBStats: API-Reference/public/objects/dbstats.md
@@ -42,7 +44,10 @@ nav:
         - UlistLabels: API-Reference/public/objects/ulistlabels.md
         - User: API-Reference/public/objects/user.md
         - VN: API-Reference/public/objects/vn.md
+
     - internal:
+      - Commands:
+        - Command: API-Reference/internals/commands/command.md
       - Tools:
         - Mixins: API-Reference/internals/tools/mixins.md
 
