@@ -24,14 +24,39 @@ TERMINATOR = "\x04"
 
 
 class Command:
+    """
+    A helper class for creating a command from an interface or mapping.
+
+    Warning:
+        This object is not meant to be created by users.
+    """
+
     __slots__ = ("name", "kwargs", "interface")
 
     def __init__(self, name: str, **kwargs: t.Any) -> None:
+        """
+        Command constructor.
+
+        Args:
+            name (str): The name of the command.
+            **kwargs (t.Any): The arguments of the command or an interface.
+
+        Attributes:
+            name (str): The name of the command.
+            kwargs (t.Any): The arguments of the command.
+            interface (Interface): The [Interface](../../public/interface.md#azaka.Interface) of the command.
+        """
         self.name = name
         self.kwargs = kwargs
         self.interface: t.Optional[Interface] = kwargs.get("interface")
 
     def create(self) -> bytes:
+        """
+        Creates the command from the name, arguments or interface.
+
+        Returns:
+            bytes: The issuable command.
+        """
         if self.interface:
             return self._from_interface()
 
@@ -45,6 +70,12 @@ class Command:
 
     @t.no_type_check
     def _from_interface(self) -> bytes:
+        """
+        Creates the command from an interface.
+
+        Returns:
+            bytes: The issuable command.
+        """
         self.interface._verify()
         filter_expressions = self.interface._condition.expression
         flatten_flags = ",".join(i.value for i in self.interface._flags)
@@ -69,10 +100,23 @@ class Command:
 
 
 class Response:
+    """
+    A helper class for creating a clean middle object from response to check the type and body.
+    """
 
     __slots__ = ("_data", "type", "body")
 
     def __init__(self, data: bytes) -> None:
+        """
+        Response constructor.
+
+        Args:
+            data (bytes): The response data.
+
+        Attributes:
+            type (t.Optional[ResponseType]): The type of the response.
+            body (t.Optional[t.Union[t.Mapping[t.Any, t.Any], str]]): The body of the response.
+        """
         self._data: str = data.decode()
         self.type: t.Optional[ResponseType] = None
         self.body: t.Optional[t.Union[t.Mapping[t.Any, t.Any], str]] = None
@@ -80,6 +124,9 @@ class Response:
         self.parse()
 
     def parse(self) -> None:
+        """
+        A response parser which fills the type and body attributes.
+        """
         cleaned = self._data.rstrip(TERMINATOR)
         resp_info = cleaned.split(maxsplit=1)
 
