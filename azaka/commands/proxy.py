@@ -13,29 +13,73 @@ __all__ = ("ConditionProxy", "BoolOProxy")
 
 
 class BoolOProxy:
+    """
+    Final parser for the expressions.
+
+    This object takes care of parsing bitwise `AND` and the bitwise `OR` operators and also
+    generates the final expression which is identical to the original expression.
+
+    """
 
     __slots__ = ("expression",)
 
     def __init__(self, expression: str) -> None:
-        self.expression = f"({expression})"
+        """
+        BoolOProxy constructor.
+
+        args:
+            expression: The expression to be parsed.
+
+        attributes:
+            expression: The expression in parentheses.
+        """
+        self.expression: str = f"({expression})"
 
     def __and__(self, value: BoolOProxy) -> BoolOProxy:
+        """
+        Does an inplace bitwise `AND` operation and Returns the `BoolOProxy` object.
+        The expression will look like `(exprA and exprB)` in string form.
+        """
         self.expression = f"({self.expression} and {value.expression})"
         return self
 
     def __or__(self, value: BoolOProxy) -> BoolOProxy:
+        """
+        Does an inplace bitwise `OR` operation and Returns the `BoolOProxy` object.
+        The expression will look like `(exprA or exprB)` in string form.
+        """
         self.expression = f"({self.expression} or {value.expression})"
         return self
 
     def __repr__(self) -> str:
+        """
+        Returns the string representation of the expression.
+        """
+        return self.expression
+
+    def __str__(self) -> str:
+        """
+        Returns the string representation of the expression.
+        """
         return self.expression
 
 
 class ConditionProxy:
+    """
+    An object which takes care of parsing binary expressions which consist of
+    Relational Operators and the special operator `%` for searching.
+    """
 
     __slots__ = ("name", "operator")
 
     def __init__(self, attr_name: str, operator: Operator) -> None:
+        """
+        ConditionProxy constructor.
+
+        args:
+            attr_name: The name of the field.
+            operator: The [Operator]() instance to be used.
+        """
         self.name = attr_name
         self.operator = operator
 
@@ -57,28 +101,49 @@ class ConditionProxy:
 
     @analyze("=")
     def __eq__(self, value: t.Any) -> BoolOProxy:
+        """
+        Returns a [BoolOProxy](./#azaka.commands.proxy.BoolOProxy) object with the expression `field = value`.
+        """
         return BoolOProxy(f"{self.name} = {value}")
 
     @analyze("!=")
     def __ne__(self, value: t.Any):
+        """
+        Returns a [BoolOProxy](./#azaka.commands.proxy.BoolOProxy) object with the expression `field != value`.
+        """
         return BoolOProxy(f"{self.name} != {value}")
 
     @analyze("<")
     def __lt__(self, value: t.Any) -> BoolOProxy:
+        """
+        Returns a [BoolOProxy](./#azaka.commands.proxy.BoolOProxy) object with the expression `field < value`.
+        """
         return BoolOProxy(f"{self.name} < {value}")
 
     @analyze("<=")
     def __le__(self, value: t.Any) -> BoolOProxy:
+        """
+        Returns a [BoolOProxy](./#azaka.commands.proxy.BoolOProxy) object with the expression `field <= value`.
+        """
         return BoolOProxy(f"{self.name} <= {value}")
 
     @analyze(">")
     def __gt__(self, value: t.Any) -> BoolOProxy:
+        """
+        Returns a [BoolOProxy](./#azaka.commands.proxy.BoolOProxy) object with the expression `field > value`.
+        """
         return BoolOProxy(f"{self.name} > {value}")
 
     @analyze(">=")
     def __ge__(self, value: t.Any) -> BoolOProxy:
+        """
+        Returns a [BoolOProxy](./#azaka.commands.proxy.BoolOProxy) object with the expression `field >= value`.
+        """
         return BoolOProxy(f"{self.name} >= {value}")
 
     @analyze("~")
     def __mod__(self, value: t.Any) -> BoolOProxy:
+        """
+        Returns a [BoolOProxy](./#azaka.commands.proxy.BoolOProxy) object with the expression `field ~ value`.
+        """
         return BoolOProxy(f"{self.name} ~ {value}")
