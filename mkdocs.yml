@@ -48,6 +48,7 @@ nav:
     - internal:
       - Commands:
         - Command: API-Reference/internals/commands/command.md
+        - Proxy: API-Reference/internals/commands/proxy.md
       - Tools:
         - Mixins: API-Reference/internals/tools/mixins.md
 
