@@ -23,6 +23,7 @@ theme:
 
 nav:
   - Home: index.md
+  - Logging & Utilities: logging-&-utils.md
   - API-Reference:
     - public:
       - Client: API-Reference/public/client.md
