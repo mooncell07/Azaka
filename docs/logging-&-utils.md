@@ -54,11 +54,12 @@ Like this:
 
 ```python
 import hata
+import scarletio
 from hata.ext import asyncio
 import azaka
 
-hata_client = hata.Client("your_discord_token", extensions="commands_v2", prefix="!")
-azaka_client = azaka.Client(loop=hata_client.loop)
+hata_client = hata.Client("your_discord_token", extensions="slash")
+azaka_client = azaka.Client(loop=scarletio.get_event_loop())
 ```
 
 ------
@@ -72,12 +73,13 @@ so,
 
 ```python
 import hata
+import scarletio
 from hata.ext import asyncio
 import azaka
 
-hata_client = hata.Client("your_discord_token", extensions="commands_v2", prefix="!")
-azaka_client = azaka.Client(loop=hata_client.loop)
-azaka_future = hata_client.loop.create_future()
+loop = scarletio.get_event_loop()
+hata_client = hata.Client("your_discord_token", extensions="slash")
+azaka_client = azaka.Client(loop=loop)
 ```
 
 ------
@@ -90,24 +92,30 @@ EZ:
 
 ```python
 import hata
+import scarletio
 from hata.ext import asyncio
 import azaka
 
-hata_client = hata.Client("your_discord_token", extensions="commands_v2", prefix="!")
-azaka_client = azaka.Client(loop=hata_client.loop)
-azaka_future = hata_client.loop.create_future()
+loop = scarletio.get_event_loop()
+hata_client = hata.Client("your_discord_token", extensions="slash")
+azaka_client = azaka.Client(loop=loop)
+
+azaka_future = loop.create_future()
+# Use a lock to synchronise the requests
+azaka_lock = scarletio.Lock(loop)
 
 async def fetch_vn(ctx: azaka.Context, name: str) -> None:
+    azaka_future.clear()  # Clear the future to reuse it.
     result = await ctx.get_vn(lambda VN: VN.TITLE % name, details=True)
     azaka_future.set_result(result)
 
-@hata_client.commands
-async def vn(*msg: str) -> None:
-    name = " ".join(msg)
-    azaka_client.register(fetch_vn, name=name)  # register the callback to be called when this command is called and azaka is ready to issue it's own commands.
-    result = await azaka_future
-
-    azaka_future.clear()  # Clear the future to reuse it.
+@hata_client.interactions(is_global=True)
+async def vn(name: str) -> None:
+    async with azaka_lock:
+        # register the callback to be called when this command is called and azaka is ready to issue it's own commands.
+        azaka_client.register(fetch_vn, name=name)  
+        result = await azaka_future
+    
     return result  # Send the result to discord.
 ```
 
@@ -123,25 +131,31 @@ You must start hata's client before azaka's.
 
 ```python
 import hata
+import scarletio
 from hata.ext import asyncio
 import azaka
 
-hata_client = hata.Client("your_discord_token", extensions="commands_v2", prefix="!")
-azaka_client = azaka.Client(loop=hata_client.loop)
-azaka_future = hata_client.loop.create_future()
+loop = scarletio.get_event_loop()
+hata_client = hata.Client("your_discord_token", extensions="slash")
+azaka_client = azaka.Client(loop=loop)
+
+azaka_future = loop.create_future()
+# Use a lock to synchronise the requests
+azaka_lock = scarletio.Lock(loop)
 
 async def fetch_vn(ctx: azaka.Context, name: str) -> None:
+    azaka_future.clear()  # Clear the future to reuse it.
     result = await ctx.get_vn(lambda VN: VN.TITLE % name, details=True)
     azaka_future.set_result(result)
 
-@hata_client.commands
-async def vn(*msg: str) -> None:
-    name = " ".join(msg)
-    azaka_client.register(fetch_vn, name=name)
-    result = await azaka_future
-
-    azaka_future.clear()
-    return result
+@hata_client.interactions(is_global=True)
+async def vn(name: str) -> None:
+    async with azaka_lock:
+        # register the callback to be called when this command is called and azaka is ready to issue it's own commands.
+        azaka_client.register(fetch_vn, name=name)  
+        result = await azaka_future
+    
+    return result  # Send the result to discord.
 
 hata_client.start()
 azaka_client.start()
