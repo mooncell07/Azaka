@@ -114,12 +114,13 @@ async def fetch_vn(ctx: azaka.Context, name: str) -> None:
 
 @hata_client.interactions(is_global=True)
 async def vn(name: str) -> None:
+    yield # acknowledge the interaction
     async with azaka_lock:
         # register the callback to be called when this command is called and azaka is ready to issue it's own commands.
         azaka_client.register(fetch_vn, name=name)  
         result = await azaka_future
     
-    return result  # Send the result to discord.
+    yield result  # Send the result to discord.
 ```
 
 ------
@@ -153,12 +154,13 @@ async def fetch_vn(ctx: azaka.Context, name: str) -> None:
 
 @hata_client.interactions(is_global=True)
 async def vn(name: str) -> None:
+    yield # acknowledge the interaction
     async with azaka_lock:
         # register the callback to be called when this command is called and azaka is ready to issue it's own commands.
         azaka_client.register(fetch_vn, name=name)  
         result = await azaka_future
     
-    return result  # Send the result to discord.
+    yield result  # Send the result to discord.
 
 hata_client.start()
 azaka_client.start()
