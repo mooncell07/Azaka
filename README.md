@@ -70,15 +70,14 @@ Above example used a preset (`client.get_vn`), you can use azaka's Interface to 
 
 ```py
 import azaka
-from azaka import Type, Flags
+from azaka import Flags
 
 client = azaka.Client()
 
 @client.register
 async def main(ctx) -> None:
-    with azaka.Interface(type=Type.VN, flags=(Flags.BASIC,)) as interface:
-        VN = interface.condition()
-        interface.set_condition((VN.SEARCH % "fate") & (VN.ID == 50))
+    with azaka.Interface(type=ctx.vn, flags=(Flags.BASIC,)) as interface:
+        interface.set_condition(lambda VN: (VN.SEARCH % "fate") & (VN.ID == 50))
 
     vn = await client.get(interface)
     print(vn[0])
