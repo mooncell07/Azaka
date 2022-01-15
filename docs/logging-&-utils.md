@@ -58,8 +58,9 @@ import scarletio
 from hata.ext import asyncio
 import azaka
 
+loop = scarletio.get_event_loop()
 hata_client = hata.Client("your_discord_token", extensions="slash")
-azaka_client = azaka.Client(loop=scarletio.get_event_loop())
+azaka_client = azaka.Client(loop=loop)
 ```
 
 ------
@@ -80,6 +81,8 @@ import azaka
 loop = scarletio.get_event_loop()
 hata_client = hata.Client("your_discord_token", extensions="slash")
 azaka_client = azaka.Client(loop=loop)
+
+azaka_future = loop.create_future()
 ```
 
 ------
