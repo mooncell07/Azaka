@@ -114,7 +114,8 @@ async def fetch_vn(ctx: azaka.Context, name: str) -> None:
 
 @hata_client.interactions(is_global=True)
 async def vn(name: str) -> None:
-    yield # acknowledge the interaction
+    yield # Acknowledge the interaction
+    
     async with azaka_lock:
         # register the callback to be called when this command is called and azaka is ready to issue it's own commands.
         azaka_client.register(fetch_vn, name=name)  
@@ -154,7 +155,8 @@ async def fetch_vn(ctx: azaka.Context, name: str) -> None:
 
 @hata_client.interactions(is_global=True)
 async def vn(name: str) -> None:
-    yield # acknowledge the interaction
+    yield # Scknowledge the interaction
+    
     async with azaka_lock:
         # register the callback to be called when this command is called and azaka is ready to issue it's own commands.
         azaka_client.register(fetch_vn, name=name)  
