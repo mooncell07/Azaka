@@ -1071,6 +1071,7 @@ to discord and VNDB!</p>
 <span class="n">azaka_client</span> <span class="o">=</span> <span class="n">azaka</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">)</span>
 
 <span class="n">azaka_future</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">create_future</span><span class="p">()</span>
+
 <span class="c1"># Use a lock to synchronise the requests</span>
 <span class="n">azaka_lock</span> <span class="o">=</span> <span class="n">scarletio</span><span class="o">.</span><span class="n">Lock</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
 
