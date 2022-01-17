@@ -57,12 +57,12 @@ class Context:
         CLIENT_VERSION (str): The version of the client.
     """
 
-    ADDR = "api.vndb.org"
-    PORT = 19535
-    PROTOCOL_VERSION = 1
+    ADDR: t.Final[str] = "api.vndb.org"
+    PORT: t.Final[int] = 19535
+    PROTOCOL_VERSION: t.Final[int] = 1
 
-    CLIENT_NAME = "Azaka"
-    CLIENT_VERSION = "0.1.0a6"
+    CLIENT_NAME: t.Final[str] = "Azaka"
+    CLIENT_VERSION: t.Final[str] = "0.1.0a6"
 
     __slots__ = (
         "client",
