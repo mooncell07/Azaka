@@ -1061,6 +1061,20 @@ azaka.commands.proxy.BoolOProxy        </code>
       <p>Final parser for the expressions.</p>
 <p>This object takes care of parsing bitwise <code>AND</code> and the bitwise <code>OR</code> operators and also
 generates the final expression which is identical to the original expression.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This class is not meant to be instantiated directly.
+It is generated when any field of any <a href="../../../public/condition/">Condition</a> is conditioned
+against a value.</p>
+<p>for example:
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">azaka.condition</span> <span class="kn">import</span> <span class="n">VNCondition</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">VNCondition</span><span class="o">.</span><span class="n">TITLE</span> <span class="o">==</span> <span class="s2">&quot;fate&quot;</span><span class="p">))</span>
+<span class="c1">#output: &lt;class &#39;azaka.commands.proxy.BoolOProxy&#39;&gt;</span>
+</code></pre></div></p>
+<p>You can pass this object directly to <code>get_x</code> methods of <a href="../../../public/context/">Context</a>
+and <a href="../../../public/interface/#azaka.interface.Interface.set_condition">Interface.set_condition</a>.</p>
+</div>
 
 
 
