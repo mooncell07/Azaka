@@ -72,7 +72,9 @@ class Interface:
             predicate: The condition to set.
 
         Note:
-            predicate can be a callable which takes a [BaseCondition][] arg or a [BoolOProxy]() object.
+            predicate can be a callable which
+            takes a [BaseCondition](../internals/commands/proxy.md#azaka.commands.BaseCondition) arg or a
+            [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy) object.
 
         Raises:
             InterfaceError: If the condition is already set for the interface in use.

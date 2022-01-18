@@ -19,6 +19,21 @@ class BoolOProxy:
     This object takes care of parsing bitwise `AND` and the bitwise `OR` operators and also
     generates the final expression which is identical to the original expression.
 
+    Note:
+        This class is not meant to be instantiated directly.
+        It is generated when any field of any [Condition](../../public/condition.md) is conditioned
+        against a value.
+
+        for example:
+        ```python
+        from azaka.condition import VNCondition
+
+        print(type(VNCondition.TITLE == "fate"))
+        #output: <class 'azaka.commands.proxy.BoolOProxy'>
+        ```
+
+        You can pass this object directly to `get_x` methods of [Context](../../public/context.md)
+        and [Interface.set_condition](../../public/interface.md#azaka.interface.Interface.set_condition).
     """
 
     __slots__ = ("expression",)
