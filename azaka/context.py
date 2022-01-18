@@ -168,7 +168,9 @@ class Context:
         you need to pass `details=True` as an argument.
 
         Args:
-            predicate: A callable that takes a [VNCondition]() and returns a [BoolOProxy]().
+            predicate: A callable that takes a
+                       [VNCondition](../public/condition.md#azaka.commands.condition.VNCondition)
+                       and returns a [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
             details: Whether to get the basic and detailed info of the vn.
 
         Returns:
@@ -216,7 +218,9 @@ class Context:
         Get Staff matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [StaffCondition]() and returns a [BoolOProxy]().
+            predicate: A callable that takes a
+                       [StaffCondition](../public/condition.md#azaka.commands.condition.StaffCondition)
+                       and returns a [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
 
         Returns:
             A [list][] of [Staff](./objects/staff.md#azaka.objects.staff.Staff)s matching the predicate.
@@ -249,7 +253,9 @@ class Context:
         Get Releases matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [ReleaseCondition]() and returns a [BoolOProxy]().
+            predicate: A callable that takes a
+                       [ReleaseCondition](../public/condition.md#azaka.commands.condition.ReleaseCondition) and returns
+                       a [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
             details: Whether to get the basic and detailed info of the release.
 
         Returns:
@@ -284,7 +290,9 @@ class Context:
         Get Characters matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [CharacterCondition]() and returns a [BoolOProxy]().
+            predicate: A callable that takes a
+                       [CharacterCondition](../public/condition.md#azaka.commands.condition.CharacterCondition) and
+                       returns a [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
             details: Whether to get the basic and detailed info of the character.
 
         Returns:
@@ -318,7 +326,9 @@ class Context:
         Get Producers matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [ProducerCondition]() and returns a [BoolOProxy]().
+            predicate: A callable that takes a
+                       [ProducerCondition](../public/condition.md#azaka.commands.condition.ProducerCondition)
+                       and returns a [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
             details: Whether to get the basic and detailed info of the producer.
 
         Returns:
@@ -349,7 +359,9 @@ class Context:
         Get Quotes matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [QuoteCondition]() and returns a [BoolOProxy]().
+            predicate: A callable that takes a
+                       [QuoteCondition](../public/condition.md#azaka.commands.condition.QuoteCondition) and returns a
+                       [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
 
         Returns:
             A [list][] of [Quote](./objects/quote.md#azaka.objects.quote.Quote)s matching the predicate.
@@ -370,7 +382,9 @@ class Context:
         Get Users matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [UserCondition]() and returns a [BoolOProxy]().
+            predicate: A callable that takes a
+                       [UserCondition](../public/condition.md#azaka.commands.condition.UserCondition) and returns a
+                       [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
 
         Returns:
             A [list][] of [User](./objects/user.md#azaka.objects.user.User)s matching the predicate.
@@ -391,7 +405,9 @@ class Context:
         Get Ulists matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [UlistCondition]() and returns a [BoolOProxy]().
+            predicate: A callable that takes a
+                       [UlistCondition](../public/condition.md#azaka.commands.condition.UlistCondition) and returns a
+                       [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
 
         Returns:
             A [list][] of [Ulist](./objects/ulist.md#azaka.objects.ulist.Ulist)s matching the predicate.
@@ -412,11 +428,13 @@ class Context:
         Get Ulist Labels matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
 
         Args:
-            predicate: A callable that takes a [UlistLabelsCondition]() and returns a [BoolOProxy]().
+            predicate: A callable that takes a
+                       [UlistLabelsCondition](../public/condition.md#azaka.commands.condition.UlistLabelsCondition) and
+                       returns a [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
 
         Returns:
             A [list][] of
-            [UlistLabels](./objects/ulistlabels.md#azaka.objects.ulistlabels.UlistLabels)s
+            [UlistLabels](./objects/ulistlabels.md#azaka.objects.ulistlabels.UlistLabels)
             matching the predicate.
         """
         with Interface(type=self.ulist_labels, flags=(Flags.BASIC,)) as interface:
