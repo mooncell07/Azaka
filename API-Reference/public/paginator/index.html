@@ -382,22 +382,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#azaka.tools.paginator.Paginator.next_page" class="md-nav__link">
-    next_page()
+  <a href="#azaka.tools.paginator.Paginator.next" class="md-nav__link">
+    next()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#azaka.tools.paginator.Paginator.previous_page" class="md-nav__link">
-    previous_page()
+  <a href="#azaka.tools.paginator.Paginator.previous" class="md-nav__link">
+    previous()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#azaka.tools.paginator.Paginator.generate" class="md-nav__link">
-    generate()
+  <a href="#azaka.tools.paginator.Paginator.compress" class="md-nav__link">
+    compress()
   </a>
   
 </li>
@@ -832,22 +832,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#azaka.tools.paginator.Paginator.next_page" class="md-nav__link">
-    next_page()
+  <a href="#azaka.tools.paginator.Paginator.next" class="md-nav__link">
+    next()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#azaka.tools.paginator.Paginator.previous_page" class="md-nav__link">
-    previous_page()
+  <a href="#azaka.tools.paginator.Paginator.previous" class="md-nav__link">
+    previous()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#azaka.tools.paginator.Paginator.generate" class="md-nav__link">
-    generate()
+  <a href="#azaka.tools.paginator.Paginator.compress" class="md-nav__link">
+    compress()
   </a>
   
 </li>
@@ -942,14 +942,14 @@ used to provide async and stateful iteration over the results of <code>get</code
 
 
 
-<h3 id="azaka.tools.paginator.Paginator.next_page" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">next_page</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+<h3 id="azaka.tools.paginator.Paginator.next" class="doc doc-heading">
+<code class="highlight language-python"><span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-async"><code>async</code></small>
   </span>
 
-<a href="#azaka.tools.paginator.Paginator.next_page" class="headerlink" title="Permanent link">+</a></h3>
+<a href="#azaka.tools.paginator.Paginator.next" class="headerlink" title="Permanent link">+</a></h3>
 
     <div class="doc doc-contents ">
 
@@ -980,14 +980,14 @@ used to provide async and stateful iteration over the results of <code>get</code
 
 
 
-<h3 id="azaka.tools.paginator.Paginator.previous_page" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">previous_page</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+<h3 id="azaka.tools.paginator.Paginator.previous" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">previous</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-async"><code>async</code></small>
   </span>
 
-<a href="#azaka.tools.paginator.Paginator.previous_page" class="headerlink" title="Permanent link">+</a></h3>
+<a href="#azaka.tools.paginator.Paginator.previous" class="headerlink" title="Permanent link">+</a></h3>
 
     <div class="doc doc-contents ">
 
@@ -1014,24 +1014,22 @@ used to provide async and stateful iteration over the results of <code>get</code
 
 
 
-
-
   <div class="doc doc-object doc-method">
 
 
 
-<h3 id="azaka.tools.paginator.Paginator.generate" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+<h3 id="azaka.tools.paginator.Paginator.compress" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-async"><code>async</code></small>
   </span>
 
-<a href="#azaka.tools.paginator.Paginator.generate" class="headerlink" title="Permanent link">+</a></h3>
+<a href="#azaka.tools.paginator.Paginator.compress" class="headerlink" title="Permanent link">+</a></h3>
 
     <div class="doc doc-contents ">
 
-      <p>Generates the page of results.</p>
+      <p>Fetches all the pages of results.</p>
 
 <p><strong>Returns:</strong></p>
 <table>
@@ -1043,14 +1041,16 @@ used to provide async and stateful iteration over the results of <code>get</code
   </thead>
   <tbody>
     <tr>
-      <td><code>t.Optional[t.Iterable[BaseObject]]</code></td>
-      <td><p>The page of results.</p></td>
+      <td><code>t.List[t.Iterable[BaseObject]]</code></td>
+      <td><p>A list of pages of results.</p></td>
     </tr>
   </tbody>
 </table>
     </div>
 
   </div>
+
+
 
 
 
