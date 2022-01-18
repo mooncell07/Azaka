@@ -1,5 +1,6 @@
 import typing as t
 from dataclasses import dataclass
+
 from .baseobject import BaseObject
 
 __all__ = ("Ulist",)
@@ -16,7 +17,7 @@ class Label:
     """
 
     id: int
-    label: t.Optional[str] = None
+    label: str
 
 
 class Ulist(BaseObject):
@@ -83,4 +84,4 @@ class Ulist(BaseObject):
             The [list][] is populated only when the command was issued with
             the `LABELS` [Flags](../enums.md#azaka.tools.enums.Flags) otherwise it is empty.
         """
-        return [Label(**data) for data in self._labels]
+        return [Label(**label) for label in self._labels]

@@ -13,7 +13,7 @@ from .commands import Command
 from .connection import Connector
 from .context import Context
 from .exceptions import AzakaException
-from .interface import Interface
+from .interface import Interface, SETInterface
 from .objects import DBStats
 from .tools import Cache, ResponseType, Paginator
 
@@ -63,7 +63,7 @@ class Client:
     def is_closing(self) -> bool:
         """
         Returns:
-            True if the client's [asyncio.Transport][] is closing/closed.
+            `True` if the client's [asyncio.Transport][] is closing/closed.
         """
         return (
             self._connector.transport is None
@@ -100,7 +100,7 @@ class Client:
         else:
             raise TypeError("Callback must be a coroutine.") from None
 
-    def on_error(self, func: t.Callable[..., t.Any]) -> None:
+    def on_error(self, func: t.Callable) -> None:
         """
         Register a function to be called when an error occurs.
 
@@ -158,10 +158,7 @@ class Client:
                 )
 
         command = Command("login", **data)
-        try:
-            self._connector.start(command.create())
-        except asyncio.CancelledError:
-            pass
+        self._connector.start(command.create())
 
     async def logout(self) -> None:
         """
@@ -272,31 +269,17 @@ class Client:
 
         return obj
 
-    async def set_ulist(self, id: int, **kwargs: str) -> ResponseType:
+    async def set_ulist(self, interface: SETInterface) -> ResponseType:
         """
         Issue a `set` command to the API. This method is used to set userlist data.
 
         Args:
             id: The item id.
-            **kwargs: The data to set.
-
-        Info:
-            The following keys are supported for kwargs:
-
-                - notes
-
-                - started
-
-                - finished
-
-                - vote
-
-                - labels
-
+            interface: The [SETInterface](./interface.md#azaka.interface.SETInterface) to use.
         Returns:
             [ResponseType](./enums.md#azaka.tools.enums.ResponseType)
         """
-        command = Command(f"set ulist {id}", **kwargs)
+        command = Command(f"set ulist {interface.id}", **interface._kwargs)
 
         future = self.ctx.loop.create_future()
         await self._connector.inject(command, future)

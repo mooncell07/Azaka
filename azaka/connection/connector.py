@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import logging
 import traceback
 import typing as t
@@ -63,8 +64,9 @@ class Connector(QueueControlMixin):
             logger.debug("SHUTDOWN COMPLETED.")
 
         if task.done() or task.cancelled():
-            if isinstance(task.exception(), BaseException):
-                raise task.exception() from None  # type: ignore
+            with contextlib.suppress(asyncio.CancelledError):
+                if task.exception() is not None:
+                    raise task.exception() from None  # type: ignore
 
     async def inject(
         self, command: Command, future: t.Optional[asyncio.Future]

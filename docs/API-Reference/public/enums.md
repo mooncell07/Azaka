@@ -7,3 +7,4 @@
 ::: azaka.tools.Spoiler
 ::: azaka.tools.VoicedType
 ::: azaka.tools.AnimationType
+::: azaka.tools.Labels

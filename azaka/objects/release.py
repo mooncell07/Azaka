@@ -1,8 +1,8 @@
 import typing as t
 from dataclasses import dataclass
 
+from ..tools import AnimationType, Rtype, VoicedType
 from .baseobject import BaseObject
-from ..tools import VoicedType, AnimationType, Rtype
 
 __all__ = ("Release",)
 

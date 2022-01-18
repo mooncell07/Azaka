@@ -58,7 +58,7 @@ class Command:
             bytes: The issuable command.
         """
         if self.interface:
-            return self._from_interface()
+            return self._from_get_interface()
 
         elif self.kwargs:
             dumped = json.dumps(self.kwargs)
@@ -69,7 +69,7 @@ class Command:
         return formation.encode()
 
     @t.no_type_check
-    def _from_interface(self) -> bytes:
+    def _from_get_interface(self) -> bytes:
         """
         Creates the command from an interface.
 
