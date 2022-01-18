@@ -1,4 +1,5 @@
 import typing as t
+
 from .baseobject import BaseObject
 
 __all__ = ("Quote",)

@@ -1,5 +1,6 @@
 import typing as t
 from dataclasses import dataclass
+
 from ..tools import Gender
 from .baseobject import BaseObject
 

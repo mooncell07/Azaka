@@ -3,16 +3,16 @@ from __future__ import annotations
 import typing as t
 
 from .commands import _condition_selector, BaseCondition, BoolOProxy
-from .tools import Flags
+from .tools import Flags, Labels
 from .exceptions import InterfaceError
 
 
-__all__ = ("Interface",)
+__all__ = ("Interface", "SETInterface")
 
 
 class Interface:
     """
-    A helper class to make it easier to create commands.
+    A helper class to make it easier to create GET commands.
 
     Example:
     ```python
@@ -123,3 +123,62 @@ class Interface:
 
         if msg:
             raise InterfaceError(f"The attribute(s): `{', '.join(msg)}` can't be None.")
+
+
+class SETInterface:
+    """
+    A helper class to make it easier to create SET commands.
+    """
+
+    def __init__(self, id: int, *, vote: t.Optional[int] = None) -> None:
+        """
+        SETInterface constructor.
+
+        Args:
+            id: The id of the item to modify.
+            vote: The vote to set for the item. (Must be between 10 and 100)
+        """
+        self.id = id
+        self._kwargs: t.MutableMapping[str, t.Any] = {"vote": vote} if vote else {}
+
+    def __enter__(self) -> SETInterface:
+        return self
+
+    def __exit__(self, *ex) -> None:
+        ...
+
+    def write_notes(self, notes: str) -> None:
+        """
+        Writes notes for the item in ulist.
+
+        Args:
+            notes: The notes to write.
+        """
+        self._kwargs["notes"] = notes
+
+    def started_on(self, date: str) -> None:
+        """
+        Sets the start date for the item.
+
+        Args:
+            date: The date to set.
+        """
+        self._kwargs["started"] = date
+
+    def finished_on(self, date: str) -> None:
+        """
+        Sets the finish date for the item.
+
+        Args:
+            date: The date to set.
+        """
+        self._kwargs["finished"] = date
+
+    def set_labels(self, *labels: Labels) -> None:
+        """
+        Sets the [Label](./enums.md#azaka.tools.enums.Labels)s for the item.
+
+        Args:
+            *labels: The labels to set.
+        """
+        self._kwargs["labels"] = labels

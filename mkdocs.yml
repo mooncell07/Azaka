@@ -35,6 +35,7 @@ nav:
       - Condition: API-Reference/public/condition.md
 
       - Objects:
+        - BaseObject: API-Reference/public/objects/baseobject.md
         - Character: API-Reference/public/objects/character.md
         - DBStats: API-Reference/public/objects/dbstats.md
         - Producer: API-Reference/public/objects/producer.md
