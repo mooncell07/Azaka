@@ -30,7 +30,7 @@ class Paginator:
         self.current_page_num: int = 0
         self.more: bool = True
 
-    async def next_page(self) -> t.Optional[t.Iterable[BaseObject]]:
+    async def next(self) -> t.Optional[t.Iterable[BaseObject]]:
         """
         Fetches the next page of results.
 
@@ -39,10 +39,10 @@ class Paginator:
         """
         if self.more:
             self.current_page_num += 1
-            return await self.generate()
+            return await self._generate()
         return None
 
-    async def previous_page(self) -> t.Optional[t.Iterable[BaseObject]]:
+    async def previous(self) -> t.Optional[t.Iterable[BaseObject]]:
         """
         Fetches the previous page of results.
 
@@ -51,21 +51,30 @@ class Paginator:
         """
         if self.current_page_num > 1:
             self.current_page_num -= 1
-            return await self.generate()
+            return await self._generate()
         return None
+
+    async def compress(self) -> t.List[t.Iterable[BaseObject]]:
+        """
+        Fetches all the pages of results.
+
+        Returns:
+            A list of pages of results.
+        """
+        return [datas async for datas in self]
 
     def __aiter__(self) -> Paginator:
         return self
 
     async def __anext__(self) -> t.Iterable[BaseObject]:
-        data = await self.next_page()
+        data = await self.next()
 
         if not data:
             raise StopAsyncIteration
 
         return data
 
-    async def generate(self) -> t.Optional[t.Iterable[BaseObject]]:
+    async def _generate(self) -> t.Optional[t.List[BaseObject]]:
         """
         Generates the page of results.
 
