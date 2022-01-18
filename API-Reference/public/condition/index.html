@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#azaka.commands.condition.BaseCondition" class="md-skip">
+        <a href="#azaka.commands.condition.Operator" class="md-skip">
           Skip to content
         </a>
       
@@ -430,6 +430,40 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#azaka.commands.condition.Operator" class="md-nav__link">
+    Operator
+  </a>
+  
+    <nav class="md-nav" aria-label="Operator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#azaka.commands.condition.Operator.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.commands.condition.Operator.fill_some" class="md-nav__link">
+    fill_some()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.commands.condition.Operator.fill_all" class="md-nav__link">
+    fill_all()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#azaka.commands.condition.BaseCondition" class="md-nav__link">
     BaseCondition
   </a>
@@ -492,6 +526,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#azaka.commands.condition.ProducerCondition" class="md-nav__link">
+    ProducerCondition
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -526,6 +567,20 @@
           Objects
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../objects/baseobject/" class="md-nav__link">
+        BaseObject
+      </a>
+    </li>
+  
+
+            
           
             
               
@@ -853,6 +908,40 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#azaka.commands.condition.Operator" class="md-nav__link">
+    Operator
+  </a>
+  
+    <nav class="md-nav" aria-label="Operator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#azaka.commands.condition.Operator.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.commands.condition.Operator.fill_some" class="md-nav__link">
+    fill_some()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.commands.condition.Operator.fill_all" class="md-nav__link">
+    fill_all()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#azaka.commands.condition.BaseCondition" class="md-nav__link">
     BaseCondition
   </a>
@@ -915,6 +1004,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#azaka.commands.condition.ProducerCondition" class="md-nav__link">
+    ProducerCondition
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -935,6 +1031,231 @@
   <h1>Condition</h1>
 
 <div class="doc doc-object doc-class">
+
+
+
+<h2 id="azaka.commands.condition.Operator" class="doc doc-heading">
+        <code>
+azaka.commands.condition.Operator        </code>
+
+
+
+<a href="#azaka.commands.condition.Operator" class="headerlink" title="Permanent link">+</a></h2>
+
+    <div class="doc doc-contents first">
+
+      <p>An object for storing operators for XCondition attributes to check condition support.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This object is not meant to be created by users.</p>
+</div>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.commands.condition.Operator.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">symbols</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a href="#azaka.commands.condition.Operator.__init__" class="headerlink" title="Permanent link">+</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Operator constructor.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>*symbols</code></td>
+        <td><code>str</code></td>
+        <td><p>The symbols of the operator.</p></td>
+        <td><code>()</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>symbols</code></td>
+        <td><code>t.Tuple[str]</code></td>
+        <td><p>The symbols of the operator.</p></td>
+      </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.commands.condition.Operator.fill_some" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">fill_some</span><span class="p">(</span><span class="o">*</span><span class="n">symbols</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#azaka.commands.condition.Operator.fill_some" class="headerlink" title="Permanent link">+</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A factory method for creating an Operator object with some symbols.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>*symbols</code></td>
+        <td><code>str</code></td>
+        <td><p>The additional symbols of the operator.</p></td>
+        <td><code>()</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Operator</code></td>
+      <td><p>The created Operator object.</p></td>
+    </tr>
+  </tbody>
+</table>      <div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This method fills the <code>=</code> and <code>!=</code> symbols.</p>
+</div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.commands.condition.Operator.fill_all" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">fill_all</span><span class="p">(</span><span class="o">*</span><span class="n">symbols</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#azaka.commands.condition.Operator.fill_all" class="headerlink" title="Permanent link">+</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A factory method for creating an Operator object with all symbols.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>*symbols</code></td>
+        <td><code>str</code></td>
+        <td><p>The additional symbols of the operator.</p></td>
+        <td><code>()</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Operator</code></td>
+      <td><p>The created Operator object.</p></td>
+    </tr>
+  </tbody>
+</table>      <div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This method fills the <code>=</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code> symbols.</p>
+</div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
@@ -1788,6 +2109,105 @@ azaka.commands.condition.UlistCondition            (<a title="azaka.commands.con
 
   </div>
 
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="azaka.commands.condition.ProducerCondition" class="doc doc-heading">
+        <code>
+azaka.commands.condition.ProducerCondition            (<a title="azaka.commands.condition.BaseCondition" href="#azaka.commands.condition.BaseCondition">BaseCondition</a>)
+        </code>
+
+
+
+<a href="#azaka.commands.condition.ProducerCondition" class="headerlink" title="Permanent link">+</a></h2>
+
+    <div class="doc doc-contents first">
+
+      <p>A class storing all the attributes <code>Producer</code> type supports as condition.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Check the <code>BaseCondition</code> class for more information.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Field Value Type</th>
+<th>Operations Supported</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NAME</td>
+<td><a href="https://docs.python.org/3.10/library/stdtypes.html#str">str</a></td>
+<td><em>SOME + (%)</em></td>
+<td>Find using name of producer.</td>
+</tr>
+<tr>
+<td>ORIGINAL</td>
+<td><a href="https://docs.python.org/3.10/library/constants.html#None">None</a> or <a href="https://docs.python.org/3.10/library/stdtypes.html#str">str</a></td>
+<td><em>SOME + (%)</em></td>
+<td>Find using original/official name of the producer. Can't use <code>%</code> with <code>None</code>.</td>
+</tr>
+<tr>
+<td>TYPE</td>
+<td><a href="https://docs.python.org/3.10/library/stdtypes.html#str">str</a></td>
+<td><em>SOME</em></td>
+<td>Filter using type of producer.</td>
+</tr>
+<tr>
+<td>LANGUAGE</td>
+<td><a href="https://docs.python.org/3.10/library/stdtypes.html#str">str</a></td>
+<td><em>SOME</em></td>
+<td>Filter using language of producer.</td>
+</tr>
+<tr>
+<td>LANGUAGES_ARRAY</td>
+<td>A <a href="https://docs.python.org/3.10/library/typing.html#typing.Iterable">typing.Iterable</a> of <a href="https://docs.python.org/3.10/library/stdtypes.html#str">str</a>s</td>
+<td><em>SOME</em></td>
+<td>Filter using an array of languages of producer.</td>
+</tr>
+<tr>
+<td>SEARCH</td>
+<td><a href="https://docs.python.org/3.10/library/stdtypes.html#str">str</a></td>
+<td><em>(%)</em></td>
+<td>Performs a search on the name, original and aliases fields.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
               
             </article>
           </div>
@@ -1821,13 +2241,13 @@ azaka.commands.condition.UlistCondition            (<a title="azaka.commands.con
       
       
         
-        <a href="../objects/character/" class="md-footer__link md-footer__link--next" aria-label="Next: Character" rel="next">
+        <a href="../objects/baseobject/" class="md-footer__link md-footer__link--next" aria-label="Next: BaseObject" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Character
+              BaseObject
             </div>
           </div>
           <div class="md-footer__button md-icon">
