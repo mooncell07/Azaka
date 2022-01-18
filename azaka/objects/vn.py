@@ -227,7 +227,7 @@ class VN(BaseObject):
     @property
     def screens(self) -> t.List[Screens]:
         """
-        Returns a [list][] of [Screens](./#azaka.objects.release.Screens) objects associated with this VN.
+        Returns a [list][] of [Screens](./#azaka.objects.vn.Screens) objects associated with this VN.
 
         Info:
             The [list][] is populated only when the command was issued with
@@ -247,7 +247,7 @@ class VN(BaseObject):
     @property
     def relations(self) -> t.List[VNRelation]:
         """
-        Returns a [list][] of [VNRelation](./#azaka.objects.release.VNRelation) objects associated with this VN.
+        Returns a [list][] of [VNRelation](./#azaka.objects.vn.VNRelation) objects associated with this VN.
 
         Info:
             The [list][] is populated only when the command was issued with
@@ -258,7 +258,7 @@ class VN(BaseObject):
     @property
     def staff(self) -> t.List[VNStaff]:
         """
-        Returns a [list][] of [VNStaff](./#azaka.objects.release.VNStaff) objects associated with this VN.
+        Returns a [list][] of [VNStaff](./#azaka.objects.vn.VNStaff) objects associated with this VN.
 
         Info:
             The [list][] is populated only when the command was issued with
@@ -269,7 +269,7 @@ class VN(BaseObject):
     @property
     def image_flagging(self) -> t.Optional[ImageFlagging]:
         """
-        Returns the [ImageFlagging](./#azaka.objects.release.ImageFlagging) object associated with this VN.
+        Returns the [ImageFlagging](./#azaka.objects.vn.ImageFlagging) object associated with this VN.
 
         Info:
             This returns an [ImageFlagging](./#azaka.objects.vn.ImageFlagging)

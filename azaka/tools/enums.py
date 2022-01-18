@@ -87,7 +87,8 @@ class ErrorType(enum.Enum):
     """
     An [enum.Enum][] of all the available error types.
     These are the possible error types API can return.
-    These are present as an attribute of all errors which inherit from [AzakaException]().
+    These are present as an attribute of all errors which inherit from
+    [AzakaException](../public/exceptions.md#azaka.exceptions.AzakaException).
 
     Attributes:
         PARSE: The `parse` error type.

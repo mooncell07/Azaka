@@ -42,11 +42,12 @@ class Interface:
 
         Note:
             The [Context](./context.md) contains various `type`s that can be used or just pass
-            one of the objects from [Objects](./objects) yourself but not in any case the object
+            one of the objects from
+            [Objects](../public/objects/baseobject.md) yourself but not in any case the object
             should be constructed.
 
         Attributes:
-            condition: The [Condition]() type for this interface. (Automatically set based on type).
+            condition: The [Condition](../condition) type for this interface. (Automatically set based on type).
         """
         self.condition: t.Type[BaseCondition] = _condition_selector(type)
 
@@ -73,7 +74,8 @@ class Interface:
 
         Note:
             predicate can be a callable which
-            takes a [BaseCondition](../internals/commands/proxy.md#azaka.commands.BaseCondition) arg or a
+            takes a
+            [BaseCondition](../public/condition.md#azaka.commands.condition.BaseCondition) arg or a
             [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy) object.
 
         Raises:
@@ -176,7 +178,7 @@ class SETInterface:
 
     def set_labels(self, *labels: Labels) -> None:
         """
-        Sets the [Label](./enums.md#azaka.tools.enums.Labels)s for the item.
+        Sets the [Labels](./enums.md#azaka.tools.enums.Labels) for the item.
 
         Args:
             *labels: The labels to set.

@@ -77,7 +77,7 @@ class CommandError(AzakaException):
     Base class for all command errors.
 
     Attributes:
-        id (ErrorType): The error ID. (An [enum][] of [ErrorType](./tools/enum.md#ErrorType))
+        id (ErrorType): The error ID. (An [enum][] of [ErrorType](../public/enums.md#azaka.tools.enums.ErrorType))
     """
 
     __slots__ = ("id",)
