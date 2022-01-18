@@ -10,6 +10,7 @@ __all__ = (
     "VoicedType",
     "AnimationType",
     "Rtype",
+    "Labels",
 )
 
 
@@ -209,3 +210,26 @@ class AnimationType(enum.IntEnum):
     SIMPLE_ANIMATIONS: int = 2
     PARTIAL_ANIMATIONS: int = 3
     FULL_ANIMATIONS: int = 4
+
+
+class Labels(enum.IntEnum):
+    """
+    An [enum.IntEnum][] of all available labels.
+
+    Attributes:
+        NOLABEL: The `0` label.
+        PLAYING: The `1` label.
+        FINISHED: The `2` label.
+        STALLED: The `3` label.
+        DROPPED: The `4` label.
+        WISHLIST: The `5` label.
+        BLACKLIST: The `6` label.
+    """
+
+    NOLABEL: int = 0
+    PLAYING: int = 1
+    FINISHED: int = 2
+    STALLED: int = 3
+    DROPPED: int = 4
+    WISHLIST: int = 5
+    BLACKLIST: int = 6

@@ -3,7 +3,6 @@ from dataclasses import dataclass
 
 from .baseobject import BaseObject
 
-
 __all__ = ("VN", "ImageFlagging")
 
 

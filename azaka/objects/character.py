@@ -1,9 +1,9 @@
 import typing as t
 from dataclasses import dataclass
 
-from .vn import ImageFlagging
+from ..tools import Gender, Roles, Spoiler
 from .baseobject import BaseObject
-from ..tools import Gender, Spoiler, Roles
+from .vn import ImageFlagging
 
 
 @dataclass
