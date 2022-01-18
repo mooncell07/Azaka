@@ -93,7 +93,8 @@ class ConditionProxy:
 
         args:
             attr_name: The name of the field.
-            operator: The [Operator]() instance to be used.
+            operator: The [Operator](../../public/condition.md#azaka.commands.condition.Operator)
+                      instance to be used.
         """
         self.name = attr_name
         self.operator = operator

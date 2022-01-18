@@ -156,7 +156,8 @@ class Release(BaseObject):
         Returns a [list][] of [AnimationType](../enums.md#azaka.tools.enums.AnimationType) enums.
 
         Note:
-            The [list][] has two members of an [enum][] type [AnimationType][],
+            The [list][] has two members of an
+            [enum][] type [AnimationType](../enums.md#azaka.tools.enums.AnimationType),
             the first one indicating the story animations,
             the second the ero scene animations. Both members can be None if unknown or not applicable.
 

@@ -108,7 +108,8 @@ class Client:
             func: The function to call.
 
         Info:
-            The function must take a single argument of type [AzakaException]().
+            The function must take a single argument of type
+            [AzakaException](../public/exceptions.md#azaka.exceptions.AzakaException).
 
         Example:
             ```py
@@ -182,7 +183,7 @@ class Client:
     async def fetch_token(self) -> str:
         """
         Fetches the session token.
-        Only works when `token` arg of [Client.start](./#azaka.client,Client.start) was set to `True`.
+        Only works when `token` arg of [Client.start](./#azaka.client.Client.start) was set to `True`.
 
         Returns:
             The session token.
@@ -233,7 +234,7 @@ class Client:
             paginate: If set to `True`, it returns a [Paginator](./paginator.md#azaka.tools.paginator.Paginator).
 
         Returns:
-            [list][] of subclass of [BaseObject]()
+            [list][] of subclass of [BaseObject](../public/objects/baseobject.md#azaka.objects.BaseObject)
             if paginate is set to `False` else [Paginator](./paginator.md#azaka.tools.paginator.Paginator)
 
         Info:
@@ -274,7 +275,6 @@ class Client:
         Issue a `set` command to the API. This method is used to set userlist data.
 
         Args:
-            id: The item id.
             interface: The [SETInterface](./interface.md#azaka.interface.SETInterface) to use.
         Returns:
             [ResponseType](./enums.md#azaka.tools.enums.ResponseType)

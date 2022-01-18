@@ -170,10 +170,11 @@ class Character(BaseObject):
     @property
     def image_flagging(self) -> t.Optional[ImageFlagging]:
         """
-        Returns the [ImageFlagging]() of the character.
+        Returns the [ImageFlagging](../objects/vn.md#azaka.objects.vn.ImageFlagging) of the character.
 
         Info:
-            This returns an [ImageFlagging]() object only when the command was issued with
+            This returns an [ImageFlagging](../objects/vn.md#azaka.objects.vn.ImageFlagging)
+            object only when the command was issued with
             the `DETAILS` [Flags](../enums.md#azaka.tools.enums.Flags) otherwise it is `None`.
         """
         return ImageFlagging(**self._image_flagging) if self._image_flagging else None

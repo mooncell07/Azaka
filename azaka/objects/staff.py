@@ -34,7 +34,11 @@ class StaffVN:
     """
     A dataclass representing a staffvn.
 
-
+    Attributes:
+        id: VN ID.
+        aid: Staff Alias ID.
+        role: The staff role.
+        note: The staff note.
     """
 
     id: int
@@ -135,7 +139,7 @@ class Staff(BaseObject):
     @property
     def staff_vns(self) -> t.List[StaffVN]:
         """
-        Returns a [list][] of [StaffVN](./#azaka.objects.release.StaffVN) objects.
+        Returns a [list][] of [StaffVN](./#azaka.objects.staff.StaffVN) objects.
 
         Info:
             The [list][] is populated only when the command was issued with
