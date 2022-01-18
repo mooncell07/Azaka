@@ -428,6 +428,54 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#azaka.interface.SETInterface" class="md-nav__link">
+    SETInterface
+  </a>
+  
+    <nav class="md-nav" aria-label="SETInterface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#azaka.interface.SETInterface.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.interface.SETInterface.write_notes" class="md-nav__link">
+    write_notes()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.interface.SETInterface.started_on" class="md-nav__link">
+    started_on()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.interface.SETInterface.finished_on" class="md-nav__link">
+    finished_on()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.interface.SETInterface.set_labels" class="md-nav__link">
+    set_labels()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -504,6 +552,20 @@
           Objects
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../objects/baseobject/" class="md-nav__link">
+        BaseObject
+      </a>
+    </li>
+  
+
+            
           
             
               
@@ -871,6 +933,54 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#azaka.interface.SETInterface" class="md-nav__link">
+    SETInterface
+  </a>
+  
+    <nav class="md-nav" aria-label="SETInterface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#azaka.interface.SETInterface.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.interface.SETInterface.write_notes" class="md-nav__link">
+    write_notes()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.interface.SETInterface.started_on" class="md-nav__link">
+    started_on()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.interface.SETInterface.finished_on" class="md-nav__link">
+    finished_on()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.interface.SETInterface.set_labels" class="md-nav__link">
+    set_labels()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -904,7 +1014,7 @@ azaka.interface.Interface        </code>
 
     <div class="doc doc-contents first">
 
-      <p>A helper class to make it easier to create commands.</p>
+      <p>A helper class to make it easier to create GET commands.</p>
 
 <p><strong>Examples:</strong></p>
     
@@ -1012,7 +1122,8 @@ azaka.interface.Interface        </code>
 </table>      <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The <a href="../context/">Context</a> contains various <code>type</code>s that can be used or just pass
-one of the objects from <a href="./objects">Objects</a> yourself but not in any case the object
+one of the objects from
+<a href="../objects/baseobject/">Objects</a> yourself but not in any case the object
 should be constructed.</p>
 </div>
 
@@ -1029,7 +1140,7 @@ should be constructed.</p>
       <tr>
         <td><code>condition</code></td>
         <td></td>
-        <td><p>The <a href="">Condition</a> type for this interface. (Automatically set based on type).</p></td>
+        <td><p>The <a href="../condition">Condition</a> type for this interface. (Automatically set based on type).</p></td>
       </tr>
   </tbody>
 </table>
@@ -1076,7 +1187,8 @@ should be constructed.</p>
 </table>      <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>predicate can be a callable which
-takes a <a href="../../internals/commands/proxy/#azaka.commands.BaseCondition">BaseCondition</a> arg or a
+takes a
+<a href="../condition/#azaka.commands.condition.BaseCondition">BaseCondition</a> arg or a
 <a href="../../internals/commands/proxy/#azaka.commands.proxy.BoolOProxy">BoolOProxy</a> object.</p>
 </div>
 
@@ -1131,6 +1243,251 @@ takes a <a href="../../internals/commands/proxy/#azaka.commands.BaseCondition">B
         <td><code>t.Any</code></td>
         <td><p>The options to add.</p></td>
         <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="azaka.interface.SETInterface" class="doc doc-heading">
+        <code>
+azaka.interface.SETInterface        </code>
+
+
+
+<a href="#azaka.interface.SETInterface" class="headerlink" title="Permanent link">+</a></h2>
+
+    <div class="doc doc-contents first">
+
+      <p>A helper class to make it easier to create SET commands.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.interface.SETInterface.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">vote</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a href="#azaka.interface.SETInterface.__init__" class="headerlink" title="Permanent link">+</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>SETInterface constructor.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>id</code></td>
+        <td><code>int</code></td>
+        <td><p>The id of the item to modify.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>vote</code></td>
+        <td><code>t.Optional[int]</code></td>
+        <td><p>The vote to set for the item. (Must be between 10 and 100)</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.interface.SETInterface.write_notes" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">write_notes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">notes</span><span class="p">)</span></code>
+
+
+<a href="#azaka.interface.SETInterface.write_notes" class="headerlink" title="Permanent link">+</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Writes notes for the item in ulist.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>notes</code></td>
+        <td><code>str</code></td>
+        <td><p>The notes to write.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.interface.SETInterface.started_on" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">started_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span></code>
+
+
+<a href="#azaka.interface.SETInterface.started_on" class="headerlink" title="Permanent link">+</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Sets the start date for the item.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>date</code></td>
+        <td><code>str</code></td>
+        <td><p>The date to set.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.interface.SETInterface.finished_on" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">finished_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span></code>
+
+
+<a href="#azaka.interface.SETInterface.finished_on" class="headerlink" title="Permanent link">+</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Sets the finish date for the item.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>date</code></td>
+        <td><code>str</code></td>
+        <td><p>The date to set.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.interface.SETInterface.set_labels" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">set_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">labels</span><span class="p">)</span></code>
+
+
+<a href="#azaka.interface.SETInterface.set_labels" class="headerlink" title="Permanent link">+</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Sets the <a href="../enums/#azaka.tools.enums.Labels">Labels</a> for the item.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>*labels</code></td>
+        <td><code>Labels</code></td>
+        <td><p>The labels to set.</p></td>
+        <td><code>()</code></td>
       </tr>
   </tbody>
 </table>

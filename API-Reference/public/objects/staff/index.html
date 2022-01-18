@@ -442,6 +442,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../baseobject/" class="md-nav__link">
+        BaseObject
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../character/" class="md-nav__link">
         Character
       </a>
@@ -606,6 +620,13 @@
         <li class="md-nav__item">
   <a href="#azaka.objects.staff.StaffVoiced" class="md-nav__link">
     StaffVoiced
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#azaka.objects.staff.StaffVN" class="md-nav__link">
+    StaffVN
   </a>
   
 </li>
@@ -929,6 +950,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#azaka.objects.staff.StaffVN" class="md-nav__link">
+    StaffVN
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -954,7 +982,7 @@
 
 <h2 id="azaka.objects.staff.Staff" class="doc doc-heading">
         <code>
-azaka.objects.staff.Staff            (<span title="azaka.objects.baseobject.BaseObject">BaseObject</span>)
+azaka.objects.staff.Staff            (<a title="azaka.objects.baseobject.BaseObject" href="../baseobject/#azaka.objects.baseobject.BaseObject">BaseObject</a>)
         </code>
 
 
@@ -1115,7 +1143,7 @@ the <code>DETAILS</code> <a href="../../enums/#azaka.tools.enums.Flags">Flags</a
 
     <div class="doc doc-contents ">
 
-      <p>Returns a <a href="https://docs.python.org/3.10/library/stdtypes.html#list">list</a> of <a href="./#azaka.objects.release.StaffVN">StaffVN</a> objects.</p>
+      <p>Returns a <a href="https://docs.python.org/3.10/library/stdtypes.html#list">list</a> of <a href="./#azaka.objects.staff.StaffVN">StaffVN</a> objects.</p>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
 <p>The <a href="https://docs.python.org/3.10/library/stdtypes.html#list">list</a> is populated only when the command was issued with
@@ -1310,6 +1338,87 @@ azaka.objects.staff.StaffVoiced        </code>
         <td><code>note</code></td>
         <td><code>Optional[str]</code></td>
         <td><p>note.</p></td>
+      </tr>
+  </tbody>
+</table>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="azaka.objects.staff.StaffVN" class="doc doc-heading">
+        <code>
+azaka.objects.staff.StaffVN        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#azaka.objects.staff.StaffVN" class="headerlink" title="Permanent link">+</a></h2>
+
+    <div class="doc doc-contents first">
+
+      <p>A dataclass representing a staffvn.</p>
+
+<p><strong>Attributes:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>id</code></td>
+        <td><code>int</code></td>
+        <td><p>VN ID.</p></td>
+      </tr>
+      <tr>
+        <td><code>aid</code></td>
+        <td><code>Optional[int]</code></td>
+        <td><p>Staff Alias ID.</p></td>
+      </tr>
+      <tr>
+        <td><code>role</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>The staff role.</p></td>
+      </tr>
+      <tr>
+        <td><code>note</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>The staff note.</p></td>
       </tr>
   </tbody>
 </table>

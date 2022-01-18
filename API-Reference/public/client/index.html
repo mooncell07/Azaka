@@ -567,6 +567,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../objects/baseobject/" class="md-nav__link">
+        BaseObject
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../objects/character/" class="md-nav__link">
         Character
       </a>
@@ -1057,7 +1071,7 @@ azaka.client.Client        </code>
   <tbody>
     <tr>
       <td><code>bool</code></td>
-      <td><p>True if the client's <a href="https://docs.python.org/3.10/library/asyncio-protocol.html#asyncio.Transport">asyncio.Transport</a> is closing/closed.</p></td>
+      <td><p><code>True</code> if the client's <a href="https://docs.python.org/3.10/library/asyncio-protocol.html#asyncio.Transport">asyncio.Transport</a> is closing/closed.</p></td>
     </tr>
   </tbody>
 </table>    </div>
@@ -1219,14 +1233,15 @@ azaka.client.Client        </code>
   <tbody>
       <tr>
         <td><code>func</code></td>
-        <td><code>t.Callable[..., t.Any]</code></td>
+        <td><code>t.Callable</code></td>
         <td><p>The function to call.</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>
 </table>      <div class="admonition info">
 <p class="admonition-title">Info</p>
-<p>The function must take a single argument of type <a href="">AzakaException</a>.</p>
+<p>The function must take a single argument of type
+<a href="../exceptions/#azaka.exceptions.AzakaException">AzakaException</a>.</p>
 </div>
 
 <p><strong>Examples:</strong></p>
@@ -1353,7 +1368,7 @@ azaka.client.Client        </code>
     <div class="doc doc-contents ">
 
       <p>Fetches the session token.
-Only works when <code>token</code> arg of <a href="./#azaka.client,Client.start">Client.start</a> was set to <code>True</code>.</p>
+Only works when <code>token</code> arg of <a href="./#azaka.client.Client.start">Client.start</a> was set to <code>True</code>.</p>
 
 <p><strong>Returns:</strong></p>
 <table>
@@ -1486,7 +1501,7 @@ Only works when <code>token</code> arg of <a href="./#azaka.client,Client.start"
   <tbody>
     <tr>
       <td><code>t.Union[t.Iterable[t.Any], Paginator]</code></td>
-      <td><p><a href="https://docs.python.org/3.10/library/stdtypes.html#list">list</a> of subclass of <a href="">BaseObject</a>
+      <td><p><a href="https://docs.python.org/3.10/library/stdtypes.html#list">list</a> of subclass of <a href="../objects/baseobject/#azaka.objects.BaseObject">BaseObject</a>
 if paginate is set to <code>False</code> else <a href="../paginator/#azaka.tools.paginator.Paginator">Paginator</a></p></td>
     </tr>
   </tbody>
@@ -1518,7 +1533,7 @@ instead if you want to do basic queries.</p>
 
 
 <h3 id="azaka.client.Client.set_ulist" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">set_ulist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">set_ulist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interface</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-async"><code>async</code></small>
@@ -1542,33 +1557,13 @@ instead if you want to do basic queries.</p>
   </thead>
   <tbody>
       <tr>
-        <td><code>id</code></td>
-        <td><code>int</code></td>
-        <td><p>The item id.</p></td>
+        <td><code>interface</code></td>
+        <td><code>SETInterface</code></td>
+        <td><p>The <a href="../interface/#azaka.interface.SETInterface">SETInterface</a> to use.</p></td>
         <td><em>required</em></td>
       </tr>
-      <tr>
-        <td><code>**kwargs</code></td>
-        <td><code>str</code></td>
-        <td><p>The data to set.</p></td>
-        <td><code>{}</code></td>
-      </tr>
   </tbody>
-</table>      <div class="admonition info">
-<p class="admonition-title">Info</p>
-<p>The following keys are supported for kwargs:</p>
-<div class="highlight"><pre><span></span><code>- notes
-
-- started
-
-- finished
-
-- vote
-
-- labels
-</code></pre></div>
-</div>
-
+</table>
 <p><strong>Returns:</strong></p>
 <table>
   <thead>
