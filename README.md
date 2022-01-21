@@ -87,7 +87,7 @@ client.start()
 
 ## DOCUMENTATION & TUTORIAL -
 
-Documentation is still in development and will be available soon!
+Documentation can be found [here](https://mooncell07.github.io/Azaka/).
 
 
 ## THANKS
