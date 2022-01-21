@@ -781,6 +781,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#azaka.tools.mixins.QueueControlMixin.drain" class="md-nav__link">
+    drain()
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -790,6 +797,81 @@
   
 </nav>
       
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cache/" class="md-nav__link">
+        Cache
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2_3" type="checkbox" id="__nav_3_2_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_2_3">
+          Connection
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Connection" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Connection
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../connection/protocol/" class="md-nav__link">
+        Protocol
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../connection/connector/" class="md-nav__link">
+        Connector
+      </a>
     </li>
   
 
@@ -868,6 +950,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#azaka.tools.mixins.QueueControlMixin.drain" class="md-nav__link">
+    drain()
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -906,12 +995,17 @@ azaka.tools.mixins.QueueControlMixin        </code>
 
     <div class="doc doc-contents first">
 
-      <p>A mixin that manages internal queues and events for <a href="">connector</a>.</p>
+      <p>A mixin that manages internal queues and events for <a href="../../connection/connector/">Connector</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>pls don't play with it</p>
+</div>
 
 
 
 
   <div class="doc doc-children">
+
 
 
 
@@ -993,7 +1087,7 @@ azaka.tools.mixins.QueueControlMixin        </code>
 
     <div class="doc doc-contents ">
 
-      <p>A listener that is called by the <a href="">Protocol</a> when a response is received.
+      <p>A listener that is called by the <a href="../../connection/protocol/">Protocol</a> when a response is received.
 This method gets the <a href="https://docs.python.org/3.10/library/asyncio-future.html#asyncio.Future">asyncio.Future</a> from the <code>future_queue</code> and sets a result/exception to it.</p>
 
 <p><strong>Parameters:</strong></p>
@@ -1066,6 +1160,29 @@ This method gets the <a href="https://docs.python.org/3.10/library/asyncio-futur
 
 
 
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.tools.mixins.QueueControlMixin.drain" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">drain</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#azaka.tools.mixins.QueueControlMixin.drain" class="headerlink" title="Permanent link">+</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A coroutine that waits for the <code>push_back</code> event to be set.</p>
+
+    </div>
+
+  </div>
+
+
+
 
 
   </div>
@@ -1105,6 +1222,21 @@ This method gets the <a href="https://docs.python.org/3.10/library/asyncio-futur
           </div>
         </a>
       
+      
+        
+        <a href="../cache/" class="md-footer__link md-footer__link--next" aria-label="Next: Cache" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Cache
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
       
     </nav>
   
