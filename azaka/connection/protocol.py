@@ -27,6 +27,9 @@ if t.TYPE_CHECKING:
 __all__ = ("Protocol",)
 logger = logging.getLogger(__name__)
 
+HIGH_WATERMARK = 64
+LOW_WATERMARK = 16
+
 
 class Protocol(asyncio.Protocol):
 
@@ -46,6 +49,7 @@ class Protocol(asyncio.Protocol):
             "throttled": ThrottledError,
         }
         self._command: t.Optional[bytes] = None
+        self.connector.push_back.set()
 
     @property
     def command(self) -> t.Optional[bytes]:
@@ -56,12 +60,23 @@ class Protocol(asyncio.Protocol):
         self._command = value
 
     def connection_made(self, transport: transports.Transport) -> None:  # type: ignore
+        transport.set_write_buffer_limits(high=HIGH_WATERMARK, low=LOW_WATERMARK)
         transport.write(self.command)
         logger.info(f"DISPATCHED TRANSPORTER WITH {repr(self.command)}")
+
+    def pause_writing(self) -> None:
+        self.connector.push_back.clear()
+
+    def resume_writing(self) -> None:
+        self.connector.push_back.set()
 
     def data_received(self, data: bytes) -> None:
         logger.info("PAYLOAD RECEIVED.")
         self._direct(data)
+
+    def connection_lost(self, exc: t.Optional[Exception]) -> None:
+        logger.info("CONNECTION CLOSED.")
+        self.connector.on_disconnect.set()
 
     def _direct(self, data: bytes) -> None:
         response = Response(data)
@@ -89,7 +104,3 @@ class Protocol(asyncio.Protocol):
             raise InvalidResponseTypeError(
                 response.type, "Couldn't recognize the type of response."
             ) from None
-
-    def connection_lost(self, exc: t.Optional[Exception]) -> None:
-        logger.info("CONNECTION CLOSED.")
-        self.connector.on_disconnect.set()
