@@ -53,6 +53,10 @@ nav:
         - Proxy: API-Reference/internals/commands/proxy.md
       - Tools:
         - Mixins: API-Reference/internals/tools/mixins.md
+        - Cache: API-Reference/internals/tools/cache.md
+      - Connection:
+        - Protocol: API-Reference/internals/connection/protocol.md
+        - Connector: API-Reference/internals/connection/connector.md
 
 plugins:
 - search
