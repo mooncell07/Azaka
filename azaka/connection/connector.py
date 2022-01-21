@@ -84,6 +84,8 @@ class Connector(QueueControlMixin):
 
         else:
             transport.write(processed_command)
+            await self.drain()
+
             logger.info(f"DISPATCHED TRANSPORTER WITH {repr(processed_command)}")
 
             if future is not None:
