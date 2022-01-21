@@ -7,7 +7,10 @@ __all__ = ("QueueControlMixin",)
 
 class QueueControlMixin:
     """
-    A mixin that manages internal queues and events for [connector]().
+    A mixin that manages internal queues and events for [Connector](../connection/connector.md).
+
+    Warning:
+        pls don't play with it
     """
 
     __slots__ = ("future_queue", "on_error", "on_connect", "on_disconnect", "push_back")
@@ -37,7 +40,7 @@ class QueueControlMixin:
         exc: t.Optional[Exception] = None,
     ) -> None:
         """
-        A listener that is called by the [Protocol]() when a response is received.
+        A listener that is called by the [Protocol](../connection/protocol.md) when a response is received.
         This method gets the [asyncio.Future][] from the `future_queue` and sets a result/exception to it.
 
         Args:
@@ -59,5 +62,8 @@ class QueueControlMixin:
         """
         self.on_error.put_nowait(func)
 
-    async def drain(self):
+    async def drain(self) -> None:
+        """
+        A coroutine that waits for the `push_back` event to be set.
+        """
         await self.push_back.wait()
