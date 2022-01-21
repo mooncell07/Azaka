@@ -10,7 +10,7 @@ class QueueControlMixin:
     A mixin that manages internal queues and events for [connector]().
     """
 
-    __slots__ = ("future_queue", "on_error", "on_connect", "on_disconnect")
+    __slots__ = ("future_queue", "on_error", "on_connect", "on_disconnect", "push_back")
 
     def __init__(self) -> None:
         """
@@ -27,6 +27,8 @@ class QueueControlMixin:
         self.on_error: queue.Queue = queue.Queue(maxsize=1)
         self.on_connect: asyncio.Event = asyncio.Event()
         self.on_disconnect: asyncio.Event = asyncio.Event()
+
+        self.push_back: asyncio.Event = asyncio.Event()
 
     def listener(
         self,
@@ -56,3 +58,6 @@ class QueueControlMixin:
             func: The function to be called when an error occurs.
         """
         self.on_error.put_nowait(func)
+
+    async def drain(self):
+        await self.push_back.wait()
