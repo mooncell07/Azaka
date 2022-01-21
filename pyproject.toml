@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Azaka"
-version = "0.1.0a6"
+version = "0.1.0"
 description = "A work in progress API Wrapper around The Visual Novel Database (VNDB) written in Python."
 authors = ["mooncell07 <mooncell07@users.noreply.github.com>"]
 license = "MIT"
