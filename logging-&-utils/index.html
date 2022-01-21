@@ -762,6 +762,81 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API-Reference/internals/tools/cache/" class="md-nav__link">
+        Cache
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2_3" type="checkbox" id="__nav_3_2_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_2_3">
+          Connection
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Connection" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Connection
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API-Reference/internals/connection/protocol/" class="md-nav__link">
+        Protocol
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API-Reference/internals/connection/connector/" class="md-nav__link">
+        Connector
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -836,6 +911,10 @@
 <p>Azaka writes logs for the events happening in the library at <code>DEBUG</code> level and also enables the
 asyncio debug logger internally. Due to the nature of the library, it is recommended to keep logging ON to prevent any errors/events go silent.</p>
 <p>Here we will use python's built-in <a href="https://docs.python.org/3.10/library/logging.html#module-logging">logging</a> module to log the events:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+</code></pre></div>
 
               
             </article>
