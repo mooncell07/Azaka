@@ -1,3 +1,4 @@
+from datetime import date, datetime
 import typing as t
 from dataclasses import dataclass
 
@@ -79,7 +80,6 @@ class Release(BaseObject):
     Attributes:
         title (str): The release's title. (romaji)
         original (str): The release's original/official title.
-        released (str): The release date.
         type (str): The release type. (Deprecated)
         patch (bool): Whether the release is a patch.
         freeware (bool): Whether the release is freeware.
@@ -105,7 +105,7 @@ class Release(BaseObject):
         "_animations",
         "title",
         "original",
-        "released",
+        "_released",
         "languages",
         "type",
         "patch",
@@ -128,11 +128,10 @@ class Release(BaseObject):
         self._producers = data.get("producers", [])
         self._medias = data.get("media", [])
         self._animations = data.get("animation", [])
+        self._released = data.get("released")
 
         self.title: t.Optional[str] = data.get("title")
         self.original: t.Optional[str] = data.get("original")
-        self.released: t.Optional[str] = data.get("released")
-
         self.type: t.Optional[str] = data.get("type")
         self.patch: t.Optional[bool] = data.get("patch")
         self.freeware: t.Optional[bool] = data.get("freeware")
@@ -149,6 +148,19 @@ class Release(BaseObject):
         )
 
         self.languages: t.Optional[t.List[str]] = data.get("languages")
+
+    @property
+    def released(self) -> t.Optional[date]:
+        """
+        Returns the release date.
+
+        Note:
+            This property only returns a [datetime.date][] object if command was issued with
+            the `DETAILS` [Flags](../enums.md#azaka.tools.enums.Flags) otherwise it is `None`.
+        """
+        if self._released is not None:
+            return datetime.date(datetime.strptime(self._released, "%Y-%m-%d"))
+        return None
 
     @property
     def animations(self) -> t.List[AnimationType]:
