@@ -24,6 +24,7 @@ theme:
 nav:
   - Home: index.md
   - Logging & Utilities: logging-&-utils.md
+  - Tutorial: tutorial.md
   - API-Reference:
     - public:
       - Client: API-Reference/public/client.md
