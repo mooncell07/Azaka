@@ -13,6 +13,6 @@ Hi and welcome to the documentation of Azaka!
 
 ## Getting Started
 
-- Tutorial.
+- [Tutorial](tutorial.md).
 - [API-Reference](API-Reference/public/client).
-- Logging and other utility.
+- [Logging and other utility](logging-&-utils.md).
