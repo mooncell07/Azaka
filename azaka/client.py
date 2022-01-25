@@ -201,6 +201,12 @@ class Client:
             result = self._cache[command]
         return result
 
+    async def wait_until_connect(self) -> None:
+        """
+        Waits until the Client is connected.
+        """
+        await self._connector.on_connect.wait()
+
     async def dbstats(self, update: bool = False) -> DBStats:
         """
         Get the VNDB database statistics.
