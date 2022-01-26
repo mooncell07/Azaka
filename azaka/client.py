@@ -335,7 +335,7 @@ class Client:
 
     def stop(self) -> None:
         """
-        Stops the event loop and closes the connection.
+        Closes the internal transport.
         """
         if self._connector.transport is not None:
             self._connector.transport.close()
