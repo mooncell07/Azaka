@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import os
 import ssl
 
@@ -15,9 +16,10 @@ from .context import Context
 from .exceptions import AzakaException
 from .interface import Interface, SETInterface
 from .objects import DBStats
-from .tools import Cache, ResponseType, Paginator
+from .tools import Cache, Paginator, ResponseType
 
 __all__ = ("Client",)
+logger = logging.getLogger(__name__)
 
 
 class Client:
@@ -120,18 +122,9 @@ class Client:
         """
         self._connector.error_listener(func)
 
-    def start(self, *, token: t.Optional[t.Union[bool, str]] = None) -> None:
+    def _auth_helper(self, *, token: t.Optional[t.Union[bool, str]] = None) -> Command:
         """
-        Start the client and attempt to login.
-
-        Args:
-            token: The token to use. If not provided, password will be used if username is provided.
-
-        Raises:
-            AzakaException: Raises when a username was passed but not a password or session token.
-
-        Note:
-            For fetching a token, the argument should be set to `True` and username and password must be provided.
+        Adds logic for auth.
         """
         data = {
             "protocol": self.ctx.PROTOCOL_VERSION,
@@ -146,7 +139,7 @@ class Client:
 
             if isinstance(token, str):
                 data["sessiontoken"] = token
-                self._cache.put(Command("token"), token)
+                self._cache.put("token", token)
 
             elif password is not None:
                 data["password"] = password
@@ -159,7 +152,39 @@ class Client:
                 )
 
         command = Command("login", **data)
-        self._connector.start(command.create())
+        return command
+
+    async def connect(self, *, token: t.Optional[t.Union[bool, str]] = None) -> None:
+        """
+        Start the client and attempt to login. This method is a coroutine.
+
+        Args:
+            token: The token to use. If not provided, password will be used if username is provided.
+
+        Raises:
+            AzakaException: Raises when a username was passed but not a password or session token.
+
+        Note:
+            For fetching a token, the argument should be set to `True` and username and password must be provided.
+        """
+        command = self._auth_helper(token=token)
+        await self._connector.connect(command.create())
+
+    def start(self, *, token: t.Optional[t.Union[bool, str]] = None) -> None:
+        """
+        Blocking alternate of [Client.connect](./#azaka.client.Client.connect).
+        """
+        command = self._auth_helper(token=token)
+
+        try:
+            self.ctx.loop.run_until_complete(self._connector.connect(command.create()))
+        except KeyboardInterrupt:
+            pass
+
+        finally:
+            self._connector.shutdown()
+            self.ctx.loop.close()
+            logger.debug("SHUTDOWN COMPLETED.")
 
     async def logout(self) -> None:
         """
@@ -312,7 +337,8 @@ class Client:
         """
         Stops the event loop and closes the connection.
         """
-        self.ctx.loop.stop()
+        if self._connector.transport is not None:
+            self._connector.transport.close()
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__} connected={not self.is_closing}>"
