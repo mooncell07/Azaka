@@ -59,49 +59,16 @@ class Connector(QueueControlMixin):
             command: The command to send to the server.
         """
         self.protocol_factory.command = command
-
-        try:
-            self.transport, _ = await asyncio.wait_for(
-                self.ctx.loop.create_connection(  # type: ignore
-                    protocol_factory=lambda: self.protocol_factory,
-                    host=self.ctx.ADDR,
-                    port=self.ctx.PORT,
-                    ssl=self.ctx.ssl_context,
-                ),
-                timeout=5,
-            )
-            await self.on_disconnect.wait()
-        finally:
-            self.ctx.loop.stop()
-
-    def start(self, command: bytes) -> None:
-        """
-        Starts the event loop and manages the connector.
-
-        Args:
-            command: The command to send to the server.
-
-        Raises:
-            Exception: The exception `Connector.connect` received.
-        """
-        task = self.ctx.loop.create_task(self.connect(command))
-        task._log_destroy_pending = False  # type: ignore
-
-        try:
-            self.ctx.loop.run_forever()
-        except KeyboardInterrupt:
-            pass
-
-        finally:
-            self.shutdown()
-            self.ctx.loop.close()
-
-            logger.debug("SHUTDOWN COMPLETED.")
-
-        if task.done() or task.cancelled():
-            with contextlib.suppress(asyncio.CancelledError):
-                if task.exception() is not None:
-                    raise task.exception() from None  # type: ignore
+        self.transport, _ = await asyncio.wait_for(
+            self.ctx.loop.create_connection(  # type: ignore
+                protocol_factory=lambda: self.protocol_factory,
+                host=self.ctx.ADDR,
+                port=self.ctx.PORT,
+                ssl=self.ctx.ssl_context,
+            ),
+            timeout=5,
+        )
+        await self.on_disconnect.wait()
 
     async def inject(
         self, command: Command, future: t.Optional[asyncio.Future]
