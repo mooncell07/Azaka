@@ -79,9 +79,7 @@ class Command:
         self.interface._verify()
         filter_expressions = self.interface._condition.expression
         flatten_flags = ",".join(i.value for i in self.interface._flags)
-        dumped_options = (
-            json.dumps(self.interface._options) if self.interface._options else ""
-        )
+        dumped_options = json.dumps(self.interface._options)
 
         resolved_type = (
             self.interface._type.__name__.lower()
