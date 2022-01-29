@@ -54,7 +54,7 @@ class Interface:
         self._type = type
         self._condition: t.Optional[BoolOProxy] = None
         self._flags: t.Iterable[Flags] = flags
-        self._options: t.Optional[t.Mapping[str, t.Any]] = None
+        self._options: t.Mapping[str, t.Any] = {}
 
     def __enter__(self) -> Interface:
         return self
@@ -96,7 +96,7 @@ class Interface:
         Args:
             **kwargs: The options to add.
         """
-        self._options = kwargs
+        self._options.update(kwargs)
 
     @property
     def flags(self) -> t.Iterable[Flags]:
