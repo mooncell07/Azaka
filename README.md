@@ -1,4 +1,4 @@
-<p align="center"> <img src="https://cdn-icons-png.flaticon.com/512/2322/2322246.png" height=200> </p>
+<p align="center"> <img src="https://cdn-icons-png.flaticon.com/512/2322/2322246.png" height=100> </p>
 
 # WELCOME!
 
@@ -6,16 +6,18 @@ Welcome to Azaka, a work-in-progress asynchronous API wrapper around the [visual
 
 This wrapper is aimed to provide 100% API coverage being extremely simple to use and powerful. Now let's discuss why you should use it in next section.
 
-# LINKS -
+# LINKS
 
-- [Features](https://github.com/mooncell07/Azaka#features--)
-- [Problems](https://github.com/mooncell07/Azaka#problems--)
-- [Installation](https://github.com/mooncell07/Azaka#installation--)
-- [Usage](https://github.com/mooncell07/Azaka#usage--)
-- [Docs. & Tuts.](https://github.com/mooncell07/Azaka#documentation--tutorial--)
-- [Thanks](https://github.com/mooncell07/Azaka#thanks)
+- [WELCOME!](#welcome)
+- [LINKS](#links)
+  - [FEATURES](#features)
+  - [PROBLEMS](#problems)
+  - [INSTALLATION](#installation)
+  - [USAGE](#usage)
+  - [DOCUMENTATION & TUTORIAL](#documentation--tutorial)
+  - [THANKS](#thanks)
 
-## FEATURES -
+## FEATURES
 
 - **Fully Asynchronous** - Everything which poses a threat of blocking the I/O for a significant amount of time is async.
 - **Single Connection** - Everything is handled by a single connection to the API and it is reused
@@ -25,7 +27,7 @@ This wrapper is aimed to provide 100% API coverage being extremely simple to use
 - **No Dependency Requirement** - No third party dependency is required to do anything in entire library.
 
 
-## PROBLEMS -
+## PROBLEMS
 
 *(yes, i am a gud person)*
 
@@ -35,7 +37,7 @@ This wrapper is aimed to provide 100% API coverage being extremely simple to use
 - **Support** - Well.. i can only help with it so yea you can contact me on discord `Nova#3379`.
 
 
-## INSTALLATION -
+## INSTALLATION
 
 You can install Azaka using pip.
 
@@ -50,7 +52,7 @@ Additionally, you can also install
 
 for speeding up the stuff!
 
-## USAGE -
+## USAGE
 
 *Example of getting basic VN data.*
 
@@ -86,7 +88,7 @@ async def main(ctx) -> None:
 client.start()
 ```
 
-## DOCUMENTATION & TUTORIAL -
+## DOCUMENTATION & TUTORIAL
 
 Documentation can be found [here](https://mooncell07.github.io/Azaka/).
 
