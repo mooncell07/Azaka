@@ -9,10 +9,10 @@ from ..exceptions import OperationNotSupportedError
 if t.TYPE_CHECKING:
     from .condition import Operator
 
-__all__ = ("ConditionProxy", "BoolOProxy")
+__all__ = ("_ConditionProxy", "_BoolOProxy")
 
 
-class BoolOProxy:
+class _BoolOProxy:
     """
     Final parser for the expressions.
 
@@ -29,7 +29,7 @@ class BoolOProxy:
         from azaka.condition import VNCondition
 
         print(type(VNCondition.TITLE == "fate"))
-        #output: <class 'azaka.commands.proxy.BoolOProxy'>
+        #output: <class 'azaka.commands.proxy._BoolOProxy'>
         ```
 
         You can pass this object directly to `get_x` methods of [Context](../../public/context.md)
@@ -40,7 +40,7 @@ class BoolOProxy:
 
     def __init__(self, expression: str) -> None:
         """
-        BoolOProxy constructor.
+        _BoolOProxy constructor.
 
         args:
             expression: The expression to be parsed.
@@ -50,17 +50,17 @@ class BoolOProxy:
         """
         self.expression: str = f"({expression})"
 
-    def __and__(self, value: BoolOProxy) -> BoolOProxy:
+    def __and__(self, value: _BoolOProxy) -> _BoolOProxy:
         """
-        Does an inplace bitwise `AND` operation and Returns the `BoolOProxy` object.
+        Does an inplace bitwise `AND` operation and Returns the `_BoolOProxy` object.
         The expression will look like `(exprA and exprB)` in string form.
         """
         self.expression = f"({self.expression} and {value.expression})"
         return self
 
-    def __or__(self, value: BoolOProxy) -> BoolOProxy:
+    def __or__(self, value: _BoolOProxy) -> _BoolOProxy:
         """
-        Does an inplace bitwise `OR` operation and Returns the `BoolOProxy` object.
+        Does an inplace bitwise `OR` operation and Returns the `_BoolOProxy` object.
         The expression will look like `(exprA or exprB)` in string form.
         """
         self.expression = f"({self.expression} or {value.expression})"
@@ -79,7 +79,7 @@ class BoolOProxy:
         return self.expression
 
 
-class ConditionProxy:
+class _ConditionProxy:
     """
     An object which takes care of parsing binary expressions which consist of
     Relational Operators and the special operator `%` for searching.
@@ -89,7 +89,7 @@ class ConditionProxy:
 
     def __init__(self, attr_name: str, operator: Operator) -> None:
         """
-        ConditionProxy constructor.
+        _ConditionProxy constructor.
 
         args:
             attr_name: The name of the field.
@@ -100,9 +100,9 @@ class ConditionProxy:
         self.operator = operator
 
     def analyze(arg: str):  # type: ignore
-        def wrapper(func: t.Callable[[ConditionProxy, t.Any], BoolOProxy]):
+        def wrapper(func: t.Callable[[_ConditionProxy, t.Any], _BoolOProxy]):
             @functools.wraps(func)
-            def inner(self, func_arg: t.Any) -> BoolOProxy:
+            def inner(self, func_arg: t.Any) -> _BoolOProxy:
 
                 if arg in self.operator.symbols:
                     return func(self, json.dumps(func_arg))
@@ -116,50 +116,50 @@ class ConditionProxy:
         return wrapper
 
     @analyze("=")
-    def __eq__(self, value: t.Any) -> BoolOProxy:
+    def __eq__(self, value: t.Any) -> _BoolOProxy:
         """
-        Returns a [BoolOProxy](./#azaka.commands.proxy.BoolOProxy) object with the expression `field = value`.
+        Returns a [_BoolOProxy](./#azaka.commands.proxy._BoolOProxy) object with the expression `field = value`.
         """
-        return BoolOProxy(f"{self.name} = {value}")
+        return _BoolOProxy(f"{self.name} = {value}")
 
     @analyze("!=")
     def __ne__(self, value: t.Any):
         """
-        Returns a [BoolOProxy](./#azaka.commands.proxy.BoolOProxy) object with the expression `field != value`.
+        Returns a [_BoolOProxy](./#azaka.commands.proxy._BoolOProxy) object with the expression `field != value`.
         """
-        return BoolOProxy(f"{self.name} != {value}")
+        return _BoolOProxy(f"{self.name} != {value}")
 
     @analyze("<")
-    def __lt__(self, value: t.Any) -> BoolOProxy:
+    def __lt__(self, value: t.Any) -> _BoolOProxy:
         """
-        Returns a [BoolOProxy](./#azaka.commands.proxy.BoolOProxy) object with the expression `field < value`.
+        Returns a [_BoolOProxy](./#azaka.commands.proxy._BoolOProxy) object with the expression `field < value`.
         """
-        return BoolOProxy(f"{self.name} < {value}")
+        return _BoolOProxy(f"{self.name} < {value}")
 
     @analyze("<=")
-    def __le__(self, value: t.Any) -> BoolOProxy:
+    def __le__(self, value: t.Any) -> _BoolOProxy:
         """
-        Returns a [BoolOProxy](./#azaka.commands.proxy.BoolOProxy) object with the expression `field <= value`.
+        Returns a [_BoolOProxy](./#azaka.commands.proxy._BoolOProxy) object with the expression `field <= value`.
         """
-        return BoolOProxy(f"{self.name} <= {value}")
+        return _BoolOProxy(f"{self.name} <= {value}")
 
     @analyze(">")
-    def __gt__(self, value: t.Any) -> BoolOProxy:
+    def __gt__(self, value: t.Any) -> _BoolOProxy:
         """
-        Returns a [BoolOProxy](./#azaka.commands.proxy.BoolOProxy) object with the expression `field > value`.
+        Returns a [_BoolOProxy](./#azaka.commands.proxy._BoolOProxy) object with the expression `field > value`.
         """
-        return BoolOProxy(f"{self.name} > {value}")
+        return _BoolOProxy(f"{self.name} > {value}")
 
     @analyze(">=")
-    def __ge__(self, value: t.Any) -> BoolOProxy:
+    def __ge__(self, value: t.Any) -> _BoolOProxy:
         """
-        Returns a [BoolOProxy](./#azaka.commands.proxy.BoolOProxy) object with the expression `field >= value`.
+        Returns a [_BoolOProxy](./#azaka.commands.proxy._BoolOProxy) object with the expression `field >= value`.
         """
-        return BoolOProxy(f"{self.name} >= {value}")
+        return _BoolOProxy(f"{self.name} >= {value}")
 
     @analyze("~")
-    def __mod__(self, value: t.Any) -> BoolOProxy:
+    def __mod__(self, value: t.Any) -> _BoolOProxy:
         """
-        Returns a [BoolOProxy](./#azaka.commands.proxy.BoolOProxy) object with the expression `field ~ value`.
+        Returns a [_BoolOProxy](./#azaka.commands.proxy._BoolOProxy) object with the expression `field ~ value`.
         """
-        return BoolOProxy(f"{self.name} ~ {value}")
+        return _BoolOProxy(f"{self.name} ~ {value}")

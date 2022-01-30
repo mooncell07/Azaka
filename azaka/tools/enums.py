@@ -66,7 +66,7 @@ class ResponseType(enum.Enum):
     An [enum.Enum][] of all the available response types.
     These are the possible response types API can return and
     in most cases you will not need to use or get them directly.
-    except for [Client.set_ulist](../client#azaka.client.Client.set_ulist).
+    except for [Client.set](../client#azaka.client.Client.set).
 
     Attributes:
         OK: The `ok` response type.

@@ -8,7 +8,6 @@ from .interface import Interface
 from .commands import (
     UserCondition,
     VNCondition,
-    BoolOProxy,
     ReleaseCondition,
     QuoteCondition,
     CharacterCondition,
@@ -17,6 +16,7 @@ from .commands import (
     UlistLabelsCondition,
     ProducerCondition,
 )
+from .commands.proxy import _BoolOProxy
 from .tools import Flags
 from .objects import (
     VN,
@@ -158,7 +158,7 @@ class Context:
 
     async def get_vn(
         self,
-        predicate: t.Callable[[t.Type[VNCondition]], BoolOProxy],
+        predicate: t.Callable[[t.Type[VNCondition]], _BoolOProxy],
         *,
         details: bool = False
     ) -> t.Optional[t.List[VN]]:
@@ -170,7 +170,7 @@ class Context:
         Args:
             predicate: A callable that takes a
                        [VNCondition](../public/condition.md#azaka.commands.condition.VNCondition)
-                       and returns a [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
+                       and returns a [_BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy._BoolOProxy).
             details: Whether to get the basic and detailed info of the vn.
 
         Returns:
@@ -210,7 +210,7 @@ class Context:
 
     async def get_staff(
         self,
-        predicate: t.Callable[[t.Type[StaffCondition]], BoolOProxy],
+        predicate: t.Callable[[t.Type[StaffCondition]], _BoolOProxy],
         *,
         details: bool = False
     ) -> t.Optional[t.List[Staff]]:
@@ -220,7 +220,7 @@ class Context:
         Args:
             predicate: A callable that takes a
                        [StaffCondition](../public/condition.md#azaka.commands.condition.StaffCondition)
-                       and returns a [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
+                       and returns a [_BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy._BoolOProxy).
 
         Returns:
             A [list][] of [Staff](./objects/staff.md#azaka.objects.staff.Staff)s matching the predicate.
@@ -245,7 +245,7 @@ class Context:
 
     async def get_release(
         self,
-        predicate: t.Callable[[t.Type[ReleaseCondition]], BoolOProxy],
+        predicate: t.Callable[[t.Type[ReleaseCondition]], _BoolOProxy],
         *,
         details: bool = False
     ) -> t.Optional[t.List[Release]]:
@@ -255,7 +255,7 @@ class Context:
         Args:
             predicate: A callable that takes a
                        [ReleaseCondition](../public/condition.md#azaka.commands.condition.ReleaseCondition) and returns
-                       a [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
+                       a [_BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy._BoolOProxy).
             details: Whether to get the basic and detailed info of the release.
 
         Returns:
@@ -282,7 +282,7 @@ class Context:
 
     async def get_character(
         self,
-        predicate: t.Callable[[t.Type[CharacterCondition]], BoolOProxy],
+        predicate: t.Callable[[t.Type[CharacterCondition]], _BoolOProxy],
         *,
         details: bool = False
     ) -> t.Optional[t.List[Character]]:
@@ -292,7 +292,7 @@ class Context:
         Args:
             predicate: A callable that takes a
                        [CharacterCondition](../public/condition.md#azaka.commands.condition.CharacterCondition) and
-                       returns a [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
+                       returns a [_BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy._BoolOProxy).
             details: Whether to get the basic and detailed info of the character.
 
         Returns:
@@ -318,7 +318,7 @@ class Context:
 
     async def get_producer(
         self,
-        predicate: t.Callable[[t.Type[ProducerCondition]], BoolOProxy],
+        predicate: t.Callable[[t.Type[ProducerCondition]], _BoolOProxy],
         *,
         details: bool = False
     ) -> t.Optional[t.List[Producer]]:
@@ -328,7 +328,7 @@ class Context:
         Args:
             predicate: A callable that takes a
                        [ProducerCondition](../public/condition.md#azaka.commands.condition.ProducerCondition)
-                       and returns a [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
+                       and returns a [_BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy._BoolOProxy).
             details: Whether to get the basic and detailed info of the producer.
 
         Returns:
@@ -353,7 +353,7 @@ class Context:
         return None
 
     async def get_quote(
-        self, predicate: t.Callable[[t.Type[QuoteCondition]], BoolOProxy]
+        self, predicate: t.Callable[[t.Type[QuoteCondition]], _BoolOProxy]
     ) -> t.Optional[t.List[Quote]]:
         """
         Get Quotes matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
@@ -361,7 +361,7 @@ class Context:
         Args:
             predicate: A callable that takes a
                        [QuoteCondition](../public/condition.md#azaka.commands.condition.QuoteCondition) and returns a
-                       [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
+                       [_BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy._BoolOProxy).
 
         Returns:
             A [list][] of [Quote](./objects/quote.md#azaka.objects.quote.Quote)s matching the predicate.
@@ -376,7 +376,7 @@ class Context:
         return None
 
     async def get_user(
-        self, predicate: t.Callable[[t.Type[UserCondition]], BoolOProxy]
+        self, predicate: t.Callable[[t.Type[UserCondition]], _BoolOProxy]
     ) -> t.Optional[t.List[User]]:
         """
         Get Users matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
@@ -384,7 +384,7 @@ class Context:
         Args:
             predicate: A callable that takes a
                        [UserCondition](../public/condition.md#azaka.commands.condition.UserCondition) and returns a
-                       [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
+                       [_BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy._BoolOProxy).
 
         Returns:
             A [list][] of [User](./objects/user.md#azaka.objects.user.User)s matching the predicate.
@@ -399,7 +399,7 @@ class Context:
         return None
 
     async def get_ulist(
-        self, predicate: t.Callable[[t.Type[UlistCondition]], BoolOProxy]
+        self, predicate: t.Callable[[t.Type[UlistCondition]], _BoolOProxy]
     ) -> t.Optional[t.List[Ulist]]:
         """
         Get Ulists matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
@@ -407,7 +407,7 @@ class Context:
         Args:
             predicate: A callable that takes a
                        [UlistCondition](../public/condition.md#azaka.commands.condition.UlistCondition) and returns a
-                       [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
+                       [_BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy._BoolOProxy).
 
         Returns:
             A [list][] of [Ulist](./objects/ulist.md#azaka.objects.ulist.Ulist)s matching the predicate.
@@ -422,7 +422,7 @@ class Context:
         return None
 
     async def get_ulist_labels(
-        self, predicate: t.Callable[[t.Type[UlistLabelsCondition]], BoolOProxy]
+        self, predicate: t.Callable[[t.Type[UlistLabelsCondition]], _BoolOProxy]
     ) -> t.Optional[t.List[UlistLabels]]:
         """
         Get Ulist Labels matching the predicate. [info and usage](./context.md#azaka.context.Context.get_vn)
@@ -430,7 +430,7 @@ class Context:
         Args:
             predicate: A callable that takes a
                        [UlistLabelsCondition](../public/condition.md#azaka.commands.condition.UlistLabelsCondition) and
-                       returns a [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy).
+                       returns a [_BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy._BoolOProxy).
 
         Returns:
             A [list][] of

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing as t
 
-from .proxy import ConditionProxy
+from .proxy import _ConditionProxy
 from ..objects import UlistLabels
 
 
@@ -114,8 +114,8 @@ class BaseCondition:
     | ID_ARRAY | A [typing.Iterable][] of [int][]s | SOME                 | Filter using an array of `ID`s.|
     """  # noqa: E501
 
-    ID: t.Final[ConditionProxy] = ConditionProxy("id", operator=Operator.fill_all())
-    ID_ARRAY: t.Final[ConditionProxy] = ConditionProxy(
+    ID: t.Final[_ConditionProxy] = _ConditionProxy("id", operator=Operator.fill_all())
+    ID_ARRAY: t.Final[_ConditionProxy] = _ConditionProxy(
         "id", operator=Operator.fill_some()
     )
 
@@ -146,40 +146,40 @@ class VNCondition(BaseCondition):
     | TAGS_ARRAY      | A [typing.Iterable][] of [int][]s | *SOME*               | Find VNs using an array of tags.
     """  # noqa: E501
 
-    TITLE: t.Final[ConditionProxy] = ConditionProxy(
+    TITLE: t.Final[_ConditionProxy] = _ConditionProxy(
         "title", operator=Operator.fill_some("~")
     )
 
-    PLATFORMS: t.Final[ConditionProxy] = ConditionProxy(
+    PLATFORMS: t.Final[_ConditionProxy] = _ConditionProxy(
         "platforms", operator=Operator.fill_some()
     )
-    PLATFORMS_ARRAY: t.Final[ConditionProxy] = PLATFORMS
+    PLATFORMS_ARRAY: t.Final[_ConditionProxy] = PLATFORMS
 
-    RELEASED: t.Final[ConditionProxy] = ConditionProxy(
+    RELEASED: t.Final[_ConditionProxy] = _ConditionProxy(
         "released", operator=Operator.fill_some()
     )
-    RELEASED_DATE: t.Final[ConditionProxy] = ConditionProxy(
+    RELEASED_DATE: t.Final[_ConditionProxy] = _ConditionProxy(
         "released", operator=Operator.fill_all()
     )
 
-    LANGUAGES: t.Final[ConditionProxy] = ConditionProxy(
+    LANGUAGES: t.Final[_ConditionProxy] = _ConditionProxy(
         "languages", operator=Operator.fill_some()
     )
-    LANGUAGES_ARRAY: t.Final[ConditionProxy] = LANGUAGES
+    LANGUAGES_ARRAY: t.Final[_ConditionProxy] = LANGUAGES
 
-    FIRSTCHAR: t.Final[ConditionProxy] = ConditionProxy(
+    FIRSTCHAR: t.Final[_ConditionProxy] = _ConditionProxy(
         "firstchar", operator=Operator.fill_some()
     )
 
-    ORIG_LANG: t.Final[ConditionProxy] = ConditionProxy(
+    ORIG_LANG: t.Final[_ConditionProxy] = _ConditionProxy(
         "orig_lang", operator=Operator.fill_some()
     )
-    ORIG_LANG_ARRAY: t.Final[ConditionProxy] = ORIG_LANG
+    ORIG_LANG_ARRAY: t.Final[_ConditionProxy] = ORIG_LANG
 
-    SEARCH: t.Final[ConditionProxy] = ConditionProxy("search", operator=Operator("~"))
+    SEARCH: t.Final[_ConditionProxy] = _ConditionProxy("search", operator=Operator("~"))
 
-    TAGS: t.Final[ConditionProxy] = ConditionProxy("tags", Operator.fill_some())
-    TAGS_ARRAY: t.Final[ConditionProxy] = TAGS
+    TAGS: t.Final[_ConditionProxy] = _ConditionProxy("tags", Operator.fill_some())
+    TAGS_ARRAY: t.Final[_ConditionProxy] = TAGS
 
     __slots__ = ()
 
@@ -212,51 +212,51 @@ class ReleaseCondition(BaseCondition):
     | PLATFORMS_ARRAY | A [typing.Iterable][] of [str][]s | *SOME*               | Filter using an array of PLATFORMS.                                                          |
     """  # noqa: E501
 
-    VN: t.Final[ConditionProxy] = ConditionProxy("vn", operator=Operator.fill_some())
-    VN_ARRAY: t.Final[ConditionProxy] = VN
+    VN: t.Final[_ConditionProxy] = _ConditionProxy("vn", operator=Operator.fill_some())
+    VN_ARRAY: t.Final[_ConditionProxy] = VN
 
-    PRODUCER: t.Final[ConditionProxy] = ConditionProxy(
+    PRODUCER: t.Final[_ConditionProxy] = _ConditionProxy(
         "producer", operator=Operator("=")
     )
-    TITLE: t.Final[ConditionProxy] = ConditionProxy(
+    TITLE: t.Final[_ConditionProxy] = _ConditionProxy(
         "title", operator=Operator.fill_some("~")
     )
-    ORIGINAL: t.Final[ConditionProxy] = ConditionProxy(
+    ORIGINAL: t.Final[_ConditionProxy] = _ConditionProxy(
         "original", operator=Operator.fill_some("~")
     )
 
-    RELEASED: t.Final[ConditionProxy] = ConditionProxy(
+    RELEASED: t.Final[_ConditionProxy] = _ConditionProxy(
         "date", operator=Operator.fill_some()
     )
-    RELEASED_DATE: t.Final[ConditionProxy] = ConditionProxy(
+    RELEASED_DATE: t.Final[_ConditionProxy] = _ConditionProxy(
         "date", operator=Operator.fill_all()
     )
 
-    PATCH: t.Final[ConditionProxy] = ConditionProxy("patch", operator=Operator("="))
-    FREEWARE: t.Final[ConditionProxy] = ConditionProxy(
+    PATCH: t.Final[_ConditionProxy] = _ConditionProxy("patch", operator=Operator("="))
+    FREEWARE: t.Final[_ConditionProxy] = _ConditionProxy(
         "freeware", operator=Operator("=")
     )
-    DOUJIN: t.Final[ConditionProxy] = ConditionProxy("doujin", operator=Operator("="))
+    DOUJIN: t.Final[_ConditionProxy] = _ConditionProxy("doujin", operator=Operator("="))
 
-    TYPE: t.Final[ConditionProxy] = ConditionProxy(
+    TYPE: t.Final[_ConditionProxy] = _ConditionProxy(
         "type", operator=Operator.fill_some()
     )
-    GTIN: t.Final[ConditionProxy] = ConditionProxy(
+    GTIN: t.Final[_ConditionProxy] = _ConditionProxy(
         "gtin", operator=Operator.fill_some()
     )
-    CATALOG: t.Final[ConditionProxy] = ConditionProxy(
+    CATALOG: t.Final[_ConditionProxy] = _ConditionProxy(
         "catalog", operator=Operator.fill_some()
     )
 
-    LANGUAGES: t.Final[ConditionProxy] = ConditionProxy(
+    LANGUAGES: t.Final[_ConditionProxy] = _ConditionProxy(
         "languages", operator=Operator.fill_some()
     )
-    LANGUAGES_ARRAY: t.Final[ConditionProxy] = LANGUAGES
+    LANGUAGES_ARRAY: t.Final[_ConditionProxy] = LANGUAGES
 
-    PLATFORMS: t.Final[ConditionProxy] = ConditionProxy(
+    PLATFORMS: t.Final[_ConditionProxy] = _ConditionProxy(
         "platforms", operator=Operator.fill_some()
     )
-    PLATFORMS_ARRAY: t.Final[ConditionProxy] = PLATFORMS
+    PLATFORMS_ARRAY: t.Final[_ConditionProxy] = PLATFORMS
 
     __slots__ = ()
 
@@ -278,22 +278,22 @@ class ProducerCondition(BaseCondition):
     | SEARCH          | [str][]                           | *(%)*                | Performs a search on the name, original and aliases fields.                   |
     """  # noqa: E501
 
-    NAME: t.Final[ConditionProxy] = ConditionProxy(
+    NAME: t.Final[_ConditionProxy] = _ConditionProxy(
         "name", operator=Operator.fill_some("~")
     )
-    ORIGINAL: t.Final[ConditionProxy] = ConditionProxy(
+    ORIGINAL: t.Final[_ConditionProxy] = _ConditionProxy(
         "original", operator=Operator.fill_some("~")
     )
-    TYPE: t.Final[ConditionProxy] = ConditionProxy(
+    TYPE: t.Final[_ConditionProxy] = _ConditionProxy(
         "type", operator=Operator.fill_some()
     )
 
-    LANGUAGE: t.Final[ConditionProxy] = ConditionProxy(
+    LANGUAGE: t.Final[_ConditionProxy] = _ConditionProxy(
         "language", operator=Operator.fill_some()
     )
-    LANGUAGES_ARRAY: t.Final[ConditionProxy] = LANGUAGE
+    LANGUAGES_ARRAY: t.Final[_ConditionProxy] = LANGUAGE
 
-    SEARCH: t.Final[ConditionProxy] = ConditionProxy("search", operator=Operator("~"))
+    SEARCH: t.Final[_ConditionProxy] = _ConditionProxy("search", operator=Operator("~"))
 
     __slots__ = ()
 
@@ -316,21 +316,21 @@ class CharacterCondition(BaseCondition):
     | TRAITS_ARRAY | A [typing.Iterable][] of [int][]s | *SOME*               | The `=` filter will return chars that are linked to any (not all) of the given traits, the `!=` filter will return chars that are not linked to any of the given traits. |
     """  # noqa: E501
 
-    NAME: t.Final[ConditionProxy] = ConditionProxy(
+    NAME: t.Final[_ConditionProxy] = _ConditionProxy(
         "name", operator=Operator.fill_some("~")
     )
-    ORIGINAL: t.Final[ConditionProxy] = ConditionProxy(
+    ORIGINAL: t.Final[_ConditionProxy] = _ConditionProxy(
         "original", operator=Operator.fill_some("~")
     )
-    SEARCH: t.Final[ConditionProxy] = ConditionProxy("search", operator=Operator("~"))
+    SEARCH: t.Final[_ConditionProxy] = _ConditionProxy("search", operator=Operator("~"))
 
-    VN: t.Final[ConditionProxy] = ConditionProxy("vn", operator=Operator("="))
-    VN_ARRAY: t.Final[ConditionProxy] = VN
+    VN: t.Final[_ConditionProxy] = _ConditionProxy("vn", operator=Operator("="))
+    VN_ARRAY: t.Final[_ConditionProxy] = VN
 
-    TRAITS: t.Final[ConditionProxy] = ConditionProxy(
+    TRAITS: t.Final[_ConditionProxy] = _ConditionProxy(
         "traits", operator=Operator.fill_some()
     )
-    TRAITS_ARRAY: t.Final[ConditionProxy] = TRAITS
+    TRAITS_ARRAY: t.Final[_ConditionProxy] = TRAITS
 
     __slots__ = ()
 
@@ -349,10 +349,10 @@ class StaffCondition(BaseCondition):
     | SEARCH    | [str][]                           | *(%)*                | Performs a search on the name, original and aliases fields. |
     """  # noqa: E501
 
-    AID: t.Final[ConditionProxy] = ConditionProxy("aid", operator=Operator("="))
-    AID_ARRAY: t.Final[ConditionProxy] = AID
+    AID: t.Final[_ConditionProxy] = _ConditionProxy("aid", operator=Operator("="))
+    AID_ARRAY: t.Final[_ConditionProxy] = AID
 
-    SEARCH: t.Final[ConditionProxy] = ConditionProxy("search", operator=Operator("~"))
+    SEARCH: t.Final[_ConditionProxy] = _ConditionProxy("search", operator=Operator("~"))
 
     __slots__ = ()
 
@@ -385,10 +385,10 @@ class UserCondition(BaseCondition):
 
     """  # noqa: E501
 
-    USERNAME: t.Final[ConditionProxy] = ConditionProxy(
+    USERNAME: t.Final[_ConditionProxy] = _ConditionProxy(
         "username", operator=Operator.fill_some("~")
     )
-    USERNAME_ARRAY: t.Final[ConditionProxy] = ConditionProxy(
+    USERNAME_ARRAY: t.Final[_ConditionProxy] = _ConditionProxy(
         "username", operator=Operator("=")
     )
 
@@ -407,7 +407,7 @@ class UlistLabelsCondition:
     | UID       | [int][]          | *(==)*               | Find using user ID. The special value '0' is recognized as the currently logged in user. |
     """  # noqa: E501
 
-    UID: t.Final[ConditionProxy] = ConditionProxy("uid", operator=Operator("="))
+    UID: t.Final[_ConditionProxy] = _ConditionProxy("uid", operator=Operator("="))
 
 
 class UlistCondition(UlistLabelsCondition):
@@ -424,11 +424,11 @@ class UlistCondition(UlistLabelsCondition):
     | LABEL     | [int][]                           | *(==)*               | Label assigned to the VN.                |
     """  # noqa: E501
 
-    VN: t.Final[ConditionProxy] = ConditionProxy("vn", operator=Operator.fill_all())
-    VN_ARRAY: t.Final[ConditionProxy] = ConditionProxy(
+    VN: t.Final[_ConditionProxy] = _ConditionProxy("vn", operator=Operator.fill_all())
+    VN_ARRAY: t.Final[_ConditionProxy] = _ConditionProxy(
         "vn", operator=Operator.fill_some()
     )
-    LABEL: t.Final[ConditionProxy] = ConditionProxy("label", operator=Operator("~"))
+    LABEL: t.Final[_ConditionProxy] = _ConditionProxy("label", operator=Operator("~"))
 
     __slots__ = ()
 
