@@ -16,7 +16,7 @@ from .context import Context
 from .exceptions import AzakaException
 from .interface import Interface, SETInterface
 from .objects import DBStats
-from .tools import Cache, Paginator, ResponseType
+from .tools import Paginator, ResponseType
 
 __all__ = ("Client",)
 logger = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 class Client:
 
-    __slots__ = ("_cache", "_connector", "ctx")
+    __slots__ = ("_connector", "_inventory", "ctx")
 
     def __init__(
         self,
@@ -33,7 +33,6 @@ class Client:
         password: t.Optional[str] = None,
         loop: t.Optional[asyncio.AbstractEventLoop] = None,
         ssl_context: t.Optional[ssl.SSLContext] = None,
-        cache_size: int = 50,
     ) -> None:
         """
         Client Constructor. This is the main entry point for the library.
@@ -43,7 +42,6 @@ class Client:
             password: Password to use for logging in.
             loop: The [asyncio.AbstractEventLoop][] subclass to use.
             ssl_context: The [ssl.SSLContext][] to use. If not provided, a default context will be used.
-            cache_size: Size of the internal cache of data. Defaults to 50.
 
         Info:
             If you have uvloop installed, then the lib will by default use uvloop's event loop.
@@ -58,8 +56,16 @@ class Client:
             loop=loop,
             ssl_context=ssl_context,
         )
-        self._cache: Cache = Cache(maxsize=cache_size)
+        self._inventory: t.MutableMapping[str, t.Any] = {}
         self._connector: Connector = Connector(self.ctx)
+
+    @property
+    def connected(self) -> bool:
+        """
+        Returns:
+            Whether the client is connected or not.
+        """
+        return not self.is_closing
 
     @property
     def is_closing(self) -> bool:
@@ -139,7 +145,7 @@ class Client:
 
             if isinstance(token, str):
                 data["sessiontoken"] = token
-                self._cache.put("token", token)
+                self._inventory["token"] = token
 
             elif password is not None:
                 data["password"] = password
@@ -194,7 +200,7 @@ class Client:
             AzakaException: Raises when there is no session token available.
         """
         command = Command("logout")
-        token = self._cache.get("token")
+        token = self._inventory.get("token")
 
         if token is not None:
             await self._connector.inject(command, None)
@@ -215,15 +221,15 @@ class Client:
         """
         command = Command("token")
 
-        if command not in self._cache:
+        if command not in self._inventory:
             future = self.ctx.loop.create_future()
             await self._connector.inject(command, future)
 
             result = (await future).result()
-            self._cache.put(command, result)
+            self._inventory[command.name] = result
 
         else:
-            result = self._cache[command]
+            result = self._inventory[command.name]
         return result
 
     async def wait_until_connect(self) -> None:
@@ -237,21 +243,22 @@ class Client:
         Get the VNDB database statistics.
 
         Args:
-            update: If set to `True`, the client makes an api call to get data else it returns cached data.
+            update: If set to `True`, the client makes an api call to get data else it returns
+                    cached data.
 
         Returns:
             [DBStats](./objects/dbstats.md#azaka.objects.DBStats)
         """
         command = Command("dbstats")
 
-        if command not in self._cache or update is True:
+        if command not in self._inventory or update is True:
             future = self.ctx.loop.create_future()
             await self._connector.inject(command, future)
 
             result = DBStats(await future)
-            self._cache.put(command, result)
+            self._inventory[command.name] = result
         else:
-            result = self._cache[command]
+            result = self._inventory[command.name]
         return result
 
     async def get(
@@ -301,7 +308,7 @@ class Client:
 
         return obj
 
-    async def set_ulist(self, interface: SETInterface) -> ResponseType:
+    async def set(self, interface: SETInterface) -> ResponseType:
         """
         Issue a `set` command to the API. This method is used to set userlist data.
 
@@ -341,4 +348,4 @@ class Client:
             self._connector.transport.close()
 
     def __repr__(self) -> str:
-        return f"<{self.__class__.__name__} connected={not self.is_closing}>"
+        return f"<{self.__class__.__name__} connected={self.connected}>"

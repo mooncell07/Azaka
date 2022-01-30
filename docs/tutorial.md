@@ -120,10 +120,10 @@ async def main(ctx):
 ```
 
 We use `Interface.set_condition` method to set up a condition. We either pass a callable
-to it which accepts a single argument of a subclass of `BaseCondition` or pass in a `BoolOProxy`
+to it which accepts a single argument of a subclass of `BaseCondition` or pass in a `_BoolOProxy`
 object which will be used as a condition.
 
-`BoolOProxy` object should never be created by a user. It is generated when you condition a field
+`_BoolOProxy` object should never be created by a user. It is generated when you condition a field
 of BaseCondition against a value. So something like this:
 ```py
 from azaka import VNCondition
@@ -133,7 +133,7 @@ print(type(my_condition))
 
 o/p
 
-<class 'azaka.commands.proxy.BoolOProxy'>
+<class 'azaka.commands.proxy._BoolOProxy'>
 ```
 
 Now you can pass this condition to the interface!

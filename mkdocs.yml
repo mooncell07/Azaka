@@ -34,6 +34,7 @@ nav:
       - Exceptions: API-Reference/public/exceptions.md
       - Enums: API-Reference/public/enums.md
       - Condition: API-Reference/public/condition.md
+      - Utils: API-Reference/public/utils.md
 
       - Objects:
         - BaseObject: API-Reference/public/objects/baseobject.md
@@ -54,7 +55,6 @@ nav:
         - Proxy: API-Reference/internals/commands/proxy.md
       - Tools:
         - Mixins: API-Reference/internals/tools/mixins.md
-        - Cache: API-Reference/internals/tools/cache.md
       - Connection:
         - Protocol: API-Reference/internals/connection/protocol.md
         - Connector: API-Reference/internals/connection/connector.md
