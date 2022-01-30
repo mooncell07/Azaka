@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import typing as t
 
-from .commands import _condition_selector, BaseCondition, BoolOProxy
+from .commands import _condition_selector, BaseCondition
+from .commands.proxy import _BoolOProxy
+
 from .tools import Flags, Labels
 from .exceptions import InterfaceError
 
@@ -52,9 +54,9 @@ class Interface:
         self.condition: t.Type[BaseCondition] = _condition_selector(type)
 
         self._type = type
-        self._condition: t.Optional[BoolOProxy] = None
+        self._condition: t.Optional[_BoolOProxy] = None
         self._flags: t.Iterable[Flags] = flags
-        self._options: t.Mapping[str, t.Any] = {}
+        self._options: t.MutableMapping[str, t.Any] = {}
 
     def __enter__(self) -> Interface:
         return self
@@ -64,7 +66,9 @@ class Interface:
 
     def set_condition(
         self,
-        predicate: t.Union[t.Callable[[t.Type[BaseCondition]], BoolOProxy], BoolOProxy],
+        predicate: t.Union[
+            t.Callable[[t.Type[BaseCondition]], _BoolOProxy], _BoolOProxy
+        ],
     ) -> None:
         """
         Sets the condition for this interface.
@@ -76,13 +80,13 @@ class Interface:
             predicate can be a callable which
             takes a
             [BaseCondition](../public/condition.md#azaka.commands.condition.BaseCondition) arg or a
-            [BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy.BoolOProxy) object.
+            [_BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy._BoolOProxy) object.
 
         Raises:
             InterfaceError: If the condition is already set for the interface in use.
         """
         if not self._condition:
-            if isinstance(predicate, BoolOProxy):
+            if isinstance(predicate, _BoolOProxy):
                 self._condition = predicate
             else:
                 self._condition = predicate(self.condition)

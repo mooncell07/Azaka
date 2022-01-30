@@ -1,2 +1,2 @@
-::: azaka.commands.BoolOProxy
-::: azaka.commands.ConditionProxy
+::: azaka.commands.proxy._BoolOProxy
+::: azaka.commands.proxy._ConditionProxy
