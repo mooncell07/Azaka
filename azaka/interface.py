@@ -9,10 +9,11 @@ from .tools import Flags, Labels
 from .exceptions import InterfaceError
 
 
-__all__ = ("Interface", "SETInterface")
+__all__ = ("Interface", "SETInterface", "T")
+T = t.TypeVar("T")
 
 
-class Interface:
+class Interface(t.Generic[T]):
     """
     A helper class to make it easier to create GET commands.
 
@@ -34,7 +35,9 @@ class Interface:
         "condition",
     )
 
-    def __init__(self, type, *, flags: t.Iterable[Flags] = ()) -> None:
+    def __init__(
+        self, type: t.Callable[..., T], *, flags: t.Iterable[Flags] = ()
+    ) -> None:
         """
         The interface constructor.
 

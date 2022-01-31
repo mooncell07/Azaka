@@ -18,6 +18,8 @@ from .interface import Interface, SETInterface
 from .objects import DBStats
 from .tools import Paginator, ResponseType
 
+if t.TYPE_CHECKING:
+    from .interface import T
 __all__ = ("Client",)
 logger = logging.getLogger(__name__)
 
@@ -262,18 +264,16 @@ class Client:
         return result
 
     async def get(
-        self, interface: Interface, paginate=False, **kwargs: bool
-    ) -> t.Union[t.Iterable[t.Any], Paginator]:
+        self, interface: Interface[T], **kwargs: t.Any
+    ) -> t.Union[t.List[T], t.Tuple[t.List[T], bool, int]]:
         """
         Issue a `get` command to the API. This method provides a centralised way to fetch data from the VNDB API.
 
         Args:
             interface: The [Interface](./interface.md#azaka.interface.Interface) to use.
-            paginate: If set to `True`, it returns a [Paginator](./paginator.md#azaka.tools.paginator.Paginator).
 
         Returns:
-            [list][] of subclass of [BaseObject](../public/objects/baseobject.md#azaka.objects.BaseObject)
-            if paginate is set to `False` else [Paginator](./paginator.md#azaka.tools.paginator.Paginator)
+            [list][] of subclass of [BaseObject](../public/objects/baseobject.md#azaka.objects.BaseObject).
 
         Info:
             This is a low level generic method.
@@ -290,11 +290,8 @@ class Client:
                 await ctx.get(interface)
             ```
 
-        Detailed info about this method can be found in the [tutorial]().
+        Detailed info about this method can be found in the [tutorial](../../tutorial.md).
         """
-        if paginate:
-            return Paginator(self, interface)
-
         command = Command("get", interface=interface)
 
         future = self.ctx.loop.create_future()
@@ -304,7 +301,7 @@ class Client:
         obj = [interface._type(data) for data in result["items"]]
 
         if kwargs.get("metadata"):
-            return (obj, result["more"], result["num"])  # type: ignore
+            return (obj, result["more"], result["num"])
 
         return obj
 
