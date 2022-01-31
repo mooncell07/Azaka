@@ -12,7 +12,7 @@
 
     
       
-        <title>Logging & Utilities - Azaka</title>
+        <title>Tutorial - Azaka</title>
       
     
     
@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#logging" class="md-skip">
+        <a href="#basics" class="md-skip">
           Skip to content
         </a>
       
@@ -99,7 +99,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Logging & Utilities
+              Tutorial
             
           </span>
         </div>
@@ -243,48 +243,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Logging & Utilities
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../logging-%26-utils/" class="md-nav__link">
         Logging & Utilities
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#logging" class="md-nav__link">
-    Logging
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -295,11 +258,73 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../tutorial/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Tutorial
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Tutorial
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-vndb-account" class="md-nav__link">
+    Creating a VNDB account.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vndb-api-azaka" class="md-nav__link">
+    VNDB API &amp; Azaka
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terminology" class="md-nav__link">
+    Terminology
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connection-begins" class="md-nav__link">
+    Connection Begins!
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -889,6 +914,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -897,8 +924,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#logging" class="md-nav__link">
-    Logging
+  <a href="#creating-a-vndb-account" class="md-nav__link">
+    Creating a VNDB account.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vndb-api-azaka" class="md-nav__link">
+    VNDB API &amp; Azaka
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terminology" class="md-nav__link">
+    Terminology
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connection-begins" class="md-nav__link">
+    Connection Begins!
   </a>
   
 </li>
@@ -915,21 +963,181 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/mooncell07/Azaka/edit/master/docs/logging-&-utils.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/mooncell07/Azaka/edit/master/docs/tutorial.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
 
 
-  <h1>Logging & Utilities</h1>
-
-<h2 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">+</a></h2>
-<p>Azaka writes logs for the events happening in the library at <code>DEBUG</code> level and also enables the
-asyncio debug logger internally. Due to the nature of the library, it is recommended to keep logging ON to prevent any errors/events go silent.</p>
-<p>Here we will use python's built-in <a href="https://docs.python.org/3.10/library/logging.html#module-logging">logging</a> module to log the events:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
-
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<h1 id="basics">Basics<a class="headerlink" href="#basics" title="Permanent link">+</a></h1>
+<h2 id="creating-a-vndb-account">Creating a VNDB account.<a class="headerlink" href="#creating-a-vndb-account" title="Permanent link">+</a></h2>
+<p>Even though it is not <em>compulsory</em> to have a VNDB account it is needed at a few sections so it is
+recommended to create one.</p>
+<p>For creating an account at VNDB you need to go to the <a href="https://vndb.org/u/register">VNDB Website</a>.</p>
+<h2 id="vndb-api-azaka">VNDB API &amp; Azaka<a class="headerlink" href="#vndb-api-azaka" title="Permanent link">+</a></h2>
+<p>VNDB exposes it's API through a Bi-Directional TCP connection through which all the transactions
+of request and response are made. A session is made when a <code>login</code> command is sent to the API and
+can stay alive forever so you don't have to login every time you want to make a request!</p>
+<p>Azaka internally handles most of the connection related operations and exposes a simple interface to
+the users so you don't have to care much about connection related stuff.</p>
+<h2 id="terminology">Terminology<a class="headerlink" href="#terminology" title="Permanent link">+</a></h2>
+<p>Below are few terms which are used in this documentation.</p>
+<ul>
+<li><strong>Command</strong> - A command is a request to the VNDB API to perform a specific action.</li>
+<li><strong>Connection</strong> - A link between the client and the VNDB API which in this context is made up of a
+Secured TCP network protocol.</li>
+<li><strong>Interface</strong> - An abstraction of lower level <code>get</code> and <code>set</code> methods to make it easier to make complex commands.</li>
+<li><strong>Condition</strong> - Azaka has many <code>Condition</code> classes which contain fields which support various operations.</li>
+</ul>
+<h2 id="connection-begins">Connection Begins!<a class="headerlink" href="#connection-begins" title="Permanent link">+</a></h2>
+<p>Now it's time to make the wrapper do something!</p>
+<p>Let's start by importing the library.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">azaka</span>
 </code></pre></div>
+<p>Now let's create a <code>Client</code> object.</p>
+<div class="highlight"><pre><span></span><code><span class="n">client</span> <span class="o">=</span> <span class="n">azaka</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+</code></pre></div>
+<p>The <code>Client</code> object is the main entry point to the library and also you can pass
+your username and password to the constructor to login as that user.</p>
+<p>Now that we have a <code>Client</code> object we can register our coroutines to be called by the lib!</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@client</span><span class="o">.</span><span class="n">register</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">azaka</span><span class="o">.</span><span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">wait_until_connect</span><span class="p">()</span> <span class="c1"># Wait until we are connected to the VNDB API.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Connected!&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><code>client.register</code> is a decorator which registers a coroutine to be called by the library. It
+also puts <code>azaka.Context</code> object in the coroutine's 0th argument.</p>
+<p>We just need one more thing to connect to the API!</p>
+<div class="highlight"><pre><span></span><code><span class="n">client</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="c1"># This method *blocks* forever.</span>
+</code></pre></div>
+<p>That's it! Now just run the script and you should be able to see <code>Connected!</code> printed soon!</p>
+<hr />
+<h1 id="commands-and-conditions">Commands and Conditions<a class="headerlink" href="#commands-and-conditions" title="Permanent link">+</a></h1>
+<p>So now that you know how to use the library to connect to the API,
+let's now make a simple command which will get information from the VNDB API.</p>
+<p>A command is a request to the API to perform a specific action and the lib
+provides an interface to make these things easily, so let's see how to use it!</p>
+<p>But before that let's first import the <a href="https://docs.python.org/3.10/library/enum.html#enum.Enum">enum.Enum</a> <code>Flags</code> for setting up flags.</p>
+<p><em>Flags are used to specify what information you want to fetch.</em></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">azaka</span> <span class="kn">import</span> <span class="n">Flags</span>
+</code></pre></div>
+<p>Now we can use flags like <code>Flags.BASIC</code>, <code>Flags.DETAILS</code> etc. In case you want to
+know what flags fetch what information then just read the documentation of the object
+you are getting. There are <code>FLAGS: X</code> headings given and also there is a table below
+each of them which tell what attributes will get a value sent by the API.</p>
+<p>Now let's create an interface which will get DETAILS of a specific VN.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@client</span><span class="o">.</span><span class="n">register</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+    <span class="c1"># In type parameter you can pass one of the types context has.</span>
+    <span class="c1"># You can pass more flags in the tuple too like `flags=(Flags.BASIC, Flags.DETAILS)`</span>
+    <span class="k">with</span> <span class="n">azaka</span><span class="o">.</span><span class="n">Interface</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">vn</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="p">(</span><span class="n">Flags</span><span class="o">.</span><span class="n">DETAILS</span><span class="p">,))</span> <span class="k">as</span> <span class="n">interface</span><span class="p">:</span>
+        <span class="o">...</span>
+</code></pre></div>
+<p>We now have an interface which will produce an incomplete command which will look like this!</p>
+<p><code>vn details</code></p>
+<p>And yeah you can use <code>Interface</code> as a context manager too! Looks good right?!
+Let's proceed!</p>
+<p>Now that type and flags are set, it's time to put up some conditions.
+But how conditions work in azaka? Well, it is
+really simple.</p>
+<p>Let's put up a simple condition which we will unbreak!</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@client</span><span class="o">.</span><span class="n">register</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">azaka</span><span class="o">.</span><span class="n">Interface</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">vn</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="p">(</span><span class="n">Flags</span><span class="o">.</span><span class="n">DETAILS</span><span class="p">,))</span> <span class="k">as</span> <span class="n">interface</span><span class="p">:</span>
+        <span class="n">interface</span><span class="o">.</span><span class="n">set_condition</span><span class="p">(</span><span class="k">lambda</span> <span class="n">VN</span><span class="p">:</span> <span class="n">VN</span><span class="o">.</span><span class="n">ID</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p>We use <code>Interface.set_condition</code> method to set up a condition. We either pass a callable
+to it which accepts a single argument of a subclass of <code>BaseCondition</code> or pass in a <code>_BoolOProxy</code>
+object which will be used as a condition.</p>
+<p><code>_BoolOProxy</code> object should never be created by a user. It is generated when you condition a field
+of BaseCondition against a value. So something like this:
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">azaka</span> <span class="kn">import</span> <span class="n">VNCondition</span>
+
+<span class="n">my_condition</span> <span class="o">=</span> <span class="n">VNCondition</span><span class="o">.</span><span class="n">ID</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">my_condition</span><span class="p">))</span>
+
+<span class="n">o</span><span class="o">/</span><span class="n">p</span>
+
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">azaka</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">proxy</span><span class="o">.</span><span class="n">_BoolOProxy</span><span class="s1">&#39;&gt;</span>
+</code></pre></div></p>
+<p>Now you can pass this condition to the interface!</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@client</span><span class="o">.</span><span class="n">register</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">azaka</span><span class="o">.</span><span class="n">Interface</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">vn</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="p">(</span><span class="n">Flags</span><span class="o">.</span><span class="n">DETAILS</span><span class="p">,))</span> <span class="k">as</span> <span class="n">interface</span><span class="p">:</span>
+        <span class="n">interface</span><span class="o">.</span><span class="n">set_condition</span><span class="p">(</span><span class="n">my_condition</span><span class="p">)</span>
+</code></pre></div>
+<p>This one is exactly the same as previous one so, it's upon you what you wanna use!
+I will be using lambda functions for this tutorial.</p>
+<p><em>For callback <code>lambda</code> should be preferred.</em></p>
+<p>VNDB also allows usage of the logical <code>AND</code> and <code>OR</code> operators and for that i abused the
+syntax of <code>&amp;</code> and <code>|</code> operators :)</p>
+<p>And another operator <code>~</code> for searching substrings for which i abused the <code>%</code> operator.
+So, just for demonstration purposes:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@client</span><span class="o">.</span><span class="n">register</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">azaka</span><span class="o">.</span><span class="n">Interface</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">vn</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="p">(</span><span class="n">Flags</span><span class="o">.</span><span class="n">DETAILS</span><span class="p">,))</span> <span class="k">as</span> <span class="n">interface</span><span class="p">:</span>
+        <span class="n">interface</span><span class="o">.</span><span class="n">set_condition</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">VN</span><span class="p">:</span> <span class="p">((</span><span class="n">VN</span><span class="o">.</span><span class="n">TITLE</span> <span class="o">%</span> <span class="s2">&quot;reeeee&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">VN</span><span class="o">.</span><span class="n">ORIG_LANG</span> <span class="o">!=</span> <span class="p">[</span><span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="s2">&quot;ja&quot;</span><span class="p">]))</span> <span class="o">|</span> <span class="p">(</span><span class="n">VN</span><span class="o">.</span><span class="n">ID</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="p">)</span>
+</code></pre></div>
+<p>Logic for above condition will be... vn's title should be like "reeeee" and vn's original language
+should be either "en" (english) or "ja" (japanese). Well there ain't any VN named "reeeee" as of now
+so that's a <code>False</code> and that is why it will not check original language. so it's like
+<code>False or VN.ID &gt; 4</code> now, there are ids present which are more than <code>4</code> so that's a <code>True</code> and it will
+return all the VNs which have id more than 4. You will have to consider the operator precedence. Azaka
+handles all the parsing.</p>
+<p>Now let's continue!</p>
+<p><code>azaka.Interface</code> also provides options, to use them use <code>Interface.add_option</code> method.
+You can look at it's documentation to see what options are available.</p>
+<p>Ok so i just want API to return 2 VNs in the response and their names should match the word <code>"fate"</code>
+but API will return like 10 of them in a single response! So, let's add an option for that!</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@client</span><span class="o">.</span><span class="n">register</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">azaka</span><span class="o">.</span><span class="n">Interface</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">vn</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="p">(</span><span class="n">Flags</span><span class="o">.</span><span class="n">DETAILS</span><span class="p">,))</span> <span class="k">as</span> <span class="n">interface</span><span class="p">:</span>
+        <span class="n">interface</span><span class="o">.</span><span class="n">set_condition</span><span class="p">(</span><span class="k">lambda</span> <span class="n">VN</span><span class="p">:</span> <span class="n">VN</span><span class="o">.</span><span class="n">TITLE</span> <span class="o">%</span> <span class="s2">&quot;fate&quot;</span><span class="p">)</span>
+        <span class="n">interface</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="n">results</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># This will tell API to return 2 VNs.</span>
+</code></pre></div>
+<p>Now we have an interface which has type of <code>VN</code> and a flag <code>DETAILS</code>
+with a condition and an option! Let's see how it looks like now in command form!</p>
+<p><code>vn details (title ~ "fate"){"results": 2}</code></p>
+<p>Nice! We are really close to issuing our first command!
+Now we just have to call the <code>Client.get</code> method and pass our interface as an argument.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@client</span><span class="o">.</span><span class="n">register</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">azaka</span><span class="o">.</span><span class="n">Interface</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">vn</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="p">(</span><span class="n">Flags</span><span class="o">.</span><span class="n">DETAILS</span><span class="p">,))</span> <span class="k">as</span> <span class="n">interface</span><span class="p">:</span>
+        <span class="n">interface</span><span class="o">.</span><span class="n">set_condition</span><span class="p">(</span><span class="k">lambda</span> <span class="n">VN</span><span class="p">:</span> <span class="n">VN</span><span class="o">.</span><span class="n">TITLE</span> <span class="o">%</span> <span class="s2">&quot;fate&quot;</span><span class="p">)</span>
+        <span class="n">interface</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="n">results</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">interface</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>
+<p>And that's it! We are ready to go! Our command will look like this now:</p>
+<p><code>get vn details (title ~ "fate"){"results": 2}</code></p>
+<p>Let's put our boilerplate code back in place now to run the script.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">azaka</span>
+<span class="kn">from</span> <span class="nn">azaka</span> <span class="kn">import</span> <span class="n">Flags</span>
+
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">azaka</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+
+
+<span class="nd">@client</span><span class="o">.</span><span class="n">register</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">run_on_connect</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">azaka</span><span class="o">.</span><span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">wait_until_connect</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Connected!&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@client</span><span class="o">.</span><span class="n">register</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">azaka</span><span class="o">.</span><span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">azaka</span><span class="o">.</span><span class="n">Interface</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">vn</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="p">(</span><span class="n">Flags</span><span class="o">.</span><span class="n">DETAILS</span><span class="p">,))</span> <span class="k">as</span> <span class="n">interface</span><span class="p">:</span>
+        <span class="n">interface</span><span class="o">.</span><span class="n">set_condition</span><span class="p">(</span><span class="k">lambda</span> <span class="n">VN</span><span class="p">:</span> <span class="n">VN</span><span class="o">.</span><span class="n">TITLE</span> <span class="o">%</span> <span class="s2">&quot;fate&quot;</span><span class="p">)</span>
+        <span class="n">interface</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="n">results</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">interface</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+
+<span class="n">client</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</code></pre></div>
+<p>Now run it and you will see the message <code>Connected!</code> and then the result which will be a list of
+2 <code>VN</code> objects!</p>
 
               
             </article>
@@ -948,7 +1156,7 @@ asyncio debug logger internally. Due to the nature of the library, it is recomme
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home" rel="prev">
+        <a href="../logging-%26-utils/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Logging &amp; Utilities" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -957,20 +1165,20 @@ asyncio debug logger internally. Due to the nature of the library, it is recomme
               <span class="md-footer__direction">
                 Previous
               </span>
-              Home
+              Logging & Utilities
             </div>
           </div>
         </a>
       
       
         
-        <a href="../tutorial/" class="md-footer__link md-footer__link--next" aria-label="Next: Tutorial" rel="next">
+        <a href="../API-Reference/public/client/" class="md-footer__link md-footer__link--next" aria-label="Next: Client" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Tutorial
+              Client
             </div>
           </div>
           <div class="md-footer__button md-icon">
