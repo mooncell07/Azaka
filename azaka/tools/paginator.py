@@ -12,13 +12,19 @@ __all__ = ("Paginator",)
 
 class Paginator:
     """
-    A Paginator returned by the [Client.get](../client#azaka.client.Client.get) method
-    used to provide async and stateful iteration over the results of `get` command (s).
+    A pagination wrapper over [Client.get](../client#azaka.client.Client.get)
+    which provides async stateful iteration over the results.
 
     Attributes:
         current_page (t.Optiona[t.Iterable[BaseObject]]): The current page of results.
         current_page_num (int): The current page number.
         more (bool): If there are more pages to fetch.
+
+    Example:
+    ```py
+    async for page in Paginator(client, interface):
+        ...
+    ```
     """
 
     __slots__ = ("_client", "_interface", "current_page", "current_page_num", "more")
