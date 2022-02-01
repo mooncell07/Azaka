@@ -8,9 +8,10 @@ if t.TYPE_CHECKING:
     from ..objects import BaseObject
 
 __all__ = ("Paginator",)
+P = t.TypeVar("P")
 
 
-class Paginator:
+class Paginator(t.Generic[P]):
     """
     A pagination wrapper over [Client.get](../client#azaka.client.Client.get)
     which provides async stateful iteration over the results.
@@ -36,7 +37,7 @@ class Paginator:
         self.current_page_num: int = 0
         self.more: bool = True
 
-    async def next(self) -> t.Optional[t.Iterable[BaseObject]]:
+    async def next(self) -> t.Optional[t.Iterable[P]]:
         """
         Fetches the next page of results.
 
@@ -48,7 +49,7 @@ class Paginator:
             return await self._generate()
         return None
 
-    async def previous(self) -> t.Optional[t.Iterable[BaseObject]]:
+    async def previous(self) -> t.Optional[t.Iterable[P]]:
         """
         Fetches the previous page of results.
 
@@ -60,7 +61,7 @@ class Paginator:
             return await self._generate()
         return None
 
-    async def compress(self) -> t.List[t.Iterable[BaseObject]]:
+    async def compress(self) -> t.List[t.Iterable[P]]:
         """
         Fetches all the pages of results.
 
@@ -72,7 +73,7 @@ class Paginator:
     def __aiter__(self) -> Paginator:
         return self
 
-    async def __anext__(self) -> t.Iterable[BaseObject]:
+    async def __anext__(self) -> t.Iterable[P]:
         data = await self.next()
 
         if not data:
@@ -80,7 +81,7 @@ class Paginator:
 
         return data
 
-    async def _generate(self) -> t.Optional[t.List[BaseObject]]:
+    async def _generate(self) -> t.Optional[t.List[P]]:
         """
         Generates the page of results.
 
