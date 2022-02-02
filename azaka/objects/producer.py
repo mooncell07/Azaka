@@ -79,7 +79,7 @@ class Producer(BaseObject):
     )
 
     def __init__(self, data: t.Mapping[str, t.Any]) -> None:
-        super().__init__(data["id"])
+        super().__init__(data)
 
         self._link = data.get("links")
         self._relations = data.get("relations", [])
