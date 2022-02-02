@@ -62,7 +62,7 @@ class Ulist(BaseObject):
     )
 
     def __init__(self, data: t.Mapping[str, t.Any]) -> None:
-        super().__init__(data["uid"])
+        super().__init__(data)
         self._labels = data.get("labels", [])
 
         self.uid: t.Optional[int] = data["uid"]

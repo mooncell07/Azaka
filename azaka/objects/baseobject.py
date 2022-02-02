@@ -11,13 +11,15 @@ class BaseObject:
         This class is not meant to be instantiated directly.
 
     Attributes:
-        id (int): The id of the item. (It will never be `None`.)
+        data (t.Mapping[str, t.Any]): The entire [dict][] of data API returned.
+        id (int): The id or uid of the item. (It will never be `None`.)
     """
 
-    __slots__ = ("id",)
+    __slots__ = ("data", "id")
 
-    def __init__(self, id: int) -> None:
-        self.id = id
+    def __init__(self, data: t.Mapping[str, t.Any]) -> None:
+        self.data = data
+        self.id: int = data.get("id") or data["uid"]
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__} id={self.id}>"

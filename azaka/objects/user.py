@@ -29,6 +29,6 @@ class User(BaseObject):
     __slots__ = ("username",)
 
     def __init__(self, data: t.Mapping[str, t.Any]) -> None:
-        super().__init__(data["id"])
+        super().__init__(data)
 
         self.username: t.Optional[str] = data.get("username")

@@ -188,7 +188,7 @@ class VN(BaseObject):
     )
 
     def __init__(self, data: t.Mapping[str, t.Any]) -> None:
-        super().__init__(data["id"])
+        super().__init__(data)
 
         self._anime = data.get("anime", [])
         self._screens = data.get("screens")
