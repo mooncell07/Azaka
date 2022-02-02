@@ -27,16 +27,18 @@ async def test_connection() -> None:
 @pytest.mark.asyncio
 async def test_vn() -> None:
     client = azaka.Client()
-    results: asyncio.Queue[t.Optional[t.List[azaka.objects.VN]]] = asyncio.Queue()
+    results: asyncio.Queue[
+        t.Union[None, t.Literal[False], t.List[azaka.objects.VN]]
+    ] = asyncio.Queue()
 
     @client.register
     async def inner(ctx: azaka.Context) -> None:
+        vn: t.Union[None, t.Literal[False], t.List[azaka.objects.VN]] = False
         try:
             vn = await ctx.get_vn(lambda VN: VN.ID == 11)
-        except Exception:
-            vn = False
-        results.put_nowait(vn)
-        client.stop()
+        finally:
+            results.put_nowait(vn)
+            client.stop()
 
     await client.connect()
 
