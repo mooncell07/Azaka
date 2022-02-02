@@ -73,13 +73,9 @@ class Character(BaseObject):
         image (str): URL of the character's image.
 
     ## FLAG: [MEAS](../enums.md#azaka.tools.enums.Flags)
-    Attributes:
-        bust (int): Bust size of the character in cm.
-        waist (int): Waist size of the character in cm.
-        hip (int): Hip size of the character in cm.
-        cup_size (str): Cup size of the character.
-        weight (int): Weight of the character in kg.
-        height (int): Height of the character in cm.
+
+    MEAS attributes are removed now but they can be accessed from `data` [dict][].
+    For checking the key names of MEAS keys please go to the [VNDB API docs](https://vndb.org/d11#5.4).
 
     ## FLAG: [TRAITS](../enums.md#azaka.tools.enums.Flags)
 
@@ -100,12 +96,6 @@ class Character(BaseObject):
         "_voiced",
         "_instances",
         "_image_flagging",
-        "bust",
-        "waist",
-        "hip",
-        "cup_size",
-        "weight",
-        "height",
         "traits",
         "gender",
         "spoil_gender",
@@ -116,7 +106,7 @@ class Character(BaseObject):
     )
 
     def __init__(self, data: t.Mapping[str, t.Any]) -> None:
-        super().__init__(data["id"])
+        super().__init__(data)
 
         self._image_flagging = data.get("image_flagging")
         self._voiced = data.get("voiced", [])
@@ -135,14 +125,6 @@ class Character(BaseObject):
         self.description: t.Optional[str] = data.get("description")
         self.age: t.Optional[int] = data.get("age")
         self.image: t.Optional[str] = data.get("image")
-
-        self.bust: t.Optional[int] = data.get("bust")
-        self.waist: t.Optional[int] = data.get("waist")
-        self.hip: t.Optional[int] = data.get("hip")
-        self.cup_size: t.Optional[str] = data.get("cup_size")
-        self.weight: t.Optional[int] = data.get("weight")
-        self.height: t.Optional[int] = data.get("height")
-
         self.traits: t.List[t.List[int]] = data.get("traits", [[]])
 
     @property

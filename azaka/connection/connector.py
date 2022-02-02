@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import sys
 import traceback
 import typing as t
 
@@ -129,8 +130,9 @@ class Connector(QueueControlMixin):
         """
 
         logger.debug("SHUTDOWN STARTED.")
+        if sys.version_info.minor > 8:
+            self.ctx.loop.run_until_complete(self.ctx.loop.shutdown_default_executor())
 
-        self.ctx.loop.run_until_complete(self.ctx.loop.shutdown_default_executor())
         self.ctx.loop.run_until_complete(self.ctx.loop.shutdown_asyncgens())
 
         for task in asyncio.all_tasks(loop=self.ctx.loop):
