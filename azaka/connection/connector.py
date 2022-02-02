@@ -131,7 +131,7 @@ class Connector(QueueControlMixin):
 
         logger.debug("SHUTDOWN STARTED.")
         if sys.version_info.minor > 8:
-            self.ctx.loop.run_until_complete(self.ctx.loop.shutdown_default_executor())
+            self.ctx.loop.run_until_complete(self.ctx.loop.shutdown_default_executor())  # type: ignore
 
         self.ctx.loop.run_until_complete(self.ctx.loop.shutdown_asyncgens())
 
