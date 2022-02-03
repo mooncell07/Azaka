@@ -77,7 +77,7 @@ class Protocol(asyncio.Protocol):
     def command(self, value: bytes) -> None:
         self._command = value
 
-    def connection_made(self, transport: transports.Transport) -> None:  # type: ignore
+    def connection_made(self, transport: transports.BaseTransport) -> None:
         """
         The [asyncio.BaseProtocol.connection_made][] override which
         writes the first command to the transport.
@@ -85,6 +85,7 @@ class Protocol(asyncio.Protocol):
         Args:
             transport: The transport that is used to communicate with the server.
         """
+        transport = t.cast(transports.Transport, transport)
         transport.write(self.command)
         logger.info(f"DISPATCHED TRANSPORTER WITH {repr(self.command)}")
 
