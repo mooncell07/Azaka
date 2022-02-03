@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import typing as t
 
 import azaka
 import pytest

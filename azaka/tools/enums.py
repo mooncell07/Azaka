@@ -1,4 +1,16 @@
 import enum
+import typing as t
+from ..objects import (
+    VN,
+    Character,
+    Producer,
+    Quote,
+    Release,
+    Staff,
+    User,
+    UlistLabels,
+    Ulist,
+)
 
 __all__ = (
     "Flags",
@@ -11,7 +23,20 @@ __all__ = (
     "AnimationType",
     "Rtype",
     "Labels",
+    "Types",
 )
+
+
+class Types(enum.Enum):
+    VNTYPE: t.Type[VN] = VN
+    CHARACTERTYPE: t.Type[Character] = Character
+    PRODUCERTYPE: t.Type[Producer] = Producer
+    RELEASETYPE: t.Type[Release] = Release
+    STAFFTYPE: t.Type[Staff] = Staff
+    QUOTETYPE: t.Type[Quote] = Quote
+    USERTYPE: t.Type[User] = User
+    ULISTLABELSTYPE: t.Type[UlistLabels] = UlistLabels
+    ULISTTYPE: t.Type[Ulist] = Ulist
 
 
 class Flags(enum.Enum):
