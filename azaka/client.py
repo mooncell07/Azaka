@@ -20,7 +20,6 @@ from .tools import ResponseType
 
 if t.TYPE_CHECKING:
     from .interface import T
-    from .commands.condition import C
 
 __all__ = ("Client",)
 logger = logging.getLogger(__name__)
