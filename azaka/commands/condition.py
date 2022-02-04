@@ -5,9 +5,8 @@ import typing as t
 from .proxy import _ConditionProxy
 from ..objects import UlistLabels
 
-from ..interface import T
-
-C = t.TypeVar("C")
+if t.TYPE_CHECKING:
+    from ..interface import T
 
 
 __all__ = (
@@ -22,7 +21,6 @@ __all__ = (
     "UlistLabelsCondition",
     "UlistCondition",
     "_condition_selector",
-    "C",
 )
 
 
@@ -440,7 +438,7 @@ class UlistCondition(UlistLabelsCondition):
 
 def _condition_selector(
     type: t.Type[T],
-) -> t.Type[C]:
+):
     condition_map = {
         "vn": VNCondition,
         "release": ReleaseCondition,
@@ -455,4 +453,4 @@ def _condition_selector(
     cls = condition_map[
         type.__name__.lower() if type != UlistLabels else "ulist-labels"
     ]
-    return t.cast(t.Type[C], cls)
+    return cls

@@ -2,11 +2,10 @@ from __future__ import annotations
 
 import typing as t
 
-from .commands import _condition_selector, C
-from .commands.proxy import _BoolOProxy
-
 from .tools import Flags, Labels
 from .exceptions import InterfaceError
+from .commands import _condition_selector
+from .commands.proxy import _BoolOProxy
 
 
 __all__ = ("Interface", "SETInterface", "T")
@@ -35,7 +34,9 @@ class Interface(t.Generic[T]):
         "condition",
     )
 
-    def __init__(self, type: t.Type[T], *, flags: t.Iterable[Flags] = ()) -> None:
+    def __init__(
+        self, type: t.Callable[..., T], *, flags: t.Iterable[Flags] = ()
+    ) -> None:
         """
         The interface constructor.
 
@@ -52,7 +53,7 @@ class Interface(t.Generic[T]):
         Attributes:
             condition: The [Condition](../condition) type for this interface. (Automatically set based on type).
         """
-        self.condition: t.Type[C] = _condition_selector(type)
+        self.condition = _condition_selector(type)  # type: ignore
 
         self._type = type
         self._condition: t.Optional[_BoolOProxy] = None
@@ -62,12 +63,18 @@ class Interface(t.Generic[T]):
     def __enter__(self) -> Interface:
         return self
 
-    def __exit__(self, *ex) -> None:
+    def __exit__(self, *_) -> None:
         ...
 
     def set_condition(
         self,
-        predicate: t.Union[t.Callable[[t.Type[C]], _BoolOProxy], _BoolOProxy],
+        predicate: t.Union[
+            t.Callable[
+                ...,
+                _BoolOProxy,
+            ],
+            _BoolOProxy,
+        ],
     ) -> None:
         """
         Sets the condition for this interface.
