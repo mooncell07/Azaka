@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import typing as t
+from .interface import Interface, T
 
 if t.TYPE_CHECKING:
-    from ..client import Client
-    from ..interface import Interface, T
+    from .client import Client
 
 __all__ = ("Paginator",)
 

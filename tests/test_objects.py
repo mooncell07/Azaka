@@ -61,7 +61,6 @@ def _assertions(results) -> None:
     assert isinstance(release_list, t.MutableSequence)
     assert all([isinstance(i, azaka.objects.Release) for i in release_list])
     prods = itertools.chain(*[i.release_producers for i in release_list])
-    assert isinstance(prods, t.MutableSequence)
     assert all([isinstance(p, azaka.objects.release.ReleaseProducer) for p in prods])
 
     # Testing DBStats object.
