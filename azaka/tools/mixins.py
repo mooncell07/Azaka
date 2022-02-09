@@ -1,6 +1,12 @@
+from __future__ import annotations
+
 import asyncio
 import queue
 import typing as t
+
+if t.TYPE_CHECKING:
+    from ..exceptions import AzakaException
+    from ..context import Context
 
 __all__ = ("QueueControlMixin",)
 
@@ -13,7 +19,13 @@ class QueueControlMixin:
         pls don't play with it
     """
 
-    __slots__ = ("future_queue", "on_error", "on_connect", "on_disconnect", "push_back")
+    __slots__ = (
+        "future_queue",
+        "error_handlers",
+        "on_connect",
+        "on_disconnect",
+        "push_back",
+    )
 
     def __init__(self) -> None:
         """
@@ -21,13 +33,15 @@ class QueueControlMixin:
 
         Attributes:
             future_queue: A [queue.Queue][] holding [asyncio.Future][] objects which are waiting for a response.
-            on_error: A [queue.Queue][] holding function that will be called when an error occurs in [Protocol[].
+            error_handlers: A [list][] holding function that will be called when an error occurs.
             on_connect: An [asyncio.Event][] that will be set when the connection is established.
             on_disconnect: An [asyncio.Event][] that will be set when the connection is closed.
         """
         self.future_queue: queue.Queue = queue.Queue()
+        self.error_handlers: t.List[
+            t.Callable[[Context, AzakaException], t.Coroutine[t.Any, t.Any, t.Any]]
+        ] = []
 
-        self.on_error: queue.Queue = queue.Queue(maxsize=1)
         self.on_connect: asyncio.Event = asyncio.Event()
         self.on_disconnect: asyncio.Event = asyncio.Event()
 
@@ -53,14 +67,17 @@ class QueueControlMixin:
         else:
             future.set_result(payload)
 
-    def error_listener(self, func: t.Callable) -> None:
+    def append_error_handlers(
+        self,
+        coro: t.Callable[[Context, AzakaException], t.Coroutine[t.Any, t.Any, t.Any]],
+    ) -> None:
         """
-        A method that puts the error handler in the `on_error` queue.
+        A method that puts the error handler in the `error_handlers` [list][].
 
         Args:
-            func: The function to be called when an error occurs.
+            coro: The coroutine to be called when an error occurs.
         """
-        self.on_error.put_nowait(func)
+        self.error_handlers.append(coro)
 
     async def drain(self) -> None:
         """
