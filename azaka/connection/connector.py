@@ -7,9 +7,10 @@ import traceback
 import typing as t
 
 from ..commands import Command
-from ..exceptions import BrokenConnectorError
+from ..exceptions import AzakaException, BrokenConnectorError
 from ..tools import QueueControlMixin
 from .protocol import Protocol
+
 
 if t.TYPE_CHECKING:
     from ..context import Context
@@ -158,5 +159,8 @@ class Connector(QueueControlMixin):
         try:
             await coro
         except Exception as e:
-            tb = "".join(traceback.format_exception(type(e), e, e.__traceback__))
-            logger.error(f"IGNORING EXCEPTION IN {coro.__qualname__}:\n{tb}")
+            if len(self.error_handlers) > 0 and isinstance(e, AzakaException):
+                await self.error_handlers[0](self.ctx, e)
+            else:
+                tb = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+                logger.error(f"IGNORING EXCEPTION IN {coro.__qualname__}:\n{tb}")

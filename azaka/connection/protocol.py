@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import asyncio
 import logging
-import contextlib
-import queue
 import typing as t
 from asyncio import transports
 
@@ -152,9 +150,6 @@ class Protocol(asyncio.Protocol):
             if isinstance(response.body, dict):
                 error = self._errors[response.body["id"]](**response.body)
                 self.connector.listener(exc=error)
-
-                with contextlib.suppress(queue.Empty):
-                    self.connector.on_error.get_nowait()(error)
 
         else:
             raise InvalidResponseTypeError(

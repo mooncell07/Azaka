@@ -111,25 +111,29 @@ class Client:
         else:
             raise TypeError("Callback must be a coroutine.") from None
 
-    def on_error(self, func: t.Callable) -> None:
+    def on_error(
+        self,
+        coro: t.Callable[[Context, AzakaException], t.Coroutine[t.Any, t.Any, t.Any]],
+    ) -> None:
         """
-        Register a function to be called when an error occurs.
+        Register a coroutine to be called when an error occurs.
 
         Args:
-            func: The function to call.
+            coro: The coroutine to call.
 
         Info:
-            The function must take a single argument of type
+            The coroutine must take a 2 arguments of types
+            [Context](./context.md#azaka.context.Context)
             [AzakaException](../public/exceptions.md#azaka.exceptions.AzakaException).
 
         Example:
             ```py
             @on_error
-            def my_error_handler(error):
+            async def my_error_handler(ctx, error):
                 ...
             ```
         """
-        self._connector.error_listener(func)
+        self._connector.append_error_handlers(coro)
 
     def _auth_helper(self, *, token: t.Optional[t.Union[bool, str]] = None) -> Command:
         """
