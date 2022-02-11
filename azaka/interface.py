@@ -2,11 +2,10 @@ from __future__ import annotations
 
 import typing as t
 
-from .commands import _condition_selector, BaseCondition
-from .commands.proxy import _BoolOProxy
-
 from .tools import Flags, Labels
 from .exceptions import InterfaceError
+from .commands import _condition_selector
+from .commands.proxy import _BoolOProxy
 
 
 __all__ = ("Interface", "SETInterface", "T")
@@ -54,7 +53,7 @@ class Interface(t.Generic[T]):
         Attributes:
             condition: The [Condition](../condition) type for this interface. (Automatically set based on type).
         """
-        self.condition: t.Type[BaseCondition] = _condition_selector(type)
+        self.condition = _condition_selector(type)  # type: ignore
 
         self._type = type
         self._condition: t.Optional[_BoolOProxy] = None
@@ -64,13 +63,17 @@ class Interface(t.Generic[T]):
     def __enter__(self) -> Interface:
         return self
 
-    def __exit__(self, *ex) -> None:
+    def __exit__(self, *_) -> None:
         ...
 
     def set_condition(
         self,
         predicate: t.Union[
-            t.Callable[[t.Type[BaseCondition]], _BoolOProxy], _BoolOProxy
+            t.Callable[
+                ...,
+                _BoolOProxy,
+            ],
+            _BoolOProxy,
         ],
     ) -> None:
         """
@@ -81,7 +84,7 @@ class Interface(t.Generic[T]):
 
         Note:
             predicate can be a callable which
-            takes a
+            takes a subclass of
             [BaseCondition](../public/condition.md#azaka.commands.condition.BaseCondition) arg or a
             [_BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy._BoolOProxy) object.
 

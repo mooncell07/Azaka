@@ -16,10 +16,11 @@ from .context import Context
 from .exceptions import AzakaException
 from .interface import Interface, SETInterface
 from .objects import DBStats
-from .tools import Paginator, ResponseType
+from .tools import ResponseType
 
 if t.TYPE_CHECKING:
     from .interface import T
+
 __all__ = ("Client",)
 logger = logging.getLogger(__name__)
 
@@ -110,25 +111,29 @@ class Client:
         else:
             raise TypeError("Callback must be a coroutine.") from None
 
-    def on_error(self, func: t.Callable) -> None:
+    def on_error(
+        self,
+        coro: t.Callable[[Context, AzakaException], t.Coroutine[t.Any, t.Any, t.Any]],
+    ) -> None:
         """
-        Register a function to be called when an error occurs.
+        Register a coroutine to be called when an error occurs.
 
         Args:
-            func: The function to call.
+            coro: The coroutine to call.
 
         Info:
-            The function must take a single argument of type
+            The coroutine must take 2 arguments of types
+            [Context](./context.md#azaka.context.Context) and
             [AzakaException](../public/exceptions.md#azaka.exceptions.AzakaException).
 
         Example:
             ```py
             @on_error
-            def my_error_handler(error):
+            async def my_error_handler(ctx, error):
                 ...
             ```
         """
-        self._connector.error_listener(func)
+        self._connector.append_error_handlers(coro)
 
     def _auth_helper(self, *, token: t.Optional[t.Union[bool, str]] = None) -> Command:
         """
@@ -164,13 +169,13 @@ class Client:
 
     async def connect(self, *, token: t.Optional[t.Union[bool, str]] = None) -> None:
         """
-        Start the client and attempt to login. This method is a coroutine.
+        Starts the client and attempts to login. This method is a coroutine.
 
         Args:
             token: The token to use. If not provided, password will be used if username is provided.
 
         Raises:
-            AzakaException: Raises when a username was passed but not a password or session token.
+            AzakaException: Raises when an username was passed but not a password or session token.
 
         Note:
             For fetching a token, the argument should be set to `True` and username and password must be provided.
@@ -181,6 +186,7 @@ class Client:
     def start(self, *, token: t.Optional[t.Union[bool, str]] = None) -> None:
         """
         Blocking alternate of [Client.connect](./#azaka.client.Client.connect).
+        Also handles shutdown.
         """
         command = self._auth_helper(token=token)
 
@@ -313,6 +319,10 @@ class Client:
             interface: The [SETInterface](./interface.md#azaka.interface.SETInterface) to use.
         Returns:
             [ResponseType](./enums.md#azaka.tools.enums.ResponseType)
+
+        Info:
+            This returns a `OK` of [ResponseType](./enums.md#azaka.tools.enums.ResponseType)
+            if the operation was successful.
         """
         command = Command(f"set ulist {interface.id}", **interface._kwargs)
 
