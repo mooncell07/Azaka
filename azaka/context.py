@@ -51,7 +51,7 @@ class Context:
 
     Attributes:
         ADDR (str): The address of the VNDB API.
-        PORT (int): The port to which client should connect. Azaka only supports `19535` as it provides TLS support.
+        PORT (int): The port to which client should connect to. Azaka only supports `19535` as it provides TLS support.
         PROTOCOL_VERSION (int): The version of the protocol this client is using. Currently, this is `1`.
         CLIENT_NAME (str): The name of the client. Defaults to `Azaka`.
         CLIENT_VERSION (str): The version of the client.

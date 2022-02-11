@@ -122,8 +122,8 @@ class Client:
             coro: The coroutine to call.
 
         Info:
-            The coroutine must take a 2 arguments of types
-            [Context](./context.md#azaka.context.Context)
+            The coroutine must take 2 arguments of types
+            [Context](./context.md#azaka.context.Context) and
             [AzakaException](../public/exceptions.md#azaka.exceptions.AzakaException).
 
         Example:
@@ -169,13 +169,13 @@ class Client:
 
     async def connect(self, *, token: t.Optional[t.Union[bool, str]] = None) -> None:
         """
-        Start the client and attempt to login. This method is a coroutine.
+        Starts the client and attempts to login. This method is a coroutine.
 
         Args:
             token: The token to use. If not provided, password will be used if username is provided.
 
         Raises:
-            AzakaException: Raises when a username was passed but not a password or session token.
+            AzakaException: Raises when an username was passed but not a password or session token.
 
         Note:
             For fetching a token, the argument should be set to `True` and username and password must be provided.
@@ -186,6 +186,7 @@ class Client:
     def start(self, *, token: t.Optional[t.Union[bool, str]] = None) -> None:
         """
         Blocking alternate of [Client.connect](./#azaka.client.Client.connect).
+        Also handles shutdown.
         """
         command = self._auth_helper(token=token)
 
@@ -318,6 +319,10 @@ class Client:
             interface: The [SETInterface](./interface.md#azaka.interface.SETInterface) to use.
         Returns:
             [ResponseType](./enums.md#azaka.tools.enums.ResponseType)
+
+        Info:
+            This returns a `OK` of [ResponseType](./enums.md#azaka.tools.enums.ResponseType)
+            if the operation was successful.
         """
         command = Command(f"set ulist {interface.id}", **interface._kwargs)
 
