@@ -62,7 +62,7 @@ class Context:
     PROTOCOL_VERSION: t.Final[int] = 1
 
     CLIENT_NAME: t.Final[str] = "Azaka"
-    CLIENT_VERSION: t.Final[str] = "0.2.0"
+    CLIENT_VERSION: t.Final[str] = "0.3.2"
 
     __slots__ = (
         "client",
