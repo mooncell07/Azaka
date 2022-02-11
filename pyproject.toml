@@ -10,6 +10,9 @@ keywords = ["vndb", "apiwrapper", "async", "visualnovel", "python"]
 [tool.poetry.dependencies]
 python = "^3.8"
 
+[tool.poetry.extras]
+dump = ["azaka-dump-parser"]
+
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
 pre-commit = "^2.15.0"
