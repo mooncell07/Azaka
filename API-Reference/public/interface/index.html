@@ -1127,7 +1127,6 @@ azaka.interface.Interface            (<a title="typing.Generic" href="https://do
 
 
 
-
   <div class="doc doc-object doc-attribute">
 
 
@@ -1270,7 +1269,7 @@ should be constructed.</p>
   <tbody>
       <tr>
         <td><code>predicate</code></td>
-        <td><code>t.Union[t.Callable[[t.Type[BaseCondition]], _BoolOProxy], _BoolOProxy]</code></td>
+        <td><code>t.Union[t.Callable[..., _BoolOProxy], _BoolOProxy]</code></td>
         <td><p>The condition to set.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -1278,7 +1277,7 @@ should be constructed.</p>
 </table>      <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>predicate can be a callable which
-takes a
+takes a subclass of
 <a href="../condition/#azaka.commands.condition.BaseCondition">BaseCondition</a> arg or a
 <a href="../../internals/commands/proxy/#azaka.commands.proxy._BoolOProxy">_BoolOProxy</a> object.</p>
 </div>

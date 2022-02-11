@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#azaka.tools.paginator.Paginator" class="md-skip">
+        <a href="#azaka.paginator.Paginator" class="md-skip">
           Skip to content
         </a>
       
@@ -389,7 +389,7 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#azaka.tools.paginator.Paginator" class="md-nav__link">
+  <a href="#azaka.paginator.Paginator" class="md-nav__link">
     Paginator
   </a>
   
@@ -397,21 +397,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#azaka.tools.paginator.Paginator.next" class="md-nav__link">
+  <a href="#azaka.paginator.Paginator.next" class="md-nav__link">
     next()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#azaka.tools.paginator.Paginator.previous" class="md-nav__link">
+  <a href="#azaka.paginator.Paginator.previous" class="md-nav__link">
     previous()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#azaka.tools.paginator.Paginator.compress" class="md-nav__link">
+  <a href="#azaka.paginator.Paginator.compress" class="md-nav__link">
     compress()
   </a>
   
@@ -928,7 +928,7 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#azaka.tools.paginator.Paginator" class="md-nav__link">
+  <a href="#azaka.paginator.Paginator" class="md-nav__link">
     Paginator
   </a>
   
@@ -936,21 +936,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#azaka.tools.paginator.Paginator.next" class="md-nav__link">
+  <a href="#azaka.paginator.Paginator.next" class="md-nav__link">
     next()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#azaka.tools.paginator.Paginator.previous" class="md-nav__link">
+  <a href="#azaka.paginator.Paginator.previous" class="md-nav__link">
     previous()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#azaka.tools.paginator.Paginator.compress" class="md-nav__link">
+  <a href="#azaka.paginator.Paginator.compress" class="md-nav__link">
     compress()
   </a>
   
@@ -984,13 +984,14 @@
 
 
 
-<h2 id="azaka.tools.paginator.Paginator" class="doc doc-heading">
+<h2 id="azaka.paginator.Paginator" class="doc doc-heading">
         <code>
-azaka.tools.paginator.Paginator        </code>
+azaka.paginator.Paginator            (<a title="typing.Generic" href="https://docs.python.org/3.10/library/typing.html#typing.Generic">Generic</a>)
+        </code>
 
 
 
-<a href="#azaka.tools.paginator.Paginator" class="headerlink" title="Permanent link">+</a></h2>
+<a href="#azaka.paginator.Paginator" class="headerlink" title="Permanent link">+</a></h2>
 
     <div class="doc doc-contents first">
 
@@ -1052,14 +1053,14 @@ which provides async stateful iteration over the results.</p>
 
 
 
-<h3 id="azaka.tools.paginator.Paginator.next" class="doc doc-heading">
+<h3 id="azaka.paginator.Paginator.next" class="doc doc-heading">
 <code class="highlight language-python"><span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-async"><code>async</code></small>
   </span>
 
-<a href="#azaka.tools.paginator.Paginator.next" class="headerlink" title="Permanent link">+</a></h3>
+<a href="#azaka.paginator.Paginator.next" class="headerlink" title="Permanent link">+</a></h3>
 
     <div class="doc doc-contents ">
 
@@ -1075,7 +1076,7 @@ which provides async stateful iteration over the results.</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>t.Optional[t.Iterable[BaseObject]]</code></td>
+      <td><code>t.Optional[t.Iterable[T]]</code></td>
       <td><p>The next page of results.</p></td>
     </tr>
   </tbody>
@@ -1090,14 +1091,14 @@ which provides async stateful iteration over the results.</p>
 
 
 
-<h3 id="azaka.tools.paginator.Paginator.previous" class="doc doc-heading">
+<h3 id="azaka.paginator.Paginator.previous" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">previous</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-async"><code>async</code></small>
   </span>
 
-<a href="#azaka.tools.paginator.Paginator.previous" class="headerlink" title="Permanent link">+</a></h3>
+<a href="#azaka.paginator.Paginator.previous" class="headerlink" title="Permanent link">+</a></h3>
 
     <div class="doc doc-contents ">
 
@@ -1113,7 +1114,7 @@ which provides async stateful iteration over the results.</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>t.Optional[t.Iterable[BaseObject]]</code></td>
+      <td><code>t.Optional[t.Iterable[T]]</code></td>
       <td><p>The previous page of results.</p></td>
     </tr>
   </tbody>
@@ -1128,14 +1129,14 @@ which provides async stateful iteration over the results.</p>
 
 
 
-<h3 id="azaka.tools.paginator.Paginator.compress" class="doc doc-heading">
+<h3 id="azaka.paginator.Paginator.compress" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-async"><code>async</code></small>
   </span>
 
-<a href="#azaka.tools.paginator.Paginator.compress" class="headerlink" title="Permanent link">+</a></h3>
+<a href="#azaka.paginator.Paginator.compress" class="headerlink" title="Permanent link">+</a></h3>
 
     <div class="doc doc-contents ">
 
@@ -1151,7 +1152,7 @@ which provides async stateful iteration over the results.</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>t.List[t.Iterable[BaseObject]]</code></td>
+      <td><code>t.List[t.Iterable[T]]</code></td>
       <td><p>A list of pages of results.</p></td>
     </tr>
   </tbody>

@@ -804,8 +804,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#azaka.tools.mixins.QueueControlMixin.error_listener" class="md-nav__link">
-    error_listener()
+  <a href="#azaka.tools.mixins.QueueControlMixin.append_error_handlers" class="md-nav__link">
+    append_error_handlers()
   </a>
   
 </li>
@@ -959,8 +959,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#azaka.tools.mixins.QueueControlMixin.error_listener" class="md-nav__link">
-    error_listener()
+  <a href="#azaka.tools.mixins.QueueControlMixin.append_error_handlers" class="md-nav__link">
+    append_error_handlers()
   </a>
   
 </li>
@@ -1068,9 +1068,9 @@ azaka.tools.mixins.QueueControlMixin        </code>
         <td><p>A <a href="https://docs.python.org/3.10/library/queue.html#queue.Queue">queue.Queue</a> holding <a href="https://docs.python.org/3.10/library/asyncio-future.html#asyncio.Future">asyncio.Future</a> objects which are waiting for a response.</p></td>
       </tr>
       <tr>
-        <td><code>on_error</code></td>
+        <td><code>error_handlers</code></td>
         <td></td>
-        <td><p>A <a href="https://docs.python.org/3.10/library/queue.html#queue.Queue">queue.Queue</a> holding function that will be called when an error occurs in [Protocol[].</p></td>
+        <td><p>A <a href="https://docs.python.org/3.10/library/stdtypes.html#list">list</a> holding function that will be called when an error occurs.</p></td>
       </tr>
       <tr>
         <td><code>on_connect</code></td>
@@ -1118,13 +1118,13 @@ This method gets the <a href="https://docs.python.org/3.10/library/asyncio-futur
   <tbody>
       <tr>
         <td><code>payload</code></td>
-        <td><code>Union[Mapping[Any, Any], Any]</code></td>
+        <td><code>t.Optional[t.Union[t.Mapping[t.Any, t.Any], t.Any]]</code></td>
         <td><p>The payload received from the API.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>exc</code></td>
-        <td><code>Optional[Exception]</code></td>
+        <td><code>t.Optional[Exception]</code></td>
         <td><p>The exception that occurred.</p></td>
         <td><code>None</code></td>
       </tr>
@@ -1140,15 +1140,15 @@ This method gets the <a href="https://docs.python.org/3.10/library/asyncio-futur
 
 
 
-<h3 id="azaka.tools.mixins.QueueControlMixin.error_listener" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">error_listener</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span></code>
+<h3 id="azaka.tools.mixins.QueueControlMixin.append_error_handlers" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">append_error_handlers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coro</span><span class="p">)</span></code>
 
 
-<a href="#azaka.tools.mixins.QueueControlMixin.error_listener" class="headerlink" title="Permanent link">+</a></h3>
+<a href="#azaka.tools.mixins.QueueControlMixin.append_error_handlers" class="headerlink" title="Permanent link">+</a></h3>
 
     <div class="doc doc-contents ">
 
-      <p>A method that puts the error handler in the <code>on_error</code> queue.</p>
+      <p>A method that puts the error handler in the <code>error_handlers</code> <a href="https://docs.python.org/3.10/library/stdtypes.html#list">list</a>.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1162,9 +1162,9 @@ This method gets the <a href="https://docs.python.org/3.10/library/asyncio-futur
   </thead>
   <tbody>
       <tr>
-        <td><code>func</code></td>
-        <td><code>Callable</code></td>
-        <td><p>The function to be called when an error occurs.</p></td>
+        <td><code>coro</code></td>
+        <td><code>t.Callable[[Context, AzakaException], t.Coroutine[t.Any, t.Any, t.Any]]</code></td>
+        <td><p>The coroutine to be called when an error occurs.</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>
