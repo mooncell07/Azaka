@@ -1374,14 +1374,14 @@ azaka.client.Client        </code>
 
 
 <h3 id="azaka.client.Client.on_error" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">on_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">on_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coro</span><span class="p">)</span></code>
 
 
 <a href="#azaka.client.Client.on_error" class="headerlink" title="Permanent link">+</a></h3>
 
     <div class="doc doc-contents ">
 
-      <p>Register a function to be called when an error occurs.</p>
+      <p>Register a coroutine to be called when an error occurs.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1395,21 +1395,22 @@ azaka.client.Client        </code>
   </thead>
   <tbody>
       <tr>
-        <td><code>func</code></td>
-        <td><code>t.Callable</code></td>
-        <td><p>The function to call.</p></td>
+        <td><code>coro</code></td>
+        <td><code>t.Callable[[Context, AzakaException], t.Coroutine[t.Any, t.Any, t.Any]]</code></td>
+        <td><p>The coroutine to call.</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>
 </table>      <div class="admonition info">
 <p class="admonition-title">Info</p>
-<p>The function must take a single argument of type
+<p>The coroutine must take 2 arguments of types
+<a href="../context/#azaka.context.Context">Context</a> and
 <a href="../exceptions/#azaka.exceptions.AzakaException">AzakaException</a>.</p>
 </div>
 
 <p><strong>Examples:</strong></p>
     <div class="highlight"><pre><span></span><code><span class="nd">@on_error</span>
-<span class="k">def</span> <span class="nf">my_error_handler</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">my_error_handler</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
     <span class="o">...</span>
 </code></pre></div>
 
@@ -1434,7 +1435,7 @@ azaka.client.Client        </code>
 
     <div class="doc doc-contents ">
 
-      <p>Start the client and attempt to login. This method is a coroutine.</p>
+      <p>Starts the client and attempts to login. This method is a coroutine.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1466,7 +1467,7 @@ azaka.client.Client        </code>
   <tbody>
       <tr>
         <td><code>AzakaException</code></td>
-        <td><p>Raises when a username was passed but not a password or session token.</p></td>
+        <td><p>Raises when an username was passed but not a password or session token.</p></td>
       </tr>
   </tbody>
 </table>      <div class="admonition note">
@@ -1492,7 +1493,8 @@ azaka.client.Client        </code>
 
     <div class="doc doc-contents ">
 
-      <p>Blocking alternate of <a href="./#azaka.client.Client.connect">Client.connect</a>.</p>
+      <p>Blocking alternate of <a href="./#azaka.client.Client.connect">Client.connect</a>.
+Also handles shutdown.</p>
 
     </div>
 
@@ -1781,7 +1783,12 @@ instead if you want to do basic queries.</p>
       <td><p><a href="../enums/#azaka.tools.enums.ResponseType">ResponseType</a></p></td>
     </tr>
   </tbody>
-</table>
+</table>      <div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This returns a <code>OK</code> of <a href="../enums/#azaka.tools.enums.ResponseType">ResponseType</a>
+if the operation was successful.</p>
+</div>
+
     </div>
 
   </div>
