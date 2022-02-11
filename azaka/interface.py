@@ -84,7 +84,7 @@ class Interface(t.Generic[T]):
 
         Note:
             predicate can be a callable which
-            takes a
+            takes a subclass of
             [BaseCondition](../public/condition.md#azaka.commands.condition.BaseCondition) arg or a
             [_BoolOProxy](../internals/commands/proxy.md#azaka.commands.proxy._BoolOProxy) object.
 
