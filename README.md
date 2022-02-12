@@ -88,6 +88,8 @@ async def main(ctx) -> None:
 
 client.start()
 ```
+More Examples in Examples folder.
+
 
 ## DOCUMENTATION & TUTORIAL
 
