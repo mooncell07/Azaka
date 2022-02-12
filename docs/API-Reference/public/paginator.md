@@ -1,1 +1,1 @@
-::: azaka.tools.Paginator
+::: azaka.Paginator
