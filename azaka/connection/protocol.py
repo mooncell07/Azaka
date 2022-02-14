@@ -16,6 +16,7 @@ from ..exceptions import (
     UnknownGetFlagError,
     UnknownGetTypeError,
     ThrottledError,
+    InvalidQueryError,
 )
 from ..tools import ResponseType
 
@@ -55,6 +56,7 @@ class Protocol(asyncio.Protocol):
             "parse": CommandSyntaxError,
             "needlogin": AuthorizationError,
             "throttled": ThrottledError,
+            "ignore": InvalidQueryError,
         }
         self._command: t.Optional[bytes] = None
         self.connector.push_back.set()

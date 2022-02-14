@@ -61,11 +61,16 @@ class QueueControlMixin:
             payload: The payload received from the API.
             exc: The exception that occurred.
         """
-        future = self.future_queue.get_nowait()
-        if exc is not None:
-            future.set_exception(exc)
+        try:
+            future = self.future_queue.get_nowait()
+        except queue.Empty:
+            if exc is not None:
+                raise exc from None
         else:
-            future.set_result(payload)
+            if exc is not None:
+                future.set_exception(exc)
+            else:
+                future.set_result(payload)
 
     def append_error_handlers(
         self,
