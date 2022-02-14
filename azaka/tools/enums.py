@@ -115,6 +115,7 @@ class ErrorType(enum.Enum):
     GETINFO: str = "getinfo"
     FILTER: str = "filter"
     SETTYPE: str = "settype"
+    IGNORE: str = "ignore"
 
 
 class Gender(enum.Enum):

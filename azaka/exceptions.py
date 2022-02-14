@@ -17,6 +17,7 @@ __all__ = (
     "CommandSyntaxError",
     "ThrottledError",
     "InterfaceError",
+    "InvalidQueryError",
 )
 
 
@@ -217,6 +218,17 @@ class ThrottledError(CommandError):
 class InterfaceError(AzakaException):
     """
     An exception that is raised when the interface is broken.
+    """
+
+    __slots__ = ()
+
+    def __init__(self, msg: str) -> None:
+        super().__init__(msg)
+
+
+class InvalidQueryError(AzakaException):
+    """
+    An exception that is raised when a malformed query was passed.
     """
 
     __slots__ = ()
