@@ -17,14 +17,26 @@ class BaseObject:
         id (int): The id or uid of the item. (It will never be `None`.)
     """
 
-    __slots__ = ("data", "id")
+    __slots__ = ("_name", "data", "id")
 
     def __init__(self, data: t.Mapping[str, t.Any]) -> None:
+        self._name = self.__class__.__name__
         self.data = data
         self.id: int = data.get("id") or data["uid"]
 
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        self._name = value
+
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__} id={self.id}>"
+
+    def __lshift__(self, _):
+        raise NotImplementedError
 
     def __eq__(self, other: t.Any) -> bool:
         """

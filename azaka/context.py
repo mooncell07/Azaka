@@ -206,7 +206,7 @@ class Context:
         if isinstance(result, list):
             return result
 
-        return None
+        assert None
 
     async def get_staff(
         self,
@@ -241,7 +241,7 @@ class Context:
         if isinstance(result, list):
             return result
 
-        return None
+        assert None
 
     async def get_release(
         self,
@@ -278,7 +278,7 @@ class Context:
         if isinstance(result, list):
             return result
 
-        return None
+        assert None
 
     async def get_character(
         self,
@@ -314,7 +314,7 @@ class Context:
         if isinstance(result, list):
             return result
 
-        return None
+        assert None
 
     async def get_producer(
         self,
@@ -350,7 +350,7 @@ class Context:
         if isinstance(result, list):
             return result
 
-        return None
+        assert None
 
     async def get_quote(
         self, predicate: t.Callable[[t.Type[QuoteCondition]], _BoolOProxy]
@@ -373,7 +373,7 @@ class Context:
         if isinstance(result, list):
             return result
 
-        return None
+        assert None
 
     async def get_user(
         self, predicate: t.Callable[[t.Type[UserCondition]], _BoolOProxy]
@@ -396,7 +396,7 @@ class Context:
         if isinstance(result, list):
             return result
 
-        return None
+        assert None
 
     async def get_ulist(
         self, predicate: t.Callable[[t.Type[UlistCondition]], _BoolOProxy]
@@ -419,7 +419,7 @@ class Context:
         if isinstance(result, list):
             return result
 
-        return None
+        assert None
 
     async def get_ulist_labels(
         self, predicate: t.Callable[[t.Type[UlistLabelsCondition]], _BoolOProxy]
@@ -444,4 +444,4 @@ class Context:
         if isinstance(result, list):
             return result
 
-        return None
+        assert None

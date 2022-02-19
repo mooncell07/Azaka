@@ -412,6 +412,8 @@ class UlistLabelsCondition:
 
     UID: t.Final[_ConditionProxy] = _ConditionProxy("uid", operator=Operator("="))
 
+    __slots__ = ()
+
 
 class UlistCondition(UlistLabelsCondition):
     """

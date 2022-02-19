@@ -45,7 +45,7 @@ class Paginator(t.Generic[T]):
         if self.more:
             self.current_page_num += 1
             return await self._generate()
-        return None
+        assert None
 
     async def previous(self) -> t.Optional[t.Iterable[T]]:
         """
@@ -57,7 +57,7 @@ class Paginator(t.Generic[T]):
         if self.current_page_num > 1:
             self.current_page_num -= 1
             return await self._generate()
-        return None
+        assert None
 
     async def compress(self) -> t.List[t.Iterable[T]]:
         """
@@ -92,4 +92,4 @@ class Paginator(t.Generic[T]):
         if isinstance(data, tuple):
             self.current_page, self.more, _ = data
             return data[0]
-        return None
+        assert None

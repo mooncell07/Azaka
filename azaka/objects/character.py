@@ -14,7 +14,7 @@ class CharacterVoiced:
     Attributes:
         id: staff ID.
         vid: VN ID.
-        AID: The staff alias ID being used.
+        aid: The staff alias ID being used.
         note: The staff note.
     """
 
