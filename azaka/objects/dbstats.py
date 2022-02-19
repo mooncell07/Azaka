@@ -27,6 +27,7 @@ class DBStats:
     """
 
     __slots__ = (
+        "_name",
         "_data",
         "chars",
         "posts",
@@ -41,6 +42,8 @@ class DBStats:
     )
 
     def __init__(self, data: t.Mapping[str, t.Any]) -> None:
+        self._name = self.__class__.__name__
+
         self.chars: t.Optional[int] = data.get("chars")
         self.posts: t.Optional[int] = data.get("posts")
         self.producers: t.Optional[int] = data.get("producers")
@@ -51,6 +54,17 @@ class DBStats:
         self.traits: t.Optional[int] = data.get("traits")
         self.users: t.Optional[int] = data.get("users")
         self.vn: t.Optional[int] = data.get("vn")
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        self._name = value
+
+    def __lshift__(self, _) -> None:
+        raise NotImplementedError
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}>"

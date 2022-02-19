@@ -52,14 +52,14 @@ class Connector(QueueControlMixin):
         super().__init__()
         self.protocol_factory: Protocol = Protocol(self)
 
-    async def connect(self, command: bytes) -> None:
+    async def connect(self, command: Command) -> None:
         """
         Create a connection to the server and wait until the connection is lost.
 
         Args:
             command: The command to send to the server.
         """
-        self.protocol_factory.command = command
+        self.protocol_factory.command = command.create()
         self.transport, _ = await asyncio.wait_for(
             self.ctx.loop.create_connection(  # type: ignore
                 protocol_factory=lambda: self.protocol_factory,
@@ -123,7 +123,7 @@ class Connector(QueueControlMixin):
         if transport is not None:
             return [transport.get_extra_info(arg, default=default) for arg in args]
 
-        return None
+        assert None
 
     def shutdown(self) -> None:
         """

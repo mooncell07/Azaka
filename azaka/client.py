@@ -25,9 +25,15 @@ __all__ = ("Client",)
 logger = logging.getLogger(__name__)
 
 
+class Cache(dict):
+    def __lshift__(self, value):
+        self[value._name] = value
+        return value
+
+
 class Client:
 
-    __slots__ = ("_connector", "_inventory", "ctx")
+    __slots__ = ("_connector", "cache", "_ctx")
 
     def __init__(
         self,
@@ -52,15 +58,26 @@ class Client:
         Note:
             A password or session token should be provided if passing an username.
         """
-        self.ctx: Context = Context(
+        self._ctx: Context = Context(
             self,
             username=username,
             password=password,
             loop=loop,
             ssl_context=ssl_context,
         )
-        self._inventory: t.MutableMapping[str, t.Any] = {}
-        self._connector: Connector = Connector(self.ctx)
+        self.cache: Cache = Cache()
+        self._connector: Connector = Connector(self._ctx)
+
+    def __matmul__(
+        self, coros: t.Iterable[t.Callable[..., t.Coroutine[t.Any, t.Any, t.Any]]]
+    ):
+        for coro in coros:
+            if inspect.iscoroutinefunction(coro):
+                self._ctx.loop.create_task(
+                    self._connector.handle_user_exceptions(coro(self._ctx))
+                )
+            else:
+                raise TypeError("Callback must be a coroutine.") from None
 
     @property
     def connected(self) -> bool:
@@ -105,8 +122,8 @@ class Client:
         """
 
         if inspect.iscoroutinefunction(coro):
-            self.ctx.loop.create_task(
-                self._connector.handle_user_exceptions(coro(self.ctx, *args, **kwargs))
+            self._ctx.loop.create_task(
+                self._connector.handle_user_exceptions(coro(self._ctx, *args, **kwargs))
             )
         else:
             raise TypeError("Callback must be a coroutine.") from None
@@ -140,19 +157,19 @@ class Client:
         Adds logic for auth.
         """
         data = {
-            "protocol": self.ctx.PROTOCOL_VERSION,
-            "client": self.ctx.CLIENT_NAME,
-            "clientver": self.ctx.CLIENT_VERSION,
+            "protocol": self._ctx.PROTOCOL_VERSION,
+            "client": self._ctx.CLIENT_NAME,
+            "clientver": self._ctx.CLIENT_VERSION,
         }
 
-        username = self.ctx.username
-        password = self.ctx.password
+        username = self._ctx.username
+        password = self._ctx.password
         if username is not None:
             data["username"] = username
 
             if isinstance(token, str):
                 data["sessiontoken"] = token
-                self._inventory["token"] = token
+                self.cache["token"] = token
 
             elif password is not None:
                 data["password"] = password
@@ -181,7 +198,7 @@ class Client:
             For fetching a token, the argument should be set to `True` and username and password must be provided.
         """
         command = self._auth_helper(token=token)
-        await self._connector.connect(command.create())
+        await self._connector.connect(command)
 
     def start(self, *, token: t.Optional[t.Union[bool, str]] = None) -> None:
         """
@@ -191,13 +208,13 @@ class Client:
         command = self._auth_helper(token=token)
 
         try:
-            self.ctx.loop.run_until_complete(self._connector.connect(command.create()))
+            self._ctx.loop.run_until_complete(self._connector.connect(command))
         except KeyboardInterrupt:
             pass
 
         finally:
             self._connector.shutdown()
-            self.ctx.loop.close()
+            self._ctx.loop.close()
             logger.debug("SHUTDOWN COMPLETED.")
 
     async def logout(self) -> None:
@@ -208,7 +225,7 @@ class Client:
             AzakaException: Raises when there is no session token available.
         """
         command = Command("logout")
-        token = self._inventory.get("token")
+        token = self.cache.get("token")
 
         if token is not None:
             await self._connector.inject(command, None)
@@ -229,15 +246,15 @@ class Client:
         """
         command = Command("token")
 
-        if command not in self._inventory:
-            future = self.ctx.loop.create_future()
+        if command not in self.cache:
+            future = self._ctx.loop.create_future()
             await self._connector.inject(command, future)
 
             result = (await future).result()
-            self._inventory[command.name] = result
+            self.cache[command.name] = result
 
         else:
-            result = self._inventory[command.name]
+            result = self.cache[command.name]
         return result
 
     async def wait_until_connect(self) -> None:
@@ -246,27 +263,18 @@ class Client:
         """
         await self._connector.on_connect.wait()
 
-    async def dbstats(self, update: bool = False) -> DBStats:
+    async def dbstats(self) -> DBStats:
         """
         Get the VNDB database statistics.
-
-        Args:
-            update: If set to `True`, the client makes an api call to get data else it returns
-                    cached data.
 
         Returns:
             [DBStats](./objects/dbstats.md#azaka.objects.DBStats)
         """
         command = Command("dbstats")
+        future = self._ctx.loop.create_future()
+        await self._connector.inject(command, future)
+        result = DBStats(await future)
 
-        if command not in self._inventory or update is True:
-            future = self.ctx.loop.create_future()
-            await self._connector.inject(command, future)
-
-            result = DBStats(await future)
-            self._inventory[command.name] = result
-        else:
-            result = self._inventory[command.name]
         return result
 
     async def get(
@@ -300,7 +308,7 @@ class Client:
         """
         command = Command("get", interface=interface)
 
-        future = self.ctx.loop.create_future()
+        future = self._ctx.loop.create_future()
         await self._connector.inject(command, future)
 
         result = await future
@@ -326,7 +334,7 @@ class Client:
         """
         command = Command(f"set ulist {interface.id}", **interface._kwargs)
 
-        future = self.ctx.loop.create_future()
+        future = self._ctx.loop.create_future()
         await self._connector.inject(command, future)
         result = await future
 
