@@ -60,17 +60,21 @@ class QueueControlMixin:
         Args:
             payload: The payload received from the API.
             exc: The exception that occurred.
+
+        Info:
+            This method will raise an error if there is no more future left to send an exception to.
         """
-        try:
+        if not self.future_queue.qsize() == 0:
             future = self.future_queue.get_nowait()
-        except queue.Empty:
-            if exc is not None:
-                raise exc from None
-        else:
+
             if exc is not None:
                 future.set_exception(exc)
             else:
                 future.set_result(payload)
+
+        else:
+            if exc is not None:
+                raise exc from None
 
     def append_error_handlers(
         self,
