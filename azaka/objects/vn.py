@@ -195,7 +195,7 @@ class VN(BaseObject):
         super().__init__(data)
 
         self._anime = data.get("anime", [])
-        self._screens = data.get("screens")
+        self._screens = data.get("screens", [])
         self._relations = data.get("relations", [])
         self._staff = data.get("staff", [])
         self._image_flagging = data.get("image_flagging", {})
@@ -237,7 +237,7 @@ class VN(BaseObject):
             The [list][] is populated only when the command was issued with
             the `SCREENS` [Flags](../enums.md#azaka.tools.enums.Flags) otherwise it is empty.
         """
-        return [Screens(**data) for data in self._screens if self._screens]
+        return [Screens(**data) for data in self._screens]
 
     @property
     def relations(self) -> t.List[VNRelation]:
