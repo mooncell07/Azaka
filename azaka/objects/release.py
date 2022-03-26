@@ -35,8 +35,12 @@ class ReleaseVN:
 
     id: int
     title: t.Optional[str] = None
-    rtype: t.Optional[str] = None
+    rtype: t.Optional[Rtype] = None
     original: t.Optional[str] = None
+
+    def __post_init__(self) -> None:
+        if self.rtype:
+            self.rtype = Rtype(self.rtype)
 
 
 @dataclass
@@ -99,7 +103,7 @@ class Release(BaseObject):
     """
 
     __slots__ = (
-        "_vns",
+        "_vn",
         "_producers",
         "_medias",
         "_animations",
@@ -124,7 +128,7 @@ class Release(BaseObject):
     def __init__(self, data: t.Mapping[str, t.Any]) -> None:
         super().__init__(data)
 
-        self._vns = data.get("vn")
+        self._vn = data.get("vn")
         self._producers = data.get("producers", [])
         self._medias = data.get("media", [])
         self._animations = data.get("animation", [])
@@ -186,14 +190,7 @@ class Release(BaseObject):
             The [list][] is populated only when the command was issued with
             the `VN` [Flags](../enums.md#azaka.tools.enums.Flags) otherwise it is empty.
         """
-        vns = []
-
-        if self._vns:
-            for vn in self._vns:
-                vn["rtype"] = Rtype(vn["rtype"]) if vn.get("rtype") else None
-                vns.append(ReleaseVN(**vn))
-
-        return vns
+        return [ReleaseVN(**vn) for vn in self._vn if self._vn]
 
     @property
     def release_producers(self) -> t.List[ReleaseProducer]:
