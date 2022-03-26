@@ -41,6 +41,10 @@ class Instance:
     name: t.Optional[str] = None
     original: t.Optional[str] = None
 
+    def __post_init__(self) -> None:
+        if self.spoiler:
+            self.spoiler = Spoiler(self.spoiler)
+
 
 class Character(BaseObject):
     """
@@ -181,13 +185,4 @@ class Character(BaseObject):
             The [list][] is populated only when the command was issued with
             the `INSTANCES` [Flags](../enums.md#azaka.tools.enums.Flags) otherwise it is empty.
         """
-        incs = []
-
-        if self._instances:
-            for data in self._instances:
-                data["spoiler"] = (
-                    Spoiler(data["spoiler"]) if data.get("spoiler") else None
-                )
-                incs.append(Instance(**data))
-
-        return incs
+        return [Instance(**data) for data in self._instances]

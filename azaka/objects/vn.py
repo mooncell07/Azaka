@@ -89,6 +89,10 @@ class Screens:
     width: t.Optional[int] = None
     nsfw: t.Optional[bool] = None
 
+    def __post_init__(self):
+        if self.flagging:
+            self.flagging = ImageFlagging(**self.flagging)
+
 
 @dataclass
 class VNRelation:
@@ -233,16 +237,7 @@ class VN(BaseObject):
             The [list][] is populated only when the command was issued with
             the `SCREENS` [Flags](../enums.md#azaka.tools.enums.Flags) otherwise it is empty.
         """
-        screen_array = []
-
-        if self._screens is not None:
-            for data in self._screens:
-                if data.get("flagging"):
-                    flagging = ImageFlagging(**data.get("flagging"))
-                    data["flagging"] = flagging
-                screen_array.append(Screens(**data))
-
-        return screen_array
+        return [Screens(**data) for data in self._screens if self._screens]
 
     @property
     def relations(self) -> t.List[VNRelation]:

@@ -1,8 +1,6 @@
 import typing as t
 
-__all__ = ("BaseObject", "SENTINEL")
-
-SENTINEL = object()
+__all__ = ("BaseObject",)
 
 
 class BaseObject:
