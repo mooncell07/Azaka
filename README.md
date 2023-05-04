@@ -1,3 +1,7 @@
+# DEPRECATED
+This project has been deprecated and removed from PYPI, no new updates will be given to this repo.
+
+
 <p align="center"> <img src="https://cdn-icons-png.flaticon.com/512/2322/2322246.png" height=100> </p>
 <p align="center"> <a href="https://www.codefactor.io/repository/github/mooncell07/azaka"><img src="https://www.codefactor.io/repository/github/mooncell07/azaka/badge" alt="CodeFactor" /></a> </p>
 
