@@ -8,6 +8,7 @@ keywords = ["vndb", "apiwrapper", "async", "visualnovel", "python"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+aiohttp = "^3.8.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
