@@ -7,6 +7,7 @@ import query
 from exceptions import EXMAP, AzakaException
 from models import AuthInfo, Stats, User
 from typing_extensions import Self
+from utils import build_objects
 from yarl import URL
 
 __all__ = ("Client",)
@@ -67,15 +68,16 @@ class Client:
     ) -> t.Sequence[dict[str, t.Any]] | t.Sequence[t.NamedTuple]:
         if self.base_header:
             resp = await self.cs.post(
-                query.url, data=query.body, headers=self.base_header
+                query.url, data=query.parse_body, headers=self.base_header
             )
         else:
             resp = await self.cs.post(query.url, data=query.body)
 
+        data = (await self._get_data(resp))
         if json:
-            return (await self._get_data(resp))["results"]
+            return data
         else:
-            return await self._make_object(query, resp)
+            return await build_objects(query._route, data["results"])
 
     async def _get_data(self, resp: aiohttp.ClientResponse) -> dict[str, t.Any]:
         status = resp.status
@@ -88,16 +90,6 @@ class Client:
                 raise error(msg)
             else:
                 raise AzakaException(msg, status)
-
-    async def _make_object(
-        self, query: query.Query, resp: aiohttp.ClientResponse
-    ) -> t.Sequence[t.NamedTuple]:
-        structs = []
-        jsons = (await self._get_data(resp))["results"]
-        for json in jsons:
-            struct = namedtuple(query._route.upper(), json)
-            structs.append(struct(*json.values()))
-        return structs
 
     async def create_cs(self) -> None:
         self.cs = aiohttp.ClientSession(headers={"Content-Type": "application/json"})
