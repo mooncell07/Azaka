@@ -1,6 +1,7 @@
 import enum
-import json
 import typing as t
+import json
+from utils import clean_string
 
 from typing_extensions import Self
 
@@ -24,7 +25,7 @@ def OR(*args: tuple) -> list:
 
 
 class Query:
-    __slots__ = ("_route", "_fields", "_filters")
+    __slots__ = ("_route", "_fields", "_filters", "_body")
 
     def __init__(
         self,
@@ -35,13 +36,15 @@ class Query:
         self._route = route
         self._fields = fields
         self._filters = filters
+        self._body = {}
 
     def frm(self, route: str) -> Self:
-        self._route = route.strip().lower()
+        self._route = clean_string(route)
         return self
 
     def where(self, filters: list) -> Self:
         self._filters = filters
+        self._body["filters"] = filters
         return self
 
     @property
@@ -49,26 +52,20 @@ class Query:
         return f"{BASE}/{self._route}"
 
     @property
-    def body(self) -> str:
+    def parse_body(self) -> str:
         if not self._fields:
             raise TypeError("Missing required data item: 'field'")
-        return json.dumps({"filters": self._filters, "fields": ", ".join(self._fields)})
+        return json.dumps(self._body)
 
 
 class Node:
     __slots__ = ("name",)
 
     def __init__(self, name: str) -> None:
-        self.name = name.strip().lower()
+        self.name = clean_string(name)
 
     def _fmt(self, op: str, val: str | list) -> list:
-        clean_val: str | list
-
-        if isinstance(val, list):
-            clean_val = [i.strip().lower() for i in val]
-        else:
-            clean_val = val.strip().lower()
-        return [self.name, op, clean_val]
+        return [self.name, op, val]
 
     def __eq__(self, val: object):
         if isinstance(val, (str, list)):
@@ -96,6 +93,6 @@ class Node:
 
 
 def select(*fields: str) -> Query:
-    query = Query()
-    query._fields = fields
+    query = Query(fields=fields)
+    query._body["fields"] = ", ".join(fields)
     return query
