@@ -1,11 +1,11 @@
 import enum
 import json
+import typing as t
+
+from typing_extensions import Self
 
 __all__ = ("select", "AND", "OR", "Query", "Node")
-
-
 BASE = "https://api.vndb.org/kana"
-ROUTES = {"vn", "release", "producer", "character", "staff", "tag", "trait"}
 
 
 def AND(*args: tuple) -> list:
@@ -19,40 +19,40 @@ def OR(*args: tuple) -> list:
 class Query:
     __slots__ = ("_route", "_fields", "_filters")
 
-    def __init__(self, route=None, fields=None, filters=None) -> None:
-        self._route: str = route
-        self._fields: tuple = fields
-        self._filters: list = filters
+    def __init__(
+        self,
+        route: t.Optional[str] = None,
+        fields: t.Optional[tuple[str]] = None,
+        filters: t.Optional[list] = None,
+    ) -> None:
+        self._route = route
+        self._fields = fields
+        self._filters = filters
 
-    def frm(self, route):
-        route = route.strip().lower()
+    def frm(self, route: str) -> Self:
+        self._route = route.strip().lower()
+        return self
 
-        if route in ROUTES:
-            self._route = route
-            return self
-        else:
-            raise NotImplementedError("Route not available.")
-
-    def where(self, filters: list):
+    def where(self, filters: list) -> Self:
         self._filters = filters
         return self
 
     @property
-    def url(self):
+    def url(self) -> str:
         return f"{BASE}/{self._route}"
 
     @property
-    def body(self):
+    def body(self) -> str:
         return json.dumps({"filters": self._filters, "fields": ", ".join(self._fields)})
 
 
 class Node:
     __slots__ = ("name",)
 
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         self.name = name.strip().lower()
 
-    def _fmt(self, op: str, val: str | list) -> list[str | list]:
+    def _fmt(self, op: str, val: str | list) -> list:
         if isinstance(val, list):
             clean_val = [i.strip().lower() for i in val]
         else:

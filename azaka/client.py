@@ -1,7 +1,11 @@
+import typing as t
 from collections import namedtuple
+from types import TracebackType
 
 import aiohttp
+from exceptions import EXMAP, AzakaException
 from query import Query
+from typing_extensions import Self
 
 __all__ = ("Client",)
 
@@ -9,33 +13,46 @@ __all__ = ("Client",)
 class Client:
     __slots__ = ("key", "cs")
 
-    def __init__(self, key=None) -> None:
+    def __init__(self, key: t.Optional[str] = None) -> None:
         self.key = key
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> Self:
         await self.create_cs()
         return self
 
-    async def __aexit__(self, exc, exc_val, tb):
+    async def __aexit__(
+        self,
+        exc: t.Optional[t.Type[BaseException]],
+        exc_val: t.Optional[BaseException],
+        tb: t.Optional[TracebackType],
+    ) -> None:
         await self.cs.close()
 
-    async def execute(self, query: Query, json: bool = False):
+    async def execute(
+        self, query: Query, json: bool = False
+    ) -> t.Sequence[dict[str, t.Any]] | t.Sequence[t.NamedTuple]:
         resp = await self.cs.post(query.url, data=query.body)
 
         if json:
-            obj = await self._get_data(resp)
+            return (await self._get_data(resp))["results"]
         else:
-            obj = await self._make_object(query, resp)
+            return await self._make_object(query, resp)
 
-        return obj["results"]
-
-    async def _get_data(self, resp: aiohttp.ClientResponse):
-        if 400 > resp.status >= 200:
+    async def _get_data(self, resp: aiohttp.ClientResponse) -> dict[str, t.Any]:
+        status = resp.status
+        if 400 > status >= 200:
             return await resp.json()
         else:
-            raise NotImplementedError(await resp.text())
+            msg = await resp.text()
+            error = EXMAP.get(status)
+            if error:
+                raise error(msg)
+            else:
+                raise AzakaException(msg, status)
 
-    async def _make_object(self, query: Query, resp: aiohttp.ClientResponse):
+    async def _make_object(
+        self, query: Query, resp: aiohttp.ClientResponse
+    ) -> t.Sequence[t.NamedTuple]:
         structs = []
         jsons = (await self._get_data(resp))["results"]
         for json in jsons:
@@ -43,5 +60,5 @@ class Client:
             structs.append(struct(*json.values()))
         return structs
 
-    async def create_cs(self):
+    async def create_cs(self) -> None:
         self.cs = aiohttp.ClientSession(headers={"Content-Type": "application/json"})
