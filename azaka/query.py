@@ -4,8 +4,15 @@ import typing as t
 
 from typing_extensions import Self
 
-__all__ = ("select", "AND", "OR", "Query", "Node")
+__all__ = ("select", "AND", "OR", "Node")
 BASE = "https://api.vndb.org/kana"
+
+
+# GET - ENDPOINTS
+SCHEMA_URL = f"{BASE}/schema"
+STATS_URL = f"{BASE}/stats"
+AUTHINFO_URL = f"{BASE}/authinfo"
+USER_URL = f"{BASE}/user"
 
 
 def AND(*args: tuple) -> list:
@@ -22,7 +29,7 @@ class Query:
     def __init__(
         self,
         route: t.Optional[str] = None,
-        fields: t.Optional[tuple[str]] = None,
+        fields: t.Optional[tuple[str, ...]] = None,
         filters: t.Optional[list] = None,
     ) -> None:
         self._route = route
@@ -43,6 +50,8 @@ class Query:
 
     @property
     def body(self) -> str:
+        if not self._fields:
+            raise TypeError("Missing required data item: 'field'")
         return json.dumps({"filters": self._filters, "fields": ", ".join(self._fields)})
 
 
@@ -53,6 +62,8 @@ class Node:
         self.name = name.strip().lower()
 
     def _fmt(self, op: str, val: str | list) -> list:
+        clean_val: str | list
+
         if isinstance(val, list):
             clean_val = [i.strip().lower() for i in val]
         else:
