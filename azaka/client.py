@@ -7,7 +7,7 @@ import query
 from exceptions import EXMAP, AzakaException
 from models import AuthInfo, Stats, User
 from typing_extensions import Self
-from utils import build_objects
+from utils import Response, build_objects
 from yarl import URL
 
 __all__ = ("Client",)
@@ -31,10 +31,10 @@ class Client:
     ) -> None:
         await self.cs.close()
 
-    async def get_schema(self) -> dict[str, str]:
+    async def get_schema(self) -> t.Mapping[str, str]:
         resp = await self.cs.get(query.SCHEMA_URL)
         data = await self._get_data(resp)
-        return data
+        return t.cast(t.Mapping[str, str], data)
 
     async def get_stats(self) -> Stats:
         resp = await self.cs.get(query.STATS_URL)
@@ -48,7 +48,9 @@ class Client:
         data = await self._get_data(resp)
         return AuthInfo(**data)
 
-    async def get_user(self, *users: str, fields: t.Sequence[str] = ()) -> t.Sequence[User]:
+    async def get_user(
+        self, *users: str, fields: t.Sequence[str] = ()
+    ) -> t.Sequence[User]:
         url = URL(query.USER_URL).update_query({"q": users, "fields": fields})
         resp = await self.cs.get(url)
         data = await self._get_data(resp)
@@ -63,9 +65,7 @@ class Client:
             user_list.append(u)
         return user_list
 
-    async def execute(
-        self, query: query.Query, json: bool = False
-    ) -> t.Sequence[dict[str, t.Any]] | t.Sequence[t.NamedTuple]:
+    async def execute(self, query: query.Query) -> Response:
         if self.base_header:
             resp = await self.cs.post(
                 query.url, data=query.parse_body, headers=self.base_header
@@ -73,13 +73,10 @@ class Client:
         else:
             resp = await self.cs.post(query.url, data=query.body)
 
-        data = (await self._get_data(resp))
-        if json:
-            return data
-        else:
-            return await build_objects(query._route, data["results"])
+        data = await self._get_data(resp)
+        return await build_objects(query._route, data)
 
-    async def _get_data(self, resp: aiohttp.ClientResponse) -> dict[str, t.Any]:
+    async def _get_data(self, resp: aiohttp.ClientResponse) -> Response:
         status = resp.status
         if 400 > status >= 200:
             return await resp.json()
