@@ -25,26 +25,36 @@ def OR(*args: tuple) -> list:
 
 
 class Query:
-    __slots__ = ("_route", "_fields", "_filters", "_body")
+    __slots__ = ("_route", "_body")
 
-    def __init__(
-        self,
-        route: t.Optional[str] = None,
-        fields: t.Optional[tuple[str, ...]] = None,
-        filters: t.Optional[list] = None,
-    ) -> None:
+    def __init__(self, route = "", body = {}) -> None:
         self._route = route
-        self._fields = fields
-        self._filters = filters
-        self._body = {}
+        self._body = body or self._defaults()
+
+    def _defaults(self):
+        return {
+        "filters": [],
+        "fields": "id",
+        "sort": "id",
+        "reverse": False,
+        "results": 10,
+        "page": 1,
+        "user": None,
+        "count": False,
+        "compact_filters": False,
+        "normalized_filters": False
+        }
 
     def frm(self, route: str) -> Self:
         self._route = clean_string(route)
         return self
 
     def where(self, filters: list) -> Self:
-        self._filters = filters
         self._body["filters"] = filters
+        return self
+    
+    def sort(self, key: str) -> Self:
+        self._body["sort"] = key
         return self
 
     @property
@@ -53,8 +63,8 @@ class Query:
 
     @property
     def parse_body(self) -> str:
-        if not self._fields:
-            raise TypeError("Missing required data item: 'field'")
+        if not self._body["fields"]:
+            raise TypeError("Missing required data item: 'fields'")
         return json.dumps(self._body)
 
 
@@ -93,6 +103,7 @@ class Node:
 
 
 def select(*fields: str) -> Query:
-    query = Query(fields=fields)
-    query._body["fields"] = ", ".join(fields)
+    query = Query()
+    if fields:
+        query._body["fields"] = ", ".join(fields)
     return query
