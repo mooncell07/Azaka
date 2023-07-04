@@ -4,6 +4,7 @@ import json
 from utils import clean_string
 
 from typing_extensions import Self
+from dataclasses import dataclass, field
 
 __all__ = ("select", "AND", "OR", "Node")
 BASE = "https://api.vndb.org/kana"
@@ -27,22 +28,22 @@ def OR(*args: tuple) -> list:
 class Query:
     __slots__ = ("_route", "_body")
 
-    def __init__(self, route = "", body = {}) -> None:
+    def __init__(self, route: str ="", body={}) -> None:
         self._route = route
         self._body = body or self._defaults()
 
     def _defaults(self):
         return {
-        "filters": [],
-        "fields": "id",
-        "sort": "id",
-        "reverse": False,
-        "results": 10,
-        "page": 1,
-        "user": None,
-        "count": False,
-        "compact_filters": False,
-        "normalized_filters": False
+            "filters": [],
+            "fields": "id",
+            "sort": "id",
+            "reverse": False,
+            "results": 10,
+            "page": 1,
+            "user": None,
+            "count": False,
+            "compact_filters": False,
+            "normalized_filters": False,
         }
 
     def frm(self, route: str) -> Self:
@@ -52,10 +53,22 @@ class Query:
     def where(self, filters: list) -> Self:
         self._body["filters"] = filters
         return self
-    
+
     def sort(self, key: str) -> Self:
         self._body["sort"] = key
         return self
+
+    def set_flags(
+        self,
+        reverse=False,
+        count=False,
+        compact_filters=False,
+        normalized_filters=False,
+    ):
+        self._body["reverse"] = reverse
+        self._body["count"] = count
+        self._body["compact_filters"] = compact_filters
+        self._body["normalized_filters"] = normalized_filters
 
     @property
     def url(self) -> str:
@@ -63,8 +76,6 @@ class Query:
 
     @property
     def parse_body(self) -> str:
-        if not self._body["fields"]:
-            raise TypeError("Missing required data item: 'fields'")
         return json.dumps(self._body)
 
 
