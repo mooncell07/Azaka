@@ -8,7 +8,7 @@ class Paginator:
     def __init__(self, client: Client, max_results: int, query = None, json: bool = False):
         self.client = client
         self.max_results = max_results
-        query._body.update({"page": 1, "results": max_results})
+        query._body.update({"results": max_results})
         self.query = query
         self.json = json
 
@@ -45,5 +45,5 @@ class Paginator:
 
         return data
 
-    async def compress(self):
+    async def flatten(self):
         return [i async for i in self]
