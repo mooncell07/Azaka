@@ -1,9 +1,17 @@
-import enum
-
 __all__ = ("AzakaException", "EXMAP")
 
 
+STATUS_INVALID_REQUEST_BODY = 400
+STATUS_INVALID_AUTH_TOKEN = 401
+STATUS_NOT_FOUND = 404
+STATUS_THROTTLED = 429
+STATUS_SERVER_ERROR = 500
+STATUS_SERVER_DOWN = 502
+
+
 class AzakaException(Exception):
+    __slots__ = ("msg", "status_code")
+
     def __init__(self, msg: str, status_code: int) -> None:
         self.msg = msg
         self.status_code = status_code
@@ -12,39 +20,39 @@ class AzakaException(Exception):
 
 class InvalidRequestBodyError(AzakaException):
     def __init__(self, msg: str) -> None:
-        super().__init__(msg, 400)
+        super().__init__(msg, STATUS_INVALID_REQUEST_BODY)
 
 
 class InvalidAuthTokenError(AzakaException):
     def __init__(self, msg: str) -> None:
-        super().__init__(msg, 401)
+        super().__init__(msg, STATUS_INVALID_AUTH_TOKEN)
 
 
 class NotFoundError(AzakaException):
     def __init__(self, msg: str) -> None:
-        super().__init__(msg, 404)
+        super().__init__(msg, STATUS_NOT_FOUND)
 
 
 class ThrottledError(AzakaException):
     def __init__(self, msg: str) -> None:
-        super().__init__(msg, 429)
+        super().__init__(msg, STATUS_THROTTLED)
 
 
 class ServerError(AzakaException):
     def __init__(self, msg: str) -> None:
-        super().__init__(msg, 500)
+        super().__init__(msg, STATUS_SERVER_ERROR)
 
 
 class ServerDownError(AzakaException):
     def __init__(self, msg: str) -> None:
-        super().__init__(msg, 502)
+        super().__init__(msg, STATUS_SERVER_DOWN)
 
 
 EXMAP = {
-    400: InvalidRequestBodyError,
-    401: InvalidAuthTokenError,
-    404: NotFoundError,
-    429: ThrottledError,
-    500: ServerError,
-    502: ServerDownError,
+    STATUS_INVALID_REQUEST_BODY: InvalidRequestBodyError,
+    STATUS_INVALID_AUTH_TOKEN: InvalidAuthTokenError,
+    STATUS_NOT_FOUND: NotFoundError,
+    STATUS_THROTTLED: ThrottledError,
+    STATUS_SERVER_ERROR: ServerError,
+    STATUS_SERVER_DOWN: ServerDownError,
 }

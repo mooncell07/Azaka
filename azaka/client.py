@@ -3,12 +3,13 @@ from collections import namedtuple
 from types import TracebackType
 
 import aiohttp
-import query
-from exceptions import EXMAP, AzakaException
-from models import AuthInfo, Stats, User
 from typing_extensions import Self
-from utils import Response, build_objects
 from yarl import URL
+
+from azaka import query
+from azaka.exceptions import EXMAP, AzakaException
+from azaka.models import AuthInfo, Stats, User
+from azaka.utils import Response, RespT, build_objects
 
 __all__ = ("Client",)
 
@@ -16,8 +17,10 @@ __all__ = ("Client",)
 class Client:
     __slots__ = ("base_header", "cs")
 
-    def __init__(self, key: t.Optional[str] = None) -> None:
-        self.base_header = {"Authorization": f"token {key}"} if key else None
+    def __init__(self, token: t.Optional[str] = None) -> None:
+        self.base_header: t.Optional[t.Mapping[str, str]] = (
+            {"Authorization": f"token {token}"} if token else None
+        )
 
     async def __aenter__(self) -> Self:
         await self.create_cs()
@@ -43,7 +46,7 @@ class Client:
 
     async def get_auth_info(self) -> AuthInfo:
         if not self.base_header:
-            raise TypeError("Missing required argument 'key'")
+            raise TypeError("Missing required argument 'token'")
         resp = await self.cs.get(query.AUTHINFO_URL, headers=self.base_header)
         data = await self._get_data(resp)
         return AuthInfo(**data)
@@ -71,12 +74,12 @@ class Client:
                 query.url, data=query.parse_body, headers=self.base_header
             )
         else:
-            resp = await self.cs.post(query.url, data=query.body)
+            resp = await self.cs.post(query.url, data=query.parse_body)
 
         data = await self._get_data(resp)
         return await build_objects(query._route, data)
 
-    async def _get_data(self, resp: aiohttp.ClientResponse) -> Response:
+    async def _get_data(self, resp: aiohttp.ClientResponse) -> dict[str, RespT]:
         status = resp.status
         if 400 > status >= 200:
             return await resp.json()

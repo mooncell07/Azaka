@@ -1,9 +1,10 @@
 import typing as t
 
-import query
-from client import Client
 from typing_extensions import Self
-from utils import Response, build_objects
+
+from azaka import query
+from azaka.client import Client
+from azaka.utils import Response, build_objects
 
 __all__ = ("Paginator",)
 
@@ -22,7 +23,7 @@ class Paginator:
         self._resp = await self.client.execute(query=self.query)
         return self._resp
 
-    async def next(self) -> Response:
+    async def next(self) -> t.Optional[Response]:
         if not self._resp:
             return await self._generate()
 
@@ -30,10 +31,13 @@ class Paginator:
             self.query._body["page"] += 1
             return await self._generate()
 
-    async def previous(self) -> Response:
+        return None
+
+    async def previous(self) -> t.Optional[Response]:
         if self.query and self.query._body["page"] > 1:
             self.query._body["page"] -= 1
             return await self._generate()
+        return None
 
     def __aiter__(self) -> Self:
         return self
