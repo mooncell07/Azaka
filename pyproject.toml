@@ -9,6 +9,7 @@ keywords = ["vndb", "apiwrapper", "async", "visualnovel", "python"]
 [tool.poetry.dependencies]
 python = "^3.10"
 aiohttp = "^3.8.4"
+python-dotenv = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
@@ -16,9 +17,6 @@ pytest-asyncio = "^0.17.2"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.4.1"
-
-[tool.mypy]
-ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 asyncio_mode = "strict"
