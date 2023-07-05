@@ -4,7 +4,6 @@ from collections import namedtuple
 from types import TracebackType
 
 import aiohttp
-from typing_extensions import Self
 from yarl import URL
 
 from azaka import query
@@ -26,7 +25,7 @@ class Client:
     def base_header(self) -> t.Optional[t.Mapping[str, str]]:
         return {"Authorization": f"token {self.token}"} if self.token else None
 
-    async def __aenter__(self) -> Self:
+    async def __aenter__(self) -> t.Self:
         await self._create_cs()
         return self
 
