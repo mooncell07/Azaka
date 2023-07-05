@@ -10,14 +10,20 @@ __all__ = ("Paginator",)
 
 
 class Paginator:
-    __slots__ = ("client", "max_results", "query", "_resp")
+    __slots__ = ("client", "query", "_resp", "_exit_after")
 
-    def __init__(self, client: Client, query: query.Query, max_results: int) -> None:
+    def __init__(
+        self,
+        client: Client,
+        query: query.Query,
+        max_results_per_page: int,
+        exit_after: t.Optional[int] = None,
+    ) -> None:
         self.client = client
-        self.max_results = max_results
-        query._body["results"] = max_results
+        query._body["results"] = max_results_per_page
         self.query = query
         self._resp: t.Optional[Response] = None
+        self._exit_after = exit_after
 
     async def _generate(self) -> Response:
         self._resp = await self.client.execute(query=self.query)
@@ -44,11 +50,20 @@ class Paginator:
 
     async def __anext__(self) -> Response:
         data = await self.next()
-
-        if not data:
+        if not data or self._handle_counter():
             raise StopAsyncIteration
 
         return data
+
+    def _handle_counter(self) -> bool:
+        if self._exit_after is None:
+            return False
+        if not isinstance(self._exit_after, int) or self._exit_after < 0:
+            raise ValueError("'exit_after' must be a positive integer")
+        if self._exit_after == 0:
+            return True
+        self._exit_after -= 1
+        return False
 
     def current(self) -> t.Optional[Response]:
         return self._resp
