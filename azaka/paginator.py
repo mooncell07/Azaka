@@ -1,95 +1,72 @@
-from __future__ import annotations
-
 import typing as t
-from .interface import Interface, T
 
-if t.TYPE_CHECKING:
-    from .client import Client
+from typing_extensions import Self
+
+from azaka import query
+from azaka.client import Client
+from azaka.utils import Response, build_objects
 
 __all__ = ("Paginator",)
 
 
-class Paginator(t.Generic[T]):
-    """
-    A pagination wrapper over [Client.get](../client#azaka.client.Client.get)
-    which provides async stateful iteration over the results.
+class Paginator:
+    __slots__ = ("client", "query", "_resp", "_exit_after")
 
-    Attributes:
-        current_page (t.Optiona[t.Iterable[BaseObject]]): The current page of results.
-        current_page_num (int): The current page number.
-        more (bool): If there are more pages to fetch.
+    def __init__(
+        self,
+        client: Client,
+        query: query.Query,
+        max_results_per_page: int,
+        exit_after: t.Optional[int] = None,
+    ) -> None:
+        self.client = client
+        query._body["results"] = max_results_per_page
+        self.query = query
+        self._resp: t.Optional[Response] = None
+        self._exit_after = exit_after
 
-    Example:
-    ```py
-    async for page in Paginator(client, interface):
-        ...
-    ```
-    """
+    async def _generate(self) -> Response:
+        self._resp = await self.client.execute(query=self.query)
+        return self._resp
 
-    __slots__ = ("_client", "_interface", "current_page", "current_page_num", "more")
+    async def next(self) -> t.Optional[Response]:
+        if not self._resp:
+            return await self._generate()
 
-    def __init__(self, client: Client, interface: Interface) -> None:
-        self._client = client
-        self._interface = interface
-        self.current_page: t.Optional[t.Iterable[T]] = None
-        self.current_page_num: int = 0
-        self.more: bool = True
+        if self._resp.more:
+            self.query._body["page"] += 1
+            return await self._generate()
 
-    async def next(self) -> t.Optional[t.Iterable[T]]:
-        """
-        Fetches the next page of results.
+        return None
 
-        Returns:
-            The next page of results.
-        """
-        if self.more:
-            self.current_page_num += 1
+    async def previous(self) -> t.Optional[Response]:
+        if self.query and self.query._body["page"] > 1:
+            self.query._body["page"] -= 1
             return await self._generate()
         return None
 
-    async def previous(self) -> t.Optional[t.Iterable[T]]:
-        """
-        Fetches the previous page of results.
-
-        Returns:
-            The previous page of results.
-        """
-        if self.current_page_num > 1:
-            self.current_page_num -= 1
-            return await self._generate()
-        return None
-
-    async def compress(self) -> t.List[t.Iterable[T]]:
-        """
-        Fetches all the pages of results.
-
-        Returns:
-            A list of pages of results.
-        """
-        return [datas async for datas in self]
-
-    def __aiter__(self) -> Paginator:
+    def __aiter__(self) -> Self:
         return self
 
-    async def __anext__(self) -> t.Iterable[T]:
+    async def __anext__(self) -> Response:
         data = await self.next()
-
-        if not data:
+        if not data or self._handle_counter():
             raise StopAsyncIteration
 
         return data
 
-    async def _generate(self) -> t.Optional[t.List[T]]:
-        """
-        Generates the page of results.
+    def _handle_counter(self) -> bool:
+        if self._exit_after is None:
+            return False
+        if not isinstance(self._exit_after, int) or self._exit_after < 0:
+            raise ValueError("'exit_after' must be a positive integer")
+        if self._exit_after == 0:
+            return True
+        self._exit_after -= 1
+        return False
 
-        Returns:
-            The page of results.
-        """
-        self._interface.add_option(page=self.current_page_num)
-        data: t.Tuple[t.List[T], bool, int] = await self._client.get(self._interface, metadata=True)  # type: ignore
+    def current(self) -> t.Optional[Response]:
+        return self._resp
 
-        if isinstance(data, tuple):
-            self.current_page, self.more, _ = data
-            return data[0]
-        return None
+    async def flatten(self) -> list[Response]:
+        return [i async for i in self]
