@@ -65,12 +65,14 @@ class Query:
         self._route = clean_string(route)
         return self
 
-    def where(self, filters: FT[str]) -> Self:
-        self._body["filters"] = filters
+    def where(self, filters: t.Optional[FT[str]] = None) -> Self:
+        if filters:
+            self._body["filters"] = filters
         return self
 
-    def sort(self, key: str) -> Self:
-        self._body["sort"] = key
+    def sort(self, key: t.Optional[str] = None) -> Self:
+        if key:
+            self._body["sort"] = key
         return self
 
     def set_flags(
@@ -91,6 +93,8 @@ class Query:
 
     @property
     def parse_body(self) -> str:
+        if not self._body["fields"]:
+            raise ValueError("'fields' cannot be empty.")
         return json.dumps(self._body)
 
 
@@ -134,5 +138,7 @@ class Node:
 def select(*fields: str) -> Query:
     query = Query()
     if fields:
-        query._body["fields"] += ", ".join(fields)
+        query._body["fields"] += ", ".join([clean_string(i) for i in fields])
+    else:
+        query._body["fields"] = "id"
     return query

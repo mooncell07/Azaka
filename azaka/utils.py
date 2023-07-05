@@ -29,7 +29,7 @@ def clean_string(string: str) -> str:
     return string.strip().lower()
 
 
-async def build_objects(route: str, json: dict[str, t.Any]) -> Response:
+def build_objects(route: str, json: dict[str, t.Any]) -> Response:
     objects = []
     for res in json["results"]:
         object = namedtuple(route.upper(), res)  # type: ignore
