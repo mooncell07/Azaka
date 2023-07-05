@@ -8,8 +8,7 @@
 <img alt="Stargazers" src="https://img.shields.io/github/stars/mooncell07/Azaka?style=for-the-badge&logo=starship&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41">
 <img alt="Issues" src="https://img.shields.io/github/issues/mooncell07/Azaka?style=for-the-badge&logo=gitbook&color=B5E8E0&logoColor=D9E0EE&labelColor=302D41">
 <img alt="Releases" src="https://img.shields.io/github/license/mooncell07/Azaka?style=for-the-badge&logo=github&color=F2CDCD&logoColor=D9E0EE&labelColor=302D41"/>
-
-
+<img alt="Version" src="https://img.shields.io/pypi/v/azaka?style=for-the-badge&logo=github&color=89dceb&logoColor=D9E0EE&labelColor=302D41">
 
 </p>
 
