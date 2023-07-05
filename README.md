@@ -37,7 +37,7 @@ really clean and expressive with SQL like querying.
 
 You can install Azaka using pip.
 
-*soon*
+`pip install azaka`
 
 ## USAGE
 
