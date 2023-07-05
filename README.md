@@ -1,103 +1,70 @@
-# DEPRECATED
-This project has been deprecated and removed from PYPI, no new updates will be given to this repo.
+
 
 
 <p align="center"> <img src="https://cdn-icons-png.flaticon.com/512/2322/2322246.png" height=100> </p>
-<p align="center"> <a href="https://www.codefactor.io/repository/github/mooncell07/azaka"><img src="https://www.codefactor.io/repository/github/mooncell07/azaka/badge" alt="CodeFactor" /></a> </p>
 
-# WELCOME!
+<p align="center"> we are back!! </p>
+<p align="center">
+<img alt="Stargazers" src="https://img.shields.io/github/stars/mooncell07/Azaka?style=for-the-badge&logo=starship&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41">
+<img alt="Issues" src="https://img.shields.io/github/issues/mooncell07/Azaka?style=for-the-badge&logo=gitbook&color=B5E8E0&logoColor=D9E0EE&labelColor=302D41">
+<img alt="Releases" src="https://img.shields.io/github/license/mooncell07/Azaka?style=for-the-badge&logo=github&color=F2CDCD&logoColor=D9E0EE&labelColor=302D41"/>
+<img alt="Version" src="https://img.shields.io/pypi/v/azaka?style=for-the-badge&logo=github&color=89dceb&logoColor=D9E0EE&labelColor=302D41">
 
-Welcome to Azaka, a work-in-progress asynchronous API wrapper around the [visual novel database](https://vndb.org/) written in python.
-
-This wrapper is aimed to provide 100% API coverage being extremely simple to use and powerful. Now let's discuss why you should use it in next section.
+</p>
 
 # LINKS
 
 - [WELCOME!](#welcome)
-- [LINKS](#links)
   - [FEATURES](#features)
-  - [PROBLEMS](#problems)
   - [INSTALLATION](#installation)
   - [USAGE](#usage)
   - [DOCUMENTATION & TUTORIAL](#documentation--tutorial)
   - [THANKS](#thanks)
 
+# WELCOME!
+
+Welcome to Azaka, a work-in-progress asynchronous and thin API Wrapper around the [visual novel database](https://vndb.org/) written in python.
+
+
 ## FEATURES
 
-- **Fully Asynchronous** - Everything which poses a threat of blocking the I/O for a significant amount of time is async.
-- **Single Connection** - Everything is handled by a single connection to the API and it is reused
-(if it was not closed by the user). Giving your IP more amount of connections.
-- **Easy to Use** - Azaka provides a really easy to use interface for creating complex commands and a bunch of ready-made presets.
-- **Well Typehinted** - Everything in this library is properly typehinted.
-- **No Dependency Requirement** - No third party dependency is required to do anything in entire library.
-
-
-## PROBLEMS
-
-*(yes, i am a gud person)*
-
-- **Bloat** - A few decisions have been taken which have caused the lib. to weigh too much but trust me, it's not dead weight, they help with UX.
-- **Slow Development & bug hunting** - I am the only person working on entire lib and i have a lot of work irl too so sorrryyy.
-- **Models are not well optimized** - All the models are fully constructed even if there is no need of some members.
-- **Support** - Well.. i can only help with it so yea you can contact me on discord `Nova#3379`.
-
+- **Fully Asynchronous** - The library supports Async. communication and other jobs.
+- **Clean and Expressive** - Azaka's syntax is 
+really clean and expressive with SQL like querying.
+- **Well Typehinted & Tested** - Everything in the library is properly typehinted and checked with strict mypy type checking strategy. However there are few exceptions ;)
 
 ## INSTALLATION
 
 You can install Azaka using pip.
 
-`pip install -U azaka`
-
-That's it! There is no other required requirement.
-
-Additionally, you can also install
-
-- [uvloop](https://pypi.org/project/uvloop/)
-- [orjson](https://pypi.org/project/orjson/)
-
-for speeding up the stuff!
+*soon*
 
 ## USAGE
 
-*Example of getting basic VN data.*
+*Example of getting some basic VN data.*
 
 ```py
-import azaka
+import asyncio
+from azaka import Client, Node, select
 
-client = azaka.Client()
+query = (
+    select("title", "image.url")
+    .frm("vn")
+    .where(Node("id") == "v17")
+)
 
-@client.register
-async def main(ctx) -> None:
-    vn = await ctx.get_vn(lambda VN: VN.ID == 11)
-    print(vn[0])
+async def main() -> None:
+    async with Client() as client:
+        resp = await client.execute(query=query)
+        vn = resp.results[0]
+        print(vn.id, vn.title, vn.image["url"], sep="\n")
 
-client.start()
+asyncio.run(main())
 ```
-
-Above example used a preset (`client.get_vn`), you can use azaka's Interface to build a command yourself!
-
-```py
-import azaka
-from azaka import Flags
-
-client = azaka.Client()
-
-@client.register
-async def main(ctx) -> None:
-    with azaka.Interface(type=ctx.vn, flags=(Flags.BASIC,)) as interface:
-        interface.set_condition(lambda VN: (VN.SEARCH % "fate") & (VN.ID == 50))
-
-    vn = await client.get(interface)
-    print(vn[0])
-
-client.start()
-```
-More Examples in Examples folder.
-
 
 ## DOCUMENTATION & TUTORIAL
 
-Documentation can be found [here](https://mooncell07.github.io/Azaka/).
+Documentation will be available soon.
 
 
 ## THANKS

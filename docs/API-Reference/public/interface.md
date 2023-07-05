@@ -1,2 +1,0 @@
-::: azaka.Interface
-::: azaka.SETInterface

@@ -1,8 +1,8 @@
-__version__ = "0.3.2"
+__version__ = "0.4.1"
 
 from .client import *
-from .tools import *
-from .connection import *
-from .context import *
-from .interface import *
+from .query import *
+from .exceptions import *
+from .models import *
+from .utils import *
 from .paginator import *

@@ -1,27 +1,23 @@
 [tool.poetry]
 name = "Azaka"
-version = "0.3.2"
+version = "0.4.1"
 description = "A work in progress API Wrapper around The Visual Novel Database (VNDB) written in Python."
 authors = ["mooncell07 <mooncell07@users.noreply.github.com>"]
 license = "MIT"
-readme = "README.md"
 keywords = ["vndb", "apiwrapper", "async", "visualnovel", "python"]
+readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-azaka-dump-parser = {version = "^0.1.0", optional=true}
-[tool.poetry.extras]
-dump = ["azaka-dump-parser"]
+python = "^3.10"
+aiohttp = "^3.8.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
-pre-commit = "^2.15.0"
-mypy = "^0.910"
-black = "^21.11b1"
 pytest-asyncio = "^0.17.2"
 
-[tool.mypy]
-ignore_missing_imports = true
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.4.1"
+python-dotenv = "^1.0.0"
 
 [tool.pytest.ini_options]
 asyncio_mode = "strict"
