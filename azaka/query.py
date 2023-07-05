@@ -4,8 +4,6 @@ import json
 import typing as t
 from dataclasses import dataclass, field
 
-from typing_extensions import Self
-
 from azaka.utils import FT, clean_string
 
 __all__ = ("select", "AND", "OR", "Node")
@@ -61,16 +59,16 @@ class Query:
             "normalized_filters": False,
         }
 
-    def frm(self, route: str) -> Self:
+    def frm(self, route: str) -> t.Self:
         self._route = clean_string(route)
         return self
 
-    def where(self, filters: t.Optional[FT[str]] = None) -> Self:
+    def where(self, filters: t.Optional[FT[str]] = None) -> t.Self:
         if filters:
             self._body["filters"] = filters
         return self
 
-    def sort(self, key: t.Optional[str] = None) -> Self:
+    def sort(self, key: t.Optional[str] = None) -> t.Self:
         if key:
             self._body["sort"] = key
         return self

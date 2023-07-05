@@ -1,7 +1,5 @@
 import typing as t
 
-from typing_extensions import Self
-
 from azaka import query
 from azaka.client import Client
 from azaka.utils import Response, build_objects
@@ -45,7 +43,7 @@ class Paginator:
             return await self._generate()
         return None
 
-    def __aiter__(self) -> Self:
+    def __aiter__(self) -> t.Self:
         return self
 
     async def __anext__(self) -> Response:
