@@ -1,0 +1,49 @@
+site_name: Azaka
+site_description: Documentation for Azaka.
+site_author: Nova/Azaka
+
+theme:
+  name: "material"
+  palette:
+    - scheme: slate
+      primary: light blue
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+    - scheme: default
+      primary: light blue
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+  features:
+    - navigation.top
+  
+  logo: https://cdn-icons-png.flaticon.com/512/3276/3276136.png
+  favicon: https://cdn-icons-png.flaticon.com/512/3276/3276136.png
+repo_name: mooncell07/Azaka
+repo_url: https://github.com/mooncell07/Azaka
+
+plugins:
+- search
+- mkdocstrings:
+    handlers:
+      python:
+        options:
+            show_root_heading: true
+            members_order: "source"
+        import:
+          - https://docs.python.org/3.10/objects.inv
+
+nav:
+  - Home: index.md
+  - Azaka:
+    - Client: Azaka/client.md
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - admonition
+  - toc:
+      permalink: "+"
+
+copyright: Copyright 2023 - Present &copy; mooncell07
