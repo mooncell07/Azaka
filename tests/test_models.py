@@ -7,7 +7,6 @@ from azaka import Client
 from azaka.exceptions import InvalidAuthTokenError
 from azaka.models import AuthInfo, Stats, User
 
-
 VALID_NAME = "Azaka"
 INVALID_NAME = "NoUserWithThisNameExists"
 

@@ -8,19 +8,17 @@ keywords = ["vndb", "apiwrapper", "async", "visualnovel", "python"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.11"
 aiohttp = "^3.8.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
 pytest-asyncio = "^0.17.2"
-
-[tool.poetry.group.dev.dependencies]
 mypy = "^1.4.1"
 python-dotenv = "^1.0.0"
 mkdocs = "^1.4.3"
 mkdocs-material = "^9.1.18"
-mkdocstrings = {extras = ["python"], version = "^0.22.0"}
+mkdocstrings = {extras = ["python-legacy"], version = "^0.22.0"}
 
 [tool.pytest.ini_options]
 asyncio_mode = "strict"

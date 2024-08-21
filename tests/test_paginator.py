@@ -1,6 +1,6 @@
 import pytest
-from azaka import Node, Client, Paginator, select
 
+from azaka import Client, Node, Paginator, select
 
 MAX_RESULTS = 2
 EXIT_AFTER = 3

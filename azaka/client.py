@@ -33,10 +33,7 @@ class Client:
     @property
     def base_header(self) -> t.Optional[t.Mapping[str, str]]:
         """
-        Return a dict. containing Auth. token.
-
-        Note:
-            It is [None][] when a token is not supplied.
+        Return a dict. containing Auth. token. if token is supplied else it is [None][]
         """
         return {"Authorization": f"token {self.token}"} if self.token else None
 
@@ -80,7 +77,7 @@ class Client:
 
         Returns:
             authinfo: A [dataclasses.dataclass][] representation of the [json][] response.
-        
+
         Note:
             - A [TypeError][] is raised if the token is not passed.
 
@@ -95,9 +92,9 @@ class Client:
     async def get_user(
         self, *users: str, fields: t.Sequence[str] = ()
     ) -> t.Sequence[User]:
-        """ 
+        """
         Find a user by id or username and return information about them.
-    
+
         Args:
             users: Variable number of username/ids to search for.
             fields: A Sequence type holding all fields to select.
@@ -113,7 +110,7 @@ class Client:
         - lengthvotes_sum
 
         Note:
-            The `id` and `username` fields are always selected and 
+            The `id` and `username` fields are always selected and
             should not be explicitly specified.
 
         Returns:
@@ -141,27 +138,27 @@ class Client:
         """
         Return a Response object containing the results of the query and associated metadata.
 
-        This method is used for searching and querying any database entry. It supports all the 
+        This method is used for searching and querying any database entry. It supports all the
         query routes exposed by the API publicly.
 
 
         Note:
-            This method dynamically generates the Response.results attribute. 
-            Only the fields that you specify in the select() function during the 
+            This method dynamically generates the Response.results attribute.
+            Only the fields that you specify in the select() function during the
             query will be present in the list of results.
 
         Note:
-            Fields that access data inside another data structure, such as image.url, 
+            Fields that access data inside another data structure, such as image.url,
             will have the left part become the attribute of the result and the data
             structure associated with the right part will become it's value.
             For example, the Response may look like this:
 
             `Response(results=[VN(id="v2", image={"url": ...})], ...)`
-        
-            The wrapper does not handle nested data. 
+
+            The wrapper does not handle nested data.
 
         Tip:
-            If you are new, I recommend reading ... to get a clear 
+            If you are new, I recommend reading ... to get a clear
             understanding of how to build queries.
 
         Args:
