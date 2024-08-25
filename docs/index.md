@@ -1,1 +1,1 @@
-HI :>
+HI :> This is a WIP Documentation for Azaka, i am still working on adding a guide and fixing issues here

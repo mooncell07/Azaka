@@ -60,8 +60,7 @@ asyncio.run(main())
 
 ## DOCUMENTATION & TUTORIAL
 
-Documentation will be available soon.
-
+Preliminary documentation is available @ [Azaka Docs](https://mooncell07.github.io/Azaka/)
 
 ## THANKS
 
