@@ -87,7 +87,7 @@ class Client:
         Exceptions:
             TypeError: A [TypeError][] is raised if the token is not passed.
 
-            InvalidAuthTokenError: `InvalidAuthTokenError` is raised by the API if token is found invalid.
+            InvalidAuthTokenError: [InvalidAuthTokenError](./exceptions.md#azaka.exceptions.InvalidAuthTokenError) is raised by the API if token is found invalid.
         """
         if not self.base_header:
             raise TypeError("Missing required argument 'token'")
@@ -157,12 +157,11 @@ class Client:
 
             `VN(id="v2", image={"url": ...})`
 
-        Tip:
-            If you are new, I recommend reading ... to get a clear
-            understanding of how to build queries.
+        See Also:
+            [Response](./models.md#azaka.models.Response), [Query](./query.md#azaka.query.Query)
 
         Args:
-            query: A Query object.
+            query: A [Query](./query.md#azaka.query.Query) object.
 
         Returns:
             A [Response](./models.md#azaka.models.Response) object containing the results of the query and associated metadata.
@@ -211,8 +210,7 @@ class Client:
 
     async def close_cs(self) -> None:
         """
-        Close the internal aiohttp.ClientSession.
-
+        Close the internal [aiohttp.ClientSession](https://docs.aiohttp.org/en/stable/client_reference.html#aiohttp.ClientSession) object.
         Danger:
             You must call this method after completing the request if you are not using
             Context Manager.

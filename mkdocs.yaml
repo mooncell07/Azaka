@@ -42,6 +42,7 @@ nav:
     - Paginator: Azaka/paginator.md
     - Models: Azaka/models.md
     - Exceptions: Azaka/exceptions.md
+    - Query: Azaka/query.md
 
 markdown_extensions:
   - pymdownx.highlight

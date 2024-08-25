@@ -43,7 +43,7 @@ class Paginator:
 
         Args:
             client: The [Client](./client.md) object.
-            query: The Query for the pagination.
+            query: The [Query](./query.md#azaka.query.Query) object for pagination.
             max_results_per_page: Maximum number of results per page.
             exit_after: Exit after a certain number of pages.
         """
@@ -62,7 +62,7 @@ class Paginator:
         Progress to the next page of results.
 
         Returns:
-            Optional[Response]: A Response object.
+            A [Response](./models.md#azaka.models.Response) object.
         """
         if not self._resp:
             return await self._generate()
@@ -78,7 +78,7 @@ class Paginator:
         Move back to the previous page of results.
 
         Returns:
-            Optional[Response]: A Response object.
+            A [Response](./models.md#azaka.models.Response) object.
         """
         if self.query and self.query._body["page"] > 1:
             self.query._body["page"] -= 1
@@ -110,7 +110,7 @@ class Paginator:
         Get the current page of results.
 
         Returns:
-            Optional[Response]: A Response object.
+             A [Response](./models.md#azaka.models.Response) object.
         """
         return self._resp
 
@@ -119,6 +119,6 @@ class Paginator:
         Flatten the results of the pagination into a [list][].
 
         Returns:
-            list[Response]: A [list][] of Response objects.
+            list[Response]: A [list][] of [Response](./models.md#azaka.models.Response) objects.
         """
         return [i async for i in self]
