@@ -1,0 +1,1562 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for Azaka.">
+      
+      
+        <meta name="author" content="Nova/Azaka">
+      
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../paginator/">
+      
+      
+      <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3276/3276136.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.31">
+    
+    
+      
+        <title>Client - Azaka</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.3cba04c6.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#azaka.client.Client" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Azaka" class="md-header__button md-logo" aria-label="Azaka" data-md-component="logo">
+      
+  <img src="https://cdn-icons-png.flaticon.com/512/3276/3276136.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Azaka
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Client
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="light-blue" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/mooncell07/Azaka" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    mooncell07/Azaka
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Azaka" class="md-nav__button md-logo" aria-label="Azaka" data-md-component="logo">
+      
+  <img src="https://cdn-icons-png.flaticon.com/512/3276/3276136.png" alt="logo">
+
+    </a>
+    Azaka
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/mooncell07/Azaka" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    mooncell07/Azaka
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Azaka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Azaka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Client
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Client
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#azaka.client.Client" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.base_header" class="md-nav__link">
+    <span class="md-ellipsis">
+      base_header
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.get_schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_schema()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.get_stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_stats()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.get_auth_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_auth_info()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.get_user" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_user()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.execute" class="md-nav__link">
+    <span class="md-ellipsis">
+      execute()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.close_cs" class="md-nav__link">
+    <span class="md-ellipsis">
+      close_cs()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../paginator/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Paginator
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exceptions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exceptions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../query/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Query
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#azaka.client.Client" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.base_header" class="md-nav__link">
+    <span class="md-ellipsis">
+      base_header
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.get_schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_schema()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.get_stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_stats()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.get_auth_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_auth_info()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.get_user" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_user()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.execute" class="md-nav__link">
+    <span class="md-ellipsis">
+      execute()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azaka.client.Client.close_cs" class="md-nav__link">
+    <span class="md-ellipsis">
+      close_cs()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>Client</h1>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="azaka.client.Client" class="doc doc-heading">
+        <code>
+azaka.client.Client        </code>
+
+
+
+<a href="#azaka.client.Client" class="headerlink" title="Permanent link">#</a></h2>
+
+    <div class="doc doc-contents first">
+
+      <p>Client class for interacting with the VNDB API.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>azaka/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Client</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Client class for interacting with the VNDB API.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;cs&quot;</span><span class="p">,</span> <span class="s2">&quot;token&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Client constructor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            token: VNDB API access token.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            cs (Optional[aiohttp.ClientSession]): An [aiohttp.ClientSession](https://docs.aiohttp.org/en/stable/client_reference.html#aiohttp.ClientSession) object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">token</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">base_header</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a [dict][] containing the Authorization header.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            If the token is not passed, it will return [None][].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;token </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Self</span><span class="p">:</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_cs</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">exc</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]],</span>
+        <span class="n">exc_val</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">],</span>
+        <span class="n">tb</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">TracebackType</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">close_cs</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetches the schema of the API Database.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A [dict][] containing the schema of the API Database.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">SCHEMA_URL</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Stats</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetches the statistics of the API&#39;s Database.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A [Stats](./models.md#azaka.models.Stats) object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">STATS_URL</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Stats</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_auth_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AuthInfo</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates and Returns information about the given API Token.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            An [AuthInfo](./models.md#azaka.models.AuthInfo) object.</span>
+
+<span class="sd">        Exceptions:</span>
+<span class="sd">            TypeError: A [TypeError][] is raised if the token is not passed.</span>
+
+<span class="sd">            InvalidAuthTokenError: [InvalidAuthTokenError](./exceptions.md#azaka.exceptions.InvalidAuthTokenError) is raised by the API if token is found invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_header</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Missing required argument &#39;token&#39;&quot;</span><span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">AUTHINFO_URL</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">base_header</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AuthInfo</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">users</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fields</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">())</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">User</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Looks up user(s) by id or username and returns information about them.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            users: A variable length argument of user ids or usernames as [str][]s.</span>
+<span class="sd">            fields: A [list][] of fields to select.</span>
+
+<span class="sd">        Accepted fields for the `fields` parameter are:</span>
+
+<span class="sd">        - id</span>
+
+<span class="sd">        - username</span>
+
+<span class="sd">        - lengthvotes</span>
+
+<span class="sd">        - lengthvotes_sum</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            The `id` and `username` fields are always selected and</span>
+<span class="sd">            should not be explicitly specified.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A [list][] of [User](./models.md#azaka.models.User) objects.</span>
+
+<span class="sd">        Tip:</span>
+<span class="sd">            Since API supports multiple user lookup using just one query, you can pass multiple</span>
+<span class="sd">            users like so:</span>
+
+<span class="sd">            `await client.get_user(&quot;u1&quot;, &quot;u2&quot;, .....)`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">USER_URL</span><span class="p">)</span><span class="o">.</span><span class="n">update_query</span><span class="p">({</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">users</span><span class="p">,</span> <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="p">})</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+        <span class="n">user_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">User</span><span class="p">(</span><span class="n">search_term</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">[</span><span class="n">user</span><span class="p">],</span> <span class="n">FOUND</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">user</span><span class="p">]</span>
+                <span class="k">else</span> <span class="n">User</span><span class="p">(</span><span class="n">search_term</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">FOUND</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">user_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">user_list</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="n">query</span><span class="o">.</span><span class="n">Query</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends the query to the VNDB API.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            This method dynamically generates the Response.results attribute.</span>
+<span class="sd">            Only the fields that you specify in the `select()` function at the time of building</span>
+<span class="sd">            the query will be present in the list of results.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Some fields utilize dot notation to access nested data such as `image.url`.</span>
+<span class="sd">            For such fields, we use the parent field name (`image` in this case) as an attribute of the</span>
+<span class="sd">            result, and a dictionary containing the child fields (`url` in this case)</span>
+<span class="sd">            as the value of the said attribute. Example:</span>
+
+<span class="sd">            `VN(id=&quot;v2&quot;, image={&quot;url&quot;: ...})`</span>
+
+<span class="sd">        See Also:</span>
+<span class="sd">            [Response](./models.md#azaka.models.Response), [Query](./query.md#azaka.query.Query)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query: A [Query](./query.md#azaka.query.Query) object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A [Response](./models.md#azaka.models.Response) object containing the results of the query and associated metadata.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">query</span><span class="o">.</span><span class="n">_route</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;route&#39; cannot be empty&quot;</span><span class="p">)</span>
+
+        <span class="n">fn</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">post</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">parse_body</span>
+        <span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="p">(</span><span class="n">fn</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">base_header</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_header</span> <span class="k">else</span> <span class="n">fn</span><span class="p">())</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">build_objects</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">_route</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resp</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientResponse</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">RespT</span><span class="p">]:</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">status</span>
+        <span class="k">if</span> <span class="mi">400</span> <span class="o">&gt;</span> <span class="n">status</span> <span class="o">&gt;=</span> <span class="mi">200</span> <span class="ow">and</span> <span class="n">resp</span><span class="o">.</span><span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;application/json&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">EXMAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">error</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AzakaException</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_request</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">URL</span><span class="p">,</span>
+        <span class="n">post</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">headers</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientResponse</span><span class="p">:</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_cs</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">cs</span>
+        <span class="k">if</span> <span class="n">post</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_create_cs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cs</span> <span class="o">=</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">(</span>
+                <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">}</span>
+            <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">close_cs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Close the internal [aiohttp.ClientSession](https://docs.aiohttp.org/en/stable/client_reference.html#aiohttp.ClientSession) object.</span>
+<span class="sd">        Danger:</span>
+<span class="sd">            You must call this method after completing the request if you are not using</span>
+<span class="sd">            Context Manager.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="azaka.client.Client.base_header" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">base_header</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+<a href="#azaka.client.Client.base_header" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns a <a class="autorefs autorefs-external" href="https://docs.python.org/3.10/library/stdtypes.html#dict">dict</a> containing the Authorization header.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the token is not passed, it will return <a class="autorefs autorefs-external" href="https://docs.python.org/3.10/library/constants.html#None">None</a>.</p>
+</div>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.client.Client.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a href="#azaka.client.Client.__init__" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Client constructor.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>token</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>VNDB API access token.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>cs</code></td>
+        <td><code>Optional[aiohttp.ClientSession]</code></td>
+        <td><p>An <a href="https://docs.aiohttp.org/en/stable/client_reference.html#aiohttp.ClientSession">aiohttp.ClientSession</a> object.</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>azaka/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Client constructor.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        token: VNDB API access token.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        cs (Optional[aiohttp.ClientSession]): An [aiohttp.ClientSession](https://docs.aiohttp.org/en/stable/client_reference.html#aiohttp.ClientSession) object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">token</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.client.Client.get_schema" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#azaka.client.Client.get_schema" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Fetches the schema of the API Database.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>dict[str, str]</code></td>
+      <td><p>A <a class="autorefs autorefs-external" href="https://docs.python.org/3.10/library/stdtypes.html#dict">dict</a> containing the schema of the API Database.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>azaka/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetches the schema of the API Database.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A [dict][] containing the schema of the API Database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">SCHEMA_URL</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.client.Client.get_stats" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#azaka.client.Client.get_stats" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Fetches the statistics of the API's Database.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Stats</code></td>
+      <td><p>A <a href="../models/#azaka.models.Stats">Stats</a> object.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>azaka/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Stats</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetches the statistics of the API&#39;s Database.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A [Stats](./models.md#azaka.models.Stats) object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">STATS_URL</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Stats</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.client.Client.get_auth_info" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_auth_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#azaka.client.Client.get_auth_info" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Validates and Returns information about the given API Token.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>AuthInfo</code></td>
+      <td><p>An <a href="../models/#azaka.models.AuthInfo">AuthInfo</a> object.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>TypeError</code></td>
+        <td><p>A <a class="autorefs autorefs-external" href="https://docs.python.org/3.10/library/exceptions.html#TypeError">TypeError</a> is raised if the token is not passed.</p></td>
+      </tr>
+      <tr>
+        <td><code>InvalidAuthTokenError</code></td>
+        <td><p><a href="../exceptions/#azaka.exceptions.InvalidAuthTokenError">InvalidAuthTokenError</a> is raised by the API if token is found invalid.</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>azaka/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_auth_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AuthInfo</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validates and Returns information about the given API Token.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An [AuthInfo](./models.md#azaka.models.AuthInfo) object.</span>
+
+<span class="sd">    Exceptions:</span>
+<span class="sd">        TypeError: A [TypeError][] is raised if the token is not passed.</span>
+
+<span class="sd">        InvalidAuthTokenError: [InvalidAuthTokenError](./exceptions.md#azaka.exceptions.InvalidAuthTokenError) is raised by the API if token is found invalid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_header</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Missing required argument &#39;token&#39;&quot;</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">AUTHINFO_URL</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">base_header</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">AuthInfo</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.client.Client.get_user" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">users</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">())</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#azaka.client.Client.get_user" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Looks up user(s) by id or username and returns information about them.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>users</code></td>
+        <td><code>str</code></td>
+        <td><p>A variable length argument of user ids or usernames as <a class="autorefs autorefs-external" href="https://docs.python.org/3.10/library/stdtypes.html#str">str</a>s.</p></td>
+        <td><code>()</code></td>
+      </tr>
+      <tr>
+        <td><code>fields</code></td>
+        <td><code>list[str]</code></td>
+        <td><p>A <a class="autorefs autorefs-external" href="https://docs.python.org/3.10/library/stdtypes.html#list">list</a> of fields to select.</p></td>
+        <td><code>()</code></td>
+      </tr>
+  </tbody>
+</table>      <p>Accepted fields for the <code>fields</code> parameter are:</p>
+<ul>
+<li>
+<p>id</p>
+</li>
+<li>
+<p>username</p>
+</li>
+<li>
+<p>lengthvotes</p>
+</li>
+<li>
+<p>lengthvotes_sum</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code>id</code> and <code>username</code> fields are always selected and
+should not be explicitly specified.</p>
+</div>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list[azaka.models.User]</code></td>
+      <td><p>A <a class="autorefs autorefs-external" href="https://docs.python.org/3.10/library/stdtypes.html#list">list</a> of <a href="../models/#azaka.models.User">User</a> objects.</p></td>
+    </tr>
+  </tbody>
+</table>      <div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Since API supports multiple user lookup using just one query, you can pass multiple
+users like so:</p>
+<p><code>await client.get_user("u1", "u2", .....)</code></p>
+</div>
+
+        <details class="quote">
+          <summary>Source code in <code>azaka/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">users</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fields</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">())</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">User</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Looks up user(s) by id or username and returns information about them.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        users: A variable length argument of user ids or usernames as [str][]s.</span>
+<span class="sd">        fields: A [list][] of fields to select.</span>
+
+<span class="sd">    Accepted fields for the `fields` parameter are:</span>
+
+<span class="sd">    - id</span>
+
+<span class="sd">    - username</span>
+
+<span class="sd">    - lengthvotes</span>
+
+<span class="sd">    - lengthvotes_sum</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The `id` and `username` fields are always selected and</span>
+<span class="sd">        should not be explicitly specified.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A [list][] of [User](./models.md#azaka.models.User) objects.</span>
+
+<span class="sd">    Tip:</span>
+<span class="sd">        Since API supports multiple user lookup using just one query, you can pass multiple</span>
+<span class="sd">        users like so:</span>
+
+<span class="sd">        `await client.get_user(&quot;u1&quot;, &quot;u2&quot;, .....)`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">USER_URL</span><span class="p">)</span><span class="o">.</span><span class="n">update_query</span><span class="p">({</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">users</span><span class="p">,</span> <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="n">fields</span><span class="p">})</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+    <span class="n">user_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">User</span><span class="p">(</span><span class="n">search_term</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">[</span><span class="n">user</span><span class="p">],</span> <span class="n">FOUND</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">user</span><span class="p">]</span>
+            <span class="k">else</span> <span class="n">User</span><span class="p">(</span><span class="n">search_term</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">FOUND</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">user_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">user_list</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.client.Client.execute" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#azaka.client.Client.execute" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Sends the query to the VNDB API.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method dynamically generates the Response.results attribute.
+Only the fields that you specify in the <code>select()</code> function at the time of building
+the query will be present in the list of results.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some fields utilize dot notation to access nested data such as <code>image.url</code>.
+For such fields, we use the parent field name (<code>image</code> in this case) as an attribute of the
+result, and a dictionary containing the child fields (<code>url</code> in this case)
+as the value of the said attribute. Example:</p>
+<p><code>VN(id="v2", image={"url": ...})</code></p>
+</div>
+<p>See Also:
+    <a href="../models/#azaka.models.Response">Response</a>, <a href="../query/#azaka.query.Query">Query</a></p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>query</code></td>
+        <td><code>Query</code></td>
+        <td><p>A <a href="../query/#azaka.query.Query">Query</a> object.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Response</code></td>
+      <td><p>A <a href="../models/#azaka.models.Response">Response</a> object containing the results of the query and associated metadata.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>azaka/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="n">query</span><span class="o">.</span><span class="n">Query</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sends the query to the VNDB API.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        This method dynamically generates the Response.results attribute.</span>
+<span class="sd">        Only the fields that you specify in the `select()` function at the time of building</span>
+<span class="sd">        the query will be present in the list of results.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        Some fields utilize dot notation to access nested data such as `image.url`.</span>
+<span class="sd">        For such fields, we use the parent field name (`image` in this case) as an attribute of the</span>
+<span class="sd">        result, and a dictionary containing the child fields (`url` in this case)</span>
+<span class="sd">        as the value of the said attribute. Example:</span>
+
+<span class="sd">        `VN(id=&quot;v2&quot;, image={&quot;url&quot;: ...})`</span>
+
+<span class="sd">    See Also:</span>
+<span class="sd">        [Response](./models.md#azaka.models.Response), [Query](./query.md#azaka.query.Query)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        query: A [Query](./query.md#azaka.query.Query) object.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A [Response](./models.md#azaka.models.Response) object containing the results of the query and associated metadata.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">query</span><span class="o">.</span><span class="n">_route</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;route&#39; cannot be empty&quot;</span><span class="p">)</span>
+
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">post</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">parse_body</span>
+    <span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="p">(</span><span class="n">fn</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">base_header</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_header</span> <span class="k">else</span> <span class="n">fn</span><span class="p">())</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">build_objects</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">_route</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="azaka.client.Client.close_cs" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">close_cs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#azaka.client.Client.close_cs" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Close the internal <a href="https://docs.aiohttp.org/en/stable/client_reference.html#aiohttp.ClientSession">aiohttp.ClientSession</a> object.</p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>You must call this method after completing the request if you are not using
+Context Manager.</p>
+</div>
+
+        <details class="quote">
+          <summary>Source code in <code>azaka/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">close_cs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Close the internal [aiohttp.ClientSession](https://docs.aiohttp.org/en/stable/client_reference.html#aiohttp.ClientSession) object.</span>
+<span class="sd">    Danger:</span>
+<span class="sd">        You must call this method after completing the request if you are not using</span>
+<span class="sd">        Context Manager.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="p">:</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright 2023 - Present &copy; mooncell07
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
+      
+    
+  </body>
+</html>
