@@ -1,0 +1,9 @@
+[data-md-color-scheme="slate"] {
+    --md-default-bg-color: 	rgb(36, 39, 58);
+}
+
+div.doc-contents:not(.first) {
+    padding-left: 25px;
+    border-left: 4px solid 	rgb(54, 58, 79);
+    margin-bottom: 80px;
+}

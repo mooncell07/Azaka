@@ -13,27 +13,32 @@ from azaka.utils import Response, RespT, build_objects
 
 __all__ = ("Client",)
 
-
 class Client:
+    """
+    Client class for interacting with the VNDB API.
+    """
     __slots__ = ("cs", "token")
 
     def __init__(self, token: t.Optional[str] = None) -> None:
         """
-        Client Constructor.
+        Client constructor.
 
         Args:
             token: VNDB API access token.
 
         Attributes:
-            cs (t.Optional[aiohttp.ClientSession]): An aiohttp.ClientSession object.
+            cs (Optional[aiohttp.ClientSession]): An [aiohttp.ClientSession](https://docs.aiohttp.org/en/stable/client_reference.html#aiohttp.ClientSession) object.
         """
         self.token = token
         self.cs: t.Optional[aiohttp.ClientSession] = None
 
     @property
-    def base_header(self) -> t.Optional[t.Mapping[str, str]]:
+    def base_header(self) -> t.Optional[dict[str, str]]:
         """
-        Return a dict. containing Auth. token. if token is supplied else it is [None][]
+        Returns a [dict][] containing the Authorization header.
+        
+        Note:
+            If the token is not passed, it will return [None][].
         """
         return {"Authorization": f"token {self.token}"} if self.token else None
 
@@ -49,23 +54,23 @@ class Client:
     ) -> None:
         await self.close_cs()
 
-    async def get_schema(self) -> t.Mapping[str, str]:
+    async def get_schema(self) -> dict[str, str]:
         """
-        Return a Mapping containing metadata about API objects and enums.
+        Fetches the schema of the API Database.
 
         Returns:
-            data: Mapping of API structure.
+            A [dict][] containing the schema of the API Database.
         """
         resp = await self._request(query.SCHEMA_URL)
         data = await self._get_data(resp)
-        return t.cast(t.Mapping[str, str], data)
+        return t.cast(dict[str, str], data)
 
     async def get_stats(self) -> Stats:
         """
-        Return VNDB database stats.
+        Fetches the statistics of the API's Database.
 
         Returns:
-            stats: A [dataclasses.dataclass][] representation of the [json][] response.
+            A [Stats](./models.md#azaka.models.Stats) object.
         """
         resp = await self._request(query.STATS_URL)
         data = await self._get_data(resp)
@@ -73,15 +78,15 @@ class Client:
 
     async def get_auth_info(self) -> AuthInfo:
         """
-        Validate the API token and return information about it.
+        Validates and Returns information about the given API token.
 
         Returns:
-            authinfo: A [dataclasses.dataclass][] representation of the [json][] response.
+            An [AuthInfo](./models.md#azaka.models.AuthInfo) object.
 
-        Note:
-            - A [TypeError][] is raised if the token is not passed.
+        Exceptions:
+            TypeError: A [TypeError][] is raised if the token is not passed.
 
-            - InvalidAuthTokenError will be raised by the API if token is found invalid.
+            InvalidAuthTokenError: `InvalidAuthTokenError` is raised by the API if token is found invalid.
         """
         if not self.base_header:
             raise TypeError("Missing required argument 'token'")
@@ -90,14 +95,14 @@ class Client:
         return AuthInfo(**data)
 
     async def get_user(
-        self, *users: str, fields: t.Sequence[str] = ()
-    ) -> t.Sequence[User]:
+        self, *users: str, fields: list[str] = ()
+    ) -> list[User]:
         """
-        Find a user by id or username and return information about them.
+        Looks up user(s) by id or username and returns information about them.
 
         Args:
-            users: Variable number of username/ids to search for.
-            fields: A Sequence type holding all fields to select.
+            users: A variable length argument of user ids or usernames as [str][]s.
+            fields: A [list][] of fields to select.
 
         Accepted fields for the `fields` parameter are:
 
@@ -114,11 +119,13 @@ class Client:
             should not be explicitly specified.
 
         Returns:
-            user_list: A [list][] of User objects.
+            A [list][] of [User](./models.md#azaka.models.User) objects.
 
         Tip:
             Since API supports multiple user lookup using just one query, you can pass multiple
-            users like so: `await client.get_user("u1", "u2", .....)`
+            users like so: 
+
+            `await client.get_user("u1", "u2", .....)`
         """
         url = URL(query.USER_URL).update_query({"q": users, "fields": fields})
         resp = await self._request(url)
@@ -136,26 +143,20 @@ class Client:
 
     async def execute(self, query: query.Query) -> Response:
         """
-        Return a Response object containing the results of the query and associated metadata.
-
-        This method is used for searching and querying any database entry. It supports all the
-        query routes exposed by the API publicly.
-
+        Returns a Response object containing the results of the query and associated metadata.
 
         Note:
             This method dynamically generates the Response.results attribute.
-            Only the fields that you specify in the select() function during the
-            query will be present in the list of results.
+            Only the fields that you specify in the select() function at the time of building
+            the query will be present in the list of results.
 
         Note:
-            Fields that access data inside another data structure, such as image.url,
-            will have the left part become the attribute of the result and the data
-            structure associated with the right part will become it's value.
-            For example, the Response may look like this:
+            Some fields utilize dot notation to access nested data such as `image.url`. 
+            For such fields, we use the parent field name (`image` in this case) as an attribute of the
+            result, and a dictionary containing the child fields (`url` in this case) 
+            as the value of the said attribute. Example:
 
-            `Response(results=[VN(id="v2", image={"url": ...})], ...)`
-
-            The wrapper does not handle nested data.
+            `VN(id="v2", image={"url": ...})`
 
         Tip:
             If you are new, I recommend reading ... to get a clear
@@ -165,7 +166,7 @@ class Client:
             query: A Query object.
 
         Returns:
-            response: A Response object.
+            A Response object containing the results of the query and associated metadata.
         """
         if not query._route:
             raise TypeError("'route' cannot be empty")
@@ -195,7 +196,7 @@ class Client:
         url: str | URL,
         post: bool = False,
         data: t.Optional[str] = None,
-        headers: t.Optional[t.Mapping[str, str]] = None,
+        headers: t.Optional[dict[str, str]] = None,
     ) -> aiohttp.ClientResponse:
         await self._create_cs()
         assert self.cs
@@ -211,7 +212,7 @@ class Client:
 
     async def close_cs(self) -> None:
         """
-        Close the internal [aiohttp.ClientSession].
+        Close the internal aiohttp.ClientSession.
 
         Danger:
             You must call this method after completing the request if you are not using

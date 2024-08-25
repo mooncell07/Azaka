@@ -20,6 +20,7 @@ theme:
   
   logo: https://cdn-icons-png.flaticon.com/512/3276/3276136.png
   favicon: https://cdn-icons-png.flaticon.com/512/3276/3276136.png
+
 repo_name: mooncell07/Azaka
 repo_url: https://github.com/mooncell07/Azaka
 
@@ -29,6 +30,7 @@ plugins:
     handlers:
       python:
         options:
+            docstring_style: google
             show_root_heading: true
             members_order: "source"
         import:
@@ -38,12 +40,17 @@ nav:
   - Home: index.md
   - Azaka:
     - Client: Azaka/client.md
+    - Paginator: Azaka/paginator.md
+    - Models: Azaka/models.md
 
 markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
   - admonition
   - toc:
-      permalink: "+"
+      permalink: "#"
+
+extra_css:
+- ./css/extra.css
 
 copyright: Copyright 2023 - Present &copy; mooncell07
