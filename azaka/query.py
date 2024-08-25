@@ -1,12 +1,10 @@
-import enum
-import functools
 import json
 import typing as t
-from dataclasses import dataclass, field
 
 from azaka.utils import FT, clean_string
 
 __all__ = ("select", "AND", "OR", "Node")
+
 BASE = "https://api.vndb.org/kana"
 
 

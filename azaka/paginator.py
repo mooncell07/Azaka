@@ -1,8 +1,8 @@
 import typing as t
 
-from azaka.query import Query
 from azaka.client import Client
-from azaka.utils import Response
+from azaka.models import Response
+from azaka.query import Query
 
 __all__ = ("Paginator",)
 

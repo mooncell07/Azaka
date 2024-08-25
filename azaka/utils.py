@@ -1,20 +1,12 @@
 import typing as t
 from collections import namedtuple
-from dataclasses import dataclass, field
 
-__all__ = ("Response", "clean_string", "build_objects", "FT", "RespT")
+from azaka.models import Response
+
+__all__ = ("clean_string", "build_objects", "FT", "RespT")
 
 T = t.TypeVar("T")
 FT = list[T | "FT[T]"]
-
-
-@dataclass
-class Response:
-    results: t.Sequence[t.NamedTuple]
-    more: bool = False
-    count: int = 1
-    compact_filters: str = ""
-    normalized_filters: list[str] = field(default_factory=list)
 
 
 class RespT(t.TypedDict):

@@ -1,6 +1,5 @@
 import functools
 import typing as t
-from collections import namedtuple
 from types import TracebackType
 
 import aiohttp
@@ -8,15 +7,17 @@ from yarl import URL
 
 from azaka import query
 from azaka.exceptions import EXMAP, AzakaException
-from azaka.models import AuthInfo, Stats, User
-from azaka.utils import Response, RespT, build_objects
+from azaka.models import AuthInfo, Response, Stats, User
+from azaka.utils import RespT, build_objects
 
 __all__ = ("Client",)
+
 
 class Client:
     """
     Client class for interacting with the VNDB API.
     """
+
     __slots__ = ("cs", "token")
 
     def __init__(self, token: t.Optional[str] = None) -> None:
@@ -36,7 +37,7 @@ class Client:
     def base_header(self) -> t.Optional[dict[str, str]]:
         """
         Returns a [dict][] containing the Authorization header.
-        
+
         Note:
             If the token is not passed, it will return [None][].
         """
@@ -78,7 +79,7 @@ class Client:
 
     async def get_auth_info(self) -> AuthInfo:
         """
-        Validates and Returns information about the given API token.
+        Validates and Returns information about the given API Token.
 
         Returns:
             An [AuthInfo](./models.md#azaka.models.AuthInfo) object.
@@ -94,9 +95,7 @@ class Client:
         data = await self._get_data(resp)
         return AuthInfo(**data)
 
-    async def get_user(
-        self, *users: str, fields: list[str] = ()
-    ) -> list[User]:
+    async def get_user(self, *users: str, fields: list[str] = ()) -> list[User]:
         """
         Looks up user(s) by id or username and returns information about them.
 
@@ -123,7 +122,7 @@ class Client:
 
         Tip:
             Since API supports multiple user lookup using just one query, you can pass multiple
-            users like so: 
+            users like so:
 
             `await client.get_user("u1", "u2", .....)`
         """
@@ -143,17 +142,17 @@ class Client:
 
     async def execute(self, query: query.Query) -> Response:
         """
-        Returns a Response object containing the results of the query and associated metadata.
+        Sends the query to the VNDB API.
 
         Note:
             This method dynamically generates the Response.results attribute.
-            Only the fields that you specify in the select() function at the time of building
+            Only the fields that you specify in the `select()` function at the time of building
             the query will be present in the list of results.
 
         Note:
-            Some fields utilize dot notation to access nested data such as `image.url`. 
+            Some fields utilize dot notation to access nested data such as `image.url`.
             For such fields, we use the parent field name (`image` in this case) as an attribute of the
-            result, and a dictionary containing the child fields (`url` in this case) 
+            result, and a dictionary containing the child fields (`url` in this case)
             as the value of the said attribute. Example:
 
             `VN(id="v2", image={"url": ...})`
@@ -166,7 +165,7 @@ class Client:
             query: A Query object.
 
         Returns:
-            A Response object containing the results of the query and associated metadata.
+            A [Response](./models.md#azaka.models.Response) object containing the results of the query and associated metadata.
         """
         if not query._route:
             raise TypeError("'route' cannot be empty")
