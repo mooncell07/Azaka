@@ -30,7 +30,6 @@ plugins:
     handlers:
       python:
         options:
-            docstring_style: google
             show_root_heading: true
             members_order: "source"
         import:
@@ -42,6 +41,7 @@ nav:
     - Client: Azaka/client.md
     - Paginator: Azaka/paginator.md
     - Models: Azaka/models.md
+    - Exceptions: Azaka/exceptions.md
 
 markdown_extensions:
   - pymdownx.highlight
