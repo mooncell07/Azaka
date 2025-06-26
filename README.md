@@ -11,23 +11,13 @@
 # LINKS
 
 - [WELCOME!](#welcome)
-  - [FEATURES](#features)
   - [INSTALLATION](#installation)
   - [USAGE](#usage)
   - [DOCUMENTATION & TUTORIAL](#documentation--tutorial)
-  - [THANKS](#thanks)
 
 # WELCOME!
 
 Welcome to Azaka, a work-in-progress asynchronous and thin API Wrapper around the [visual novel database](https://vndb.org/) written in python.
-
-
-## FEATURES
-
-- **Fully Asynchronous** - The library supports Async. communication and other jobs.
-- **Clean and Expressive** - Azaka's syntax is 
-really clean and expressive with SQL like querying.
-- **Well Typehinted & Tested** - Everything in the library is properly typehinted and checked with strict mypy type checking strategy. However there are few exceptions ;)
 
 ## INSTALLATION
 
@@ -62,6 +52,5 @@ asyncio.run(main())
 
 Preliminary documentation is available @ [Azaka Docs](https://mooncell07.github.io/Azaka/)
 
-## THANKS
 
 Thank you for your visit :)
