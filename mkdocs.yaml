@@ -1,6 +1,6 @@
 site_name: Azaka
 site_description: Documentation for Azaka.
-site_author: Nova/Azaka
+site_author: Nova/mooncell07
 
 theme:
   name: "material"
@@ -26,6 +26,8 @@ repo_url: https://github.com/mooncell07/Azaka
 
 plugins:
 - search
+- autorefs:
+    link_titles: external
 - mkdocstrings:
     handlers:
       python:
@@ -48,6 +50,7 @@ markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
   - admonition
+  - attr_list
   - toc:
       permalink: "#"
 

@@ -2,16 +2,18 @@
 name = "Azaka"
 version = "0.4.3"
 description = "A work in progress API Wrapper around The Visual Novel Database (VNDB) written in Python."
-authors = ["mooncell07 <mooncell07@users.noreply.github.com>"]
+authors = ["Nova <mooncell07@proton.me>"]
 license = "MIT"
 keywords = ["vndb", "apiwrapper", "async", "visualnovel", "python"]
 readme = "README.md"
+documentation = "https://mooncell07.github.io/Azaka/"
+homepage = "https://github.com/mooncell07/Azaka/"
 
 [tool.poetry.dependencies]
 python = "^3.11"
 aiohttp = "^3.8.4"
 
-[tool.poetry.dev-dependencies]
+[poetry.group.dev.dependencies]
 pytest = "^6.2.5"
 pytest-asyncio = "^0.17.2"
 mypy = "^1.4.1"
