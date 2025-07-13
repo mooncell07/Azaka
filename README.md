@@ -8,24 +8,17 @@
 
 </p>
 
-# LINKS
+# Azaka
 
-- [WELCOME!](#welcome)
-  - [INSTALLATION](#installation)
-  - [USAGE](#usage)
-  - [DOCUMENTATION & TUTORIAL](#documentation--tutorial)
+Welcome to Azaka, a work-in-progress asynchronous API Wrapper around the [visual novel database](https://vndb.org/) written in python.
 
-# WELCOME!
-
-Welcome to Azaka, a work-in-progress asynchronous and thin API Wrapper around the [visual novel database](https://vndb.org/) written in python.
-
-## INSTALLATION
+## Installation
 
 You can install Azaka using pip.
 
 `pip install azaka`
 
-## USAGE
+## Usage
 
 *Example of getting some basic VN data.*
 
@@ -48,9 +41,7 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-## DOCUMENTATION & TUTORIAL
+## Docs
 
 Preliminary documentation is available @ [Azaka Docs](https://mooncell07.github.io/Azaka/)
 
-
-Thank you for your visit :)
