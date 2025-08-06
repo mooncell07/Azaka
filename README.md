@@ -26,6 +26,7 @@ You can install Azaka using pip.
 import asyncio
 from azaka import Client, Node, select
 
+# Refer https://api.vndb.org/kana#database-querying for fields, filters etc.
 query = (
     select("title", "image.url")
     .frm("vn")
